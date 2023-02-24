@@ -79,8 +79,8 @@ hexo.extend.tag.register(
 // https://github.com/jekyll/jekyll-gist
 // https://github.com/jekyll/jekyll-gist/blob/master/lib/jekyll-gist/gist_tag.rb
 //
-// input {% gist c08ee0f2726fd0e3909d %}
-// output <script src="https://gist.github.com/parkr/c08ee0f2726fd0e3909d.js"> </script>
+// input {% gist meredrica/088f5a593a2a7184202850c58bcb48d1 %}
+// output <script src="https://gist.github.com/meredrica/088f5a593a2a7184202850c58bcb48d1.js"> </script>
 //
 // You may optionally specify a `filename` after the `gist_id`:
 // input {% gist c08ee0f2726fd0e3909d test.md %}
@@ -132,11 +132,11 @@ hexo.extend.tag.register('gist', (args) => {
 });
 
 //
-// Input: {% jsfiddle ccWP7 %}
-// Output: <script async src=\"//jsfiddle.net/ccWP7/embed/js,resources,html,css,result/dark/"></script>
+// Input: {% jsfiddle heera/A9RDk %}
+// Output: <script async src=\"//jsfiddle.net/heera/A9RDk/embed/js,resources,html,css,result/dark/"></script>
 //
-// Input: {% jsfiddle ccWP7 js,html,result iframe %}
-// Output: <iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/ccWP7/embedded/js,html,result/light/"></iframe>
+// Input: {% jsfiddle heera/A9RDk js,html,result iframe %}
+// Output: <iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/heera/A9RDk/embedded/js,html,result/light/"></iframe>
 //
 
 // /(?<fiddle>\w+)(?:\s+(?<sequence>[\w,]+))?(?:\s+(?<skin>\w+))?(?:\s+(?<height>\w+))?(?:\s+(?<width>\w+))?/
