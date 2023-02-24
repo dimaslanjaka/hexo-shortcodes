@@ -117,17 +117,17 @@ hexo.extend.tag.register('gist', (args) => {
     };
 
     fetch_raw_code(gist_id, filename)
-      .then((data) => {
-        console.log(data);
+      .then((raw_code) => {
+        console.log(raw_code);
+        payload.raw_code = raw_code;
+        nunjucks.renderString(path.join(__dirname, 'hexo-gist.njk'), payload, (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(res);
+        });
       })
       .catch(console.log);
-
-    nunjucks.renderString(path.join(__dirname, 'hexo-gist.njk'), payload, (err, res) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(res);
-    });
   });
 });
 
