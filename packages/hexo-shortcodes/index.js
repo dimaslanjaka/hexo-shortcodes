@@ -94,7 +94,7 @@ async function fetch_raw_code(gist_id, filename) {
     const res = await axios.get(url);
     return res.data;
   } catch (e) {
-    hexo.log.error(_hg_logname, gist_id, `cannot get ${e.message}`);
+    hexo.log.error(_hg_logname, gist_id, `cannot get ${e.message}`, { url });
     return '';
   }
 }
