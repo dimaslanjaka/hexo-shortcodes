@@ -1,0 +1,60 @@
+{
+  "name": "hexo-shortcodes",
+  "version": "1.0.0",
+  "description": "Hexo shortcodes helper",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dimaslanjaka/static-blog-generator-hexo.git",
+    "directory": "packages/hexo-github-card"
+  },
+  "files": [
+    "*.js",
+    "*.njk",
+    "lib",
+    "readme.md"
+  ],
+  "scripts": {
+    "update:postinstall": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js",
+    "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
+    "update:ncu": "npx npm-check-updates -u -x hexo,hexo-fs",
+    "update": "run-s update:** && npm install && node postinstall.js",
+    "build": "node packer.js --yarn"
+  },
+  "keywords": [
+    "website",
+    "blog",
+    "hexo",
+    "github",
+    "card"
+  ],
+  "author": {
+    "name": "Jason Jiang",
+    "email": "gisonrg@gmail.com",
+    "url": "https://gisonrg.me"
+  },
+  "contributors": [
+    {
+      "email": "dimaslanjaka@gmail.com",
+      "name": "Dimas Lanjaka",
+      "url": "https://www.webmanajemen.com"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "ansi-colors": "^4.1.3",
+    "axios": "^1.3.4",
+    "bluebird": "^3.7.2",
+    "hexo-fs": "^2.0.0",
+    "nunjucks": "^3.2.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.34.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.4"
+  },
+  "engines": {
+    "hexo": ">= 3.0.0"
+  },
+  "packageManager": "yarn@3.4.1"
+}
