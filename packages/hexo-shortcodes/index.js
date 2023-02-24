@@ -16,7 +16,7 @@ const GITHUB_CARD_TAG_NAME = 'githubCard';
 const GITHUB_CARD_TEMPLATE = path.resolve(__dirname, 'hexo-github-card.njk');
 const GITHUB_CARD_TEMPLATE_CONTENT = fs.readFileSync(GITHUB_CARD_TEMPLATE, 'utf-8');
 
-nunjucks.configure([__dirname], {
+nunjucks.configure(__dirname, {
   noCache: true,
   watch: false
 });
@@ -75,26 +75,52 @@ hexo.extend.tag.register(
 );
 
 // hexo-gist
+// gist shortcode
+// https://github.com/jekyll/jekyll-gist
+// https://github.com/jekyll/jekyll-gist/blob/master/lib/jekyll-gist/gist_tag.rb
+//
+// input {% gist c08ee0f2726fd0e3909d %}
+// output <script src="https://gist.github.com/parkr/c08ee0f2726fd0e3909d.js"> </script>
+//
+// You may optionally specify a `filename` after the `gist_id`:
+// input {% gist c08ee0f2726fd0e3909d test.md %}
 
-async function fetch_raw_code(gist_id) {
-  const url = `https://gist.githubusercontent.com/${gist_id}/raw`;
-  const res = await axios.get(url);
-  return res.data;
+async function fetch_raw_code(gist_id, filename) {
+  let url = `https://gist.githubusercontent.com/${gist_id}/raw`;
+  if (typeof filename === 'string') {
+    url = `${url}/${filename}`;
+  }
+  try {
+    const res = await axios.get(url);
+    return res.data;
+  } catch (e) {
+    hexo.log.error(_hg_logname, gist_id, `cannot get ${e.message}`);
+    return '';
+  }
 }
 
-// https://github.com/jekyll/jekyll-gist/blob/master/lib/jekyll-gist/gist_tag.rb
 hexo.extend.tag.register('gist', (args) => {
   /**
    * @type {import('hexo')}
    */
-  const self = this;
+  //const self = this;
   return new Promise((resolve, reject) => {
     hexo.log.info(_hg_logname, args);
-    hexo.log.info(_hg_logname, self.config.url);
+    //hexo.log.info(_hg_logname, self.config.url);
 
+    const gist_id = args[0];
+    const filename = args[1];
     const payload = {
-      gist_id: args[0]
+      gist_id,
+      filename,
+      raw_code: ''
     };
+
+    fetch_raw_code(gist_id, filename)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch(console.log);
 
     nunjucks.renderString(path.join(__dirname, 'hexo-gist.njk'), payload, (err, res) => {
       if (err) {
@@ -112,3 +138,24 @@ hexo.extend.tag.register('gist', (args) => {
 // Input: {% jsfiddle ccWP7 js,html,result iframe %}
 // Output: <iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/ccWP7/embedded/js,html,result/light/"></iframe>
 //
+
+// /(?<fiddle>\w+)(?:\s+(?<sequence>[\w,]+))?(?:\s+(?<skin>\w+))?(?:\s+(?<height>\w+))?(?:\s+(?<width>\w+))?/
+
+hexo.extend.tag.register('jsfiddle', (args) => {
+  /**
+   * @type {import('hexo')}
+   */
+  const self = this;
+  const id = args[0];
+  const display = args[1] || 'js,resources,html,css,result';
+  const outputAs = args[2] || 'script';
+  const mode = args[3] || 'light';
+  hexo.log.info(_hg_logname, args);
+  hexo.log.info(_hg_logname, self.config.url);
+
+  if (outputAs === 'script') {
+    return `<script async src="//jsfiddle.net/${id}/embed/${display}/${mode}/"></script>`;
+  } else {
+    return `<iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/${id}/embedded/${display}/${mode}/"></iframe>`;
+  }
+});
