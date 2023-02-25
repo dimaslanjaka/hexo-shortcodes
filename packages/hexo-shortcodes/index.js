@@ -60,12 +60,13 @@ hexo.extend.tag.register(
       style: `text-align: ${align}`
     };
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       nunjucks.renderString(GITHUB_CARD_TEMPLATE_CONTENT, payload, (err, res) => {
         if (err) {
-          return reject(err);
+          resolve('ERROR(githubCard)', err.message);
+        } else {
+          resolve(res);
         }
-        resolve(res);
       });
     });
   },
@@ -83,7 +84,7 @@ hexo.extend.tag.register(
 // output <script src="https://gist.github.com/meredrica/088f5a593a2a7184202850c58bcb48d1.js"> </script>
 //
 // You may optionally specify a `filename` after the `gist_id`:
-// input {% gist c08ee0f2726fd0e3909d test.md %}
+// input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
 async function fetch_raw_code(gist_id, filename) {
   let url = `https://gist.githubusercontent.com/${gist_id}/raw`;
@@ -104,7 +105,7 @@ hexo.extend.tag.register('gist', (args) => {
    * @type {import('hexo')}
    */
   //const self = this;
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     hexo.log.info(_hg_logname, args);
     //hexo.log.info(_hg_logname, self.config.url);
 
@@ -118,13 +119,13 @@ hexo.extend.tag.register('gist', (args) => {
 
     fetch_raw_code(gist_id, filename)
       .then((raw_code) => {
-        console.log(raw_code);
         payload.raw_code = raw_code;
         nunjucks.renderString(path.join(__dirname, 'hexo-gist.njk'), payload, (err, res) => {
           if (err) {
-            return reject(err);
+            resolve(`ERROR(gist) cannot fetch raw ${gist_id}` + err.message);
+          } else {
+            resolve(res);
           }
-          resolve(res);
         });
       })
       .catch(console.log);
