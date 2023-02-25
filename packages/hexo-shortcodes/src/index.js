@@ -8,15 +8,16 @@ const { default: axios } = require('axios');
 const ansiColors = require('ansi-colors');
 const _hgc_logname = ansiColors.magentaBright('hexo-github-card');
 const _hg_logname = ansiColors.magentaBright('hexo-gist');
-const LIB_PATH = path.resolve(__dirname, './lib');
+const LIB_PATH = path.resolve(__dirname, '../lib');
+const TEMPLATE_PATH = path.resolve(__dirname, '../template');
 const GITHUB_CARD_LIB_NAME = 'githubcard.js';
 const GITHUB_CARD_FILE_PATH = path.resolve(LIB_PATH, GITHUB_CARD_LIB_NAME);
 const GITHUB_CARD_ROUTE_NAME = 'js';
 const GITHUB_CARD_TAG_NAME = 'githubCard';
-const GITHUB_CARD_TEMPLATE = path.resolve(__dirname, 'hexo-github-card.njk');
+const GITHUB_CARD_TEMPLATE = path.resolve(TEMPLATE_PATH, 'hexo-github-card.njk');
 const GITHUB_CARD_TEMPLATE_CONTENT = fs.readFileSync(GITHUB_CARD_TEMPLATE, 'utf-8');
 
-nunjucks.configure(__dirname, {
+nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
   noCache: true,
   watch: false
 });
@@ -96,7 +97,16 @@ async function fetch_raw_code(gist_id, filename) {
     return res.data;
   } catch (e) {
     hexo.log.error(_hg_logname, gist_id, `cannot get ${e.message}`, { url });
-    return '';
+    return `cannot fetch raw code ${JSON.stringify(
+      {
+        gist_id,
+        url,
+        errorMessage: e.message,
+        errorCode: e.code
+      },
+      null,
+      2
+    )}`;
   }
 }
 

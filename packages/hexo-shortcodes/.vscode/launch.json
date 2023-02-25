@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "yarn install && hexo clean && hexo s",
+      "command": "yarn add ./packages/hexo-shortcodes && hexo clean && hexo s",
       "name": "server",
       "request": "launch",
       "type": "node-terminal",
