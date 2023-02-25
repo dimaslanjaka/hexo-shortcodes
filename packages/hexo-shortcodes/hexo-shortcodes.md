@@ -7,14 +7,6 @@ permalink: /docs/hexo-shortcodes/index.html
 
 This post is used for testing hexo-shortcodes plugins.
 
-### Gist
-
-```nunjucks
-{% gist meredrica/088f5a593a2a7184202850c58bcb48d1 %}
-```
-
-{% gist meredrica/088f5a593a2a7184202850c58bcb48d1 %}
-
 ### jsFiddle
 
 ```nunjucks

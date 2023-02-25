@@ -116,8 +116,8 @@ hexo.extend.tag.register('gist', (args) => {
    */
   //const self = this;
   return new Promise((resolve) => {
-    hexo.log.info(_hg_logname, args);
-    //hexo.log.info(_hg_logname, self.config.url);
+    // hexo.log.info(_hg_logname, args);
+    // hexo.log.info(_hg_logname, self.config.url);
 
     const gist_id = args[0];
     const filename = args[1];
