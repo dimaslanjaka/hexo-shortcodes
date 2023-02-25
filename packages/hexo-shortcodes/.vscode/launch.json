@@ -5,8 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "yarn add ./packages/hexo-shortcodes && hexo clean && hexo s",
-      "name": "server",
+      "command": "yarn add ./packages/hexo-shortcodes/release/hexo-shortcodes.tgz && hexo clean && hexo s",
+      "name": "server [install]",
+      "request": "launch",
+      "type": "node-terminal",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "cwd": "${workspaceFolder}/../../"
+    },
+    {
+      "command": "hexo clean && hexo s",
+      "name": "server [direct]",
       "request": "launch",
       "type": "node-terminal",
       "env": {
