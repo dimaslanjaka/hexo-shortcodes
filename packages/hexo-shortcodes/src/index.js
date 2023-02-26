@@ -86,71 +86,75 @@ hexo.extend.tag.register(
 // input {% gist meredrica/088f5a593a2a7184202850c58bcb48d1 %}
 // output <script src="https://gist.github.com/meredrica/088f5a593a2a7184202850c58bcb48d1.js"> </script>
 //
-// You may optionally specify a `filename` after the `gist_id`:
+// You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
-hexo.extend.tag.register('gist', function (args) {
-  const gist_id = args[0];
-  const filename = args[1];
-  const payload = {
-    gist_id,
-    filename,
-    raw_code: ''
-  };
+hexo.extend.tag.register(
+  'gist',
+  function (args) {
+    const id = args[0];
+    const filename = args[1];
+    const payload = {
+      id,
+      filename,
+      raw_code: ''
+    };
 
-  const fetch_raw_code = async function (gist_id, filename) {
-    let url = `https://gist.githubusercontent.com/${gist_id}/raw`;
-    if (typeof filename === 'string') {
-      url = `${url}/${filename}`;
-    }
+    const fetch_raw_code = async function (id, filename) {
+      let url = `https://gist.githubusercontent.com/${id}/raw`;
+      if (typeof filename === 'string') {
+        url = `${url}/${filename}`;
+      }
+      return new Promise((resolve) => {
+        axios
+          .get(url)
+          .then((res) => {
+            resolve(res.data);
+          })
+          .catch((e) => {
+            hexo.log.error(_hg_logname, id, `cannot get ${e.message}`, { url });
+            resolve(
+              `cannot fetch raw code ${JSON.stringify(
+                {
+                  id,
+                  url,
+                  errorMessage: e.message,
+                  errorCode: e.code
+                },
+                null,
+                2
+              )}`
+            );
+          });
+      });
+    };
+
     return new Promise((resolve) => {
-      axios
-        .get(url)
-        .then((res) => {
-          resolve(res.data);
+      fetch_raw_code(id, filename)
+        .then((raw_code) => {
+          payload.raw_code = raw_code;
+          writefile(path.join(TEMP_PATH, id + '.txt'), raw_code);
+          writefile(path.join(TEMP_PATH, id + '.json'), JSON.stringify(payload, null, 2));
         })
-        .catch((e) => {
-          hexo.log.error(_hg_logname, gist_id, `cannot get ${e.message}`, { url });
-          resolve(
-            `cannot fetch raw code ${JSON.stringify(
-              {
-                gist_id,
-                url,
-                errorMessage: e.message,
-                errorCode: e.code
-              },
-              null,
-              2
-            )}`
-          );
-        });
-    });
-  };
-
-  return new Promise((resolve) => {
-    fetch_raw_code(gist_id, filename)
-      .then((raw_code) => {
-        payload.raw_code = raw_code;
-        writefile(path.join(TEMP_PATH, gist_id + '.txt'), raw_code);
-        writefile(path.join(TEMP_PATH, gist_id + '.json'), JSON.stringify(payload, null, 2));
-      })
-      .finally(() => {
-        nunjucks.renderString(
-          fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
-          payload,
-          function (err, result) {
-            if (typeof result !== 'string') {
-              resolve(`ERROR(gist) cannot fetch raw ${gist_id}. ${JSON.stringifyWithCircularRefs(err, null, 2)}`);
-            } else {
-              writefile(path.join(TEMP_PATH, gist_id + '.njk.txt'));
-              resolve(result);
+        .finally(() => {
+          nunjucks.renderString(
+            fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
+            payload,
+            function (err, result) {
+              if (typeof result !== 'string') {
+                resolve(`ERROR(gist) cannot fetch raw ${id}. ${JSON.stringifyWithCircularRefs(err, null, 2)}`);
+              } else {
+                writefile(path.join(TEMP_PATH, id + '.njk.txt'));
+                resolve(result);
+              }
             }
-          }
-        );
-      })
-      .catch(console.log);
-  });
-});
+          );
+        })
+        .catch(console.log);
+    });
+  },
+  { async: true }
+);
 
 //
 // Input: {% jsfiddle heera/A9RDk %}
@@ -162,18 +166,22 @@ hexo.extend.tag.register('gist', function (args) {
 
 // /(?<fiddle>\w+)(?:\s+(?<sequence>[\w,]+))?(?:\s+(?<skin>\w+))?(?:\s+(?<height>\w+))?(?:\s+(?<width>\w+))?/
 
-hexo.extend.tag.register('jsfiddle', function (args) {
-  const id = args[0];
-  const display = args[1] || 'js,resources,html,css,result';
-  const outputAs = args[2] || 'script';
-  const mode = args[3] || 'light';
+hexo.extend.tag.register(
+  'jsfiddle',
+  function (args) {
+    const id = args[0];
+    const display = args[1] || 'js,resources,html,css,result';
+    const outputAs = args[2] || 'script';
+    const mode = args[3] || 'light';
 
-  const ifr = `<iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/${id}/embedded/${display}/${mode}/"></iframe>`;
-  const scr = `<script async src="//jsfiddle.net/${id}/embed/${display}/${mode}/"></script><noscript>${ifr}</noscript>`;
+    const ifr = `<iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/${id}/embedded/${display}/${mode}/"></iframe>`;
+    const scr = `<script async src="//jsfiddle.net/${id}/embed/${display}/${mode}/"></script><noscript>${ifr}</noscript>`;
 
-  if (outputAs === 'script') {
-    return scr;
-  } else {
-    return ifr;
-  }
-});
+    if (outputAs === 'script') {
+      return scr;
+    } else {
+      return ifr;
+    }
+  },
+  { async: false }
+);
