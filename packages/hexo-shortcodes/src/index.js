@@ -17,12 +17,31 @@ const GITHUB_CARD_ROUTE_NAME = 'js';
 const GITHUB_CARD_TAG_NAME = 'githubCard';
 const GITHUB_CARD_TEMPLATE = path.resolve(TEMPLATE_PATH, 'hexo-github-card.njk');
 const GITHUB_CARD_TEMPLATE_CONTENT = fs.readFileSync(GITHUB_CARD_TEMPLATE, 'utf-8');
-const TEMP_PATH = path.join(process.cwd(), 'tmp/hexo-shortcodes');
+let TEMP_PATH = path.join(process.cwd(), 'tmp/hexo-shortcodes');
+if (fs.existsSync(path.join(process.cwd(), 'packages/hexo-shortcodes'))) {
+  TEMP_PATH = path.join(process.cwd(), 'packages/hexo-shortcodes/tmp');
+}
+if (!fs.existsSync(TEMP_PATH)) {
+  fs.mkdirSync(TEMP_PATH, { recursive: true });
+}
 
 nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
   noCache: true,
   watch: false
 });
+
+const escapeHTML = (str) =>
+  str.replace(
+    /[&<>'"]/g,
+    (tag) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag])
+  );
 
 // Registers serving of the lib used by the plugin with Hexo.
 hexo.extend.generator.register(GITHUB_CARD_ROUTE_NAME, () => {
@@ -114,15 +133,17 @@ hexo.extend.tag.register(
           .catch((e) => {
             hexo.log.error(_hg_logname, id, `cannot get ${e.message}`, { url });
             resolve(
-              `cannot fetch raw code ${JSON.stringify(
-                {
-                  id,
-                  url,
-                  errorMessage: e.message,
-                  errorCode: e.code
-                },
-                null,
-                2
+              `cannot fetch raw code ${id}.<br/> ${escapeHTML(
+                JSON.stringify(
+                  {
+                    id,
+                    url,
+                    errorMessage: e.message,
+                    errorCode: e.code
+                  },
+                  null,
+                  2
+                )
               )}`
             );
           });
