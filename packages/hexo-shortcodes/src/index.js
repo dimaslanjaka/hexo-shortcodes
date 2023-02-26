@@ -33,7 +33,7 @@ hexo.extend.generator.register(GITHUB_CARD_ROUTE_NAME, () => {
 // Registers the new tag with Hexo.
 hexo.extend.tag.register(
   GITHUB_CARD_TAG_NAME,
-  (args) => {
+  function (args) {
     const argsObj = {};
 
     args.forEach((arg) => {
@@ -110,7 +110,7 @@ async function fetch_raw_code(gist_id, filename) {
   }
 }
 
-hexo.extend.tag.register('gist', (args) => {
+hexo.extend.tag.register('gist', function (args) {
   /**
    * @type {import('hexo')}
    */
@@ -130,7 +130,7 @@ hexo.extend.tag.register('gist', (args) => {
     fetch_raw_code(gist_id, filename)
       .then((raw_code) => {
         payload.raw_code = raw_code;
-        nunjucks.renderString(path.join(__dirname, 'hexo-gist.njk'), payload, (err, res) => {
+        nunjucks.renderString(path.join(TEMPLATE_PATH, 'hexo-gist.njk'), payload, (err, res) => {
           if (err) {
             resolve(`ERROR(gist) cannot fetch raw ${gist_id}` + err.message);
           } else {
@@ -152,15 +152,18 @@ hexo.extend.tag.register('gist', (args) => {
 
 // /(?<fiddle>\w+)(?:\s+(?<sequence>[\w,]+))?(?:\s+(?<skin>\w+))?(?:\s+(?<height>\w+))?(?:\s+(?<width>\w+))?/
 
-hexo.extend.tag.register('jsfiddle', (args) => {
+hexo.extend.tag.register('jsfiddle', function (args) {
   const id = args[0];
   const display = args[1] || 'js,resources,html,css,result';
   const outputAs = args[2] || 'script';
   const mode = args[3] || 'light';
 
+  const ifr = `<iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/${id}/embedded/${display}/${mode}/"></iframe>`;
+  const scr = `<script async src="//jsfiddle.net/${id}/embed/${display}/${mode}/"></script><noscript>${ifr}</noscript>`;
+
   if (outputAs === 'script') {
-    return `<script async src="//jsfiddle.net/${id}/embed/${display}/${mode}/"></script>`;
+    return scr;
   } else {
-    return `<iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/${id}/embedded/${display}/${mode}/"></iframe>`;
+    return ifr;
   }
 });
