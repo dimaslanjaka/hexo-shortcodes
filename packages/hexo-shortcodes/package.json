@@ -22,7 +22,8 @@
     "update:ncu": "npx npm-check-updates -u -x hexo,hexo-fs",
     "update": "run-s update:** && npm install && node postinstall.js",
     "build": "tsc -p tsconfig.build.json && node packer.js --yarn",
-    "dev": "tsc -p tsconfig.build.json --watch"
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "test": "node test.js"
   },
   "keywords": [
     "website",

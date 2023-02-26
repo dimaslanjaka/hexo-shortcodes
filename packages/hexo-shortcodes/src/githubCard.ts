@@ -13,11 +13,6 @@ import {
   TEMPLATE_PATH
 } from './env';
 
-nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
-  noCache: true,
-  watch: false
-});
-
 // githubCard
 // show github profile or repositories
 
@@ -34,6 +29,11 @@ export function githubCard(hexo: import('hexo')) {
   hexo.extend.tag.register(
     GITHUB_CARD_TAG_NAME,
     function (args) {
+      nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
+        noCache: true,
+        watch: false
+      });
+
       const argsObj: Record<string, any> = {};
 
       args.forEach((arg) => {

@@ -4,7 +4,7 @@ import Bluebird from 'bluebird';
 import nunjucks from 'nunjucks';
 import path from 'path';
 import { writefile } from 'sbg-utility';
-import { TEMP_PATH } from './env';
+import { LIB_PATH, TEMPLATE_PATH, TEMP_PATH } from './env';
 const _hg_logname = ansiColors.magentaBright('hexo-gist');
 
 // hexo-gist
@@ -36,10 +36,15 @@ const fetch_raw_code = async function (id: string, filename: string) {
   });
 };
 
-export const gist = (hexo: import('hexo')) =>
+export const gist = (hexo: import('hexo')) => {
   hexo.extend.tag.register(
     'gist',
     function (args) {
+      nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
+        noCache: true,
+        watch: false
+      });
+
       return new Promise((resolve) => {
         const id = args[0];
         hexo.log.info(_hg_logname, id);
@@ -95,3 +100,4 @@ export const gist = (hexo: import('hexo')) =>
     },
     { async: true }
   );
+};

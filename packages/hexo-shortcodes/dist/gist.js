@@ -81,7 +81,11 @@ var fetch_raw_code = function (id, filename) {
     });
 };
 var gist = function (hexo) {
-    return hexo.extend.tag.register('gist', function (args) {
+    hexo.extend.tag.register('gist', function (args) {
+        nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
+            noCache: true,
+            watch: false
+        });
         return new Promise(function (resolve) {
             var id = args[0];
             hexo.log.info(_hg_logname, id);

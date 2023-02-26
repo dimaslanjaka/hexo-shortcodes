@@ -51,3 +51,21 @@ Display a repo
 ```
 
 {% gist dimaslanjaka/a6aa24a8fa7a13999ee3dac077fa21fe anonymize-ip.php %}
+
+#### vimeo
+
+```nunjucks
+{% vimeo video_id [width] [height] %}
+```
+
+#### youtube
+
+```nunjucks
+{% youtube video_id [type] [cookie] %}
+```
+
+```nunjucks
+{% youtube lJIrF4YjHfQ %}
+```
+
+{% youtube lJIrF4YjHfQ %}

@@ -8,10 +8,6 @@ exports.githubCard = void 0;
 var fs_1 = __importDefault(require("fs"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var env_1 = require("./env");
-nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
-    noCache: true,
-    watch: false
-});
 // githubCard
 // show github profile or repositories
 function githubCard(hexo) {
@@ -24,6 +20,10 @@ function githubCard(hexo) {
     });
     // Registers the new tag with Hexo.
     hexo.extend.tag.register(env_1.GITHUB_CARD_TAG_NAME, function (args) {
+        nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
+            noCache: true,
+            watch: false
+        });
         var argsObj = {};
         args.forEach(function (arg) {
             var current = arg.split(':');
