@@ -1,7 +1,7 @@
-{% if (typeof filename === 'string') %}
-  <script src="https://gist.github.com/{{ gist_id }}}.js?file={{ filename }}"></script>
+{% if filename %}
+  <script src="https://gist.github.com/{{ id }}}.js?file={{ filename }}"></script>
   {% else %}
-  <script src="https://gist.github.com/{{ gist_id }}}.js"></script>
+  <script src="https://gist.github.com/{{ id }}}.js"></script>
 {% endif %}
 
 <noscript>

@@ -151,20 +151,33 @@ hexo.extend.tag.register(
           payload.raw_code = JSON.stringifyWithCircularRefs(e, 2);
         })
         .finally(() => {
-          nunjucks.renderString(
+          let result = '';
+          if (filename) {
+            result += `<script src="https://gist.github.com/${id}.js?file=${filename}"></script>`;
+          } else {
+            result += `<script src="https://gist.github.com/${id}.js"></script>`;
+          }
+          result += `
+          <noscript>
+            <pre><code>${payload.raw_code}</code></pre>
+          </noscript>
+          `;
+          resolve(result);
+          /*nunjucks.renderString(
             fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
             payload,
             function (err, result) {
               if (err) {
+                console.log(err);
                 resolve(
-                  `ERROR(gist) cannot fetch raw ${id}.<br/> ${escapeHTML(JSON.stringifyWithCircularRefs(err, null, 2))}`
+                  `ERROR(gist) cannot fetch ${id}.<br/> ${escapeHTML(JSON.stringifyWithCircularRefs(err, null, 2))}`
                 );
               } else {
                 writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), result);
                 resolve(result);
               }
             }
-          );
+          );*/
         });
     });
   },
