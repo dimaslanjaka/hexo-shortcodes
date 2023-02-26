@@ -43,6 +43,9 @@ const escapeHTML = (str) =>
       }[tag])
   );
 
+// githubCard
+// show github profile or repositories
+
 // Registers serving of the lib used by the plugin with Hexo.
 hexo.extend.generator.register(GITHUB_CARD_ROUTE_NAME, () => {
   return {
@@ -108,6 +111,24 @@ hexo.extend.tag.register(
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
+const fetch_raw_code = async function (id, filename) {
+  let url = `https://gist.githubusercontent.com/${id}/raw`;
+  if (typeof filename === 'string') {
+    url = `${url}/${filename}`;
+  }
+  return new Promise(function (resolve, reject) {
+    axios
+      .get(url)
+      .then(function (res) {
+        resolve(res.data);
+      })
+      .catch(function (e) {
+        hexo.log.error(_hg_logname, id, `cannot get ${e.message}`, { url });
+        reject(e);
+      });
+  });
+};
+
 hexo.extend.tag.register(
   'gist',
   function (args) {
@@ -119,59 +140,32 @@ hexo.extend.tag.register(
       raw_code: ''
     };
 
-    const fetch_raw_code = async function (id, filename) {
-      let url = `https://gist.githubusercontent.com/${id}/raw`;
-      if (typeof filename === 'string') {
-        url = `${url}/${filename}`;
-      }
-      return new Promise((resolve) => {
-        axios
-          .get(url)
-          .then((res) => {
-            resolve(res.data);
-          })
-          .catch((e) => {
-            hexo.log.error(_hg_logname, id, `cannot get ${e.message}`, { url });
-            resolve(
-              `cannot fetch raw code ${id}.<br/> ${escapeHTML(
-                JSON.stringify(
-                  {
-                    id,
-                    url,
-                    errorMessage: e.message,
-                    errorCode: e.code
-                  },
-                  null,
-                  2
-                )
-              )}`
-            );
-          });
-      });
-    };
-
     return new Promise((resolve) => {
       fetch_raw_code(id, filename)
         .then((raw_code) => {
           payload.raw_code = raw_code;
-          writefile(path.join(TEMP_PATH, id + '.txt'), raw_code);
-          writefile(path.join(TEMP_PATH, id + '.json'), JSON.stringify(payload, null, 2));
+          writefile(path.join(TEMP_PATH, 'gist', id + '.txt'), raw_code);
+          writefile(path.join(TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
+        })
+        .catch((e) => {
+          payload.raw_code = JSON.stringifyWithCircularRefs(e, 2);
         })
         .finally(() => {
           nunjucks.renderString(
             fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
             payload,
             function (err, result) {
-              if (typeof result !== 'string') {
-                resolve(`ERROR(gist) cannot fetch raw ${id}. ${JSON.stringifyWithCircularRefs(err, null, 2)}`);
+              if (err) {
+                resolve(
+                  `ERROR(gist) cannot fetch raw ${id}.<br/> ${escapeHTML(JSON.stringifyWithCircularRefs(err, null, 2))}`
+                );
               } else {
-                writefile(path.join(TEMP_PATH, id + '.njk.txt'));
+                writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), result);
                 resolve(result);
               }
             }
           );
-        })
-        .catch(console.log);
+        });
     });
   },
   { async: true }

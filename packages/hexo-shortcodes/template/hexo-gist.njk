@@ -1,9 +1,9 @@
-{% if typeof filename === 'string' %}
+{% if (typeof filename === 'string') %}
   <script src="https://gist.github.com/{{ gist_id }}}.js?file={{ filename }}"></script>
   {% else %}
   <script src="https://gist.github.com/{{ gist_id }}}.js"></script>
 {% endif %}
 
 <noscript>
-  <pre><code>{{ raw_code }}</code></pre>
+  <pre><code>{{ raw_code | safe }}</code></pre>
 </noscript>
