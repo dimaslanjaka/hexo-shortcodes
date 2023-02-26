@@ -1,18 +1,7 @@
 # hexo-shortcodes
+Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.
 
-Various shortcodes for hexo
-
-## jsfiddle
-
-Embed JSFiddle playground to your website. Source idea from `jekyll-jsfiddle`.
-
-## gist
-
-Embed gist codes to your website. Source idea from `jekyll-gist`.
-
-
-## hexo-github-card
-Display a card for GitHub profile and repo in your [hexo](https://hexo.io) blog. Implemented with [Github-cards](https://github.com/lepture/github-cards).
+- [DEMO](https://www.webmanajemen.com/hexo-shortcodes)
 
 NPM
 ```
@@ -25,6 +14,18 @@ yarn add hexo-shortcodes
 ```
 
 ## Usage
+
+## jsfiddle
+
+Embed JSFiddle playground to your website. Source idea from `jekyll-jsfiddle`.
+
+## gist
+
+Embed gist codes to your website. Source idea from `jekyll-gist`.
+
+
+## hexo-github-card
+Display a card for GitHub profile and repo in your [hexo](https://hexo.io) blog. Implemented with [Github-cards](https://github.com/lepture/github-cards).
 
 Insert `githubCard` tag in your article:
 
