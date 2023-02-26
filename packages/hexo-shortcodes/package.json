@@ -54,6 +54,7 @@
     "@types/fs-extra": "^11.0.1",
     "@types/hexo": "https://github.com/dimaslanjaka/nodejs-package-types/tarball/hexo",
     "@types/hexo-util": "https://github.com/dimaslanjaka/nodejs-package-types/raw/main/hexo-util/release/types-hexo-util.tgz",
+    "@types/nunjucks": "^3.2.2",
     "cross-spawn": "^7.0.3",
     "eslint": "^8.34.0",
     "git-command-helper": "^1.1.8",

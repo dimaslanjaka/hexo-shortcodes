@@ -6,6 +6,7 @@ const nunjucks = require('nunjucks');
 const path = require('path');
 const { default: axios } = require('axios');
 const ansiColors = require('ansi-colors');
+const { writefile } = require('sbg-utility');
 const _hgc_logname = ansiColors.magentaBright('hexo-github-card');
 const _hg_logname = ansiColors.magentaBright('hexo-gist');
 const LIB_PATH = path.resolve(__dirname, '../lib');
@@ -110,36 +111,31 @@ async function fetch_raw_code(gist_id, filename) {
   }
 }
 
-hexo.extend.tag.register('gist', function (args) {
-  /**
-   * @type {import('hexo')}
-   */
-  //const self = this;
-  return new Promise((resolve) => {
-    // hexo.log.info(_hg_logname, args);
-    // hexo.log.info(_hg_logname, self.config.url);
+hexo.extend.tag.register('gist', async function (args) {
+  const gist_id = args[0];
+  const filename = args[1];
+  const payload = {
+    gist_id,
+    filename,
+    raw_code: ''
+  };
 
-    const gist_id = args[0];
-    const filename = args[1];
-    const payload = {
-      gist_id,
-      filename,
-      raw_code: ''
-    };
+  const result = nunjucks.renderString(fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(), payload);
+  if (typeof result !== 'string') {
+    //resolve(`ERROR(gist) cannot fetch raw ${gist_id}`);
+  } else {
+    writefile(path.join(__dirname, '../tmp/', gist_id + '.njk.txt'));
+    //resolve(result);
+  }
 
-    fetch_raw_code(gist_id, filename)
-      .then((raw_code) => {
-        payload.raw_code = raw_code;
-        nunjucks.renderString(path.join(TEMPLATE_PATH, 'hexo-gist.njk'), payload, (err, res) => {
-          if (err) {
-            resolve(`ERROR(gist) cannot fetch raw ${gist_id}` + err.message);
-          } else {
-            resolve(res);
-          }
-        });
-      })
-      .catch(console.log);
-  });
+  try {
+    const raw_code = await fetch_raw_code(gist_id, filename);
+    payload.raw_code = raw_code;
+    writefile(path.join(__dirname, '../tmp/', gist_id + '.txt'), raw_code);
+    writefile(path.join(__dirname, '../tmp/', gist_id + '.json'), JSON.stringify(payload, null, 2));
+  } catch (message) {
+    return console.log(message);
+  }
 });
 
 //

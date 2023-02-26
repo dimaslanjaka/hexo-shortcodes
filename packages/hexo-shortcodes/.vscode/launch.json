@@ -11,7 +11,7 @@
       "type": "node-terminal"
     },
     {
-      "command": "yarn add ./packages/hexo-shortcodes/release/hexo-shortcodes.tgz && hexo clean && hexo s",
+      "command": "yarn add ./packages/hexo-shortcodes && hexo clean && hexo s",
       "name": "server [install]",
       "request": "launch",
       "type": "node-terminal",
