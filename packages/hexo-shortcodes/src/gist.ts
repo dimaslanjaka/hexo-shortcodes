@@ -37,6 +37,7 @@ const fetch_raw_code = async function (id: string, filename: string) {
 };
 
 export const gist = (hexo: import('hexo')) => {
+  hexo.extend.tag.unregister('gist');
   hexo.extend.tag.register(
     'gist',
     function (args) {

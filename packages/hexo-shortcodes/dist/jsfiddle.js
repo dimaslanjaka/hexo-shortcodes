@@ -10,11 +10,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.jsfiddle = void 0;
 // /(?<fiddle>\w+)(?:\s+(?<sequence>[\w,]+))?(?:\s+(?<skin>\w+))?(?:\s+(?<height>\w+))?(?:\s+(?<width>\w+))?/
 var jsfiddle = function (hexo) {
-    return hexo.extend.tag.register('jsfiddle', function (args) {
-        var id = args[0];
+    hexo.extend.tag.unregister('jsfiddle');
+    hexo.extend.tag.register('jsfiddle', function (args) {
+        var id = args[0] || null;
         var display = args[1] || 'js,resources,html,css,result';
         var outputAs = args[2] || 'script';
         var mode = args[3] || 'light';
+        if (!id)
+            return '<span>[hexo-shortcodes] ERROR(jsfiddle) id undefined</span>';
         var ifr = "<iframe style=\"width: 100%; height: 300px\" src=\"http://jsfiddle.net/".concat(id, "/embedded/").concat(display, "/").concat(mode, "/\"></iframe>");
         var scr = "<script async src=\"//jsfiddle.net/".concat(id, "/embed/").concat(display, "/").concat(mode, "/\"></script><noscript>").concat(ifr, "</noscript>");
         if (outputAs === 'script') {

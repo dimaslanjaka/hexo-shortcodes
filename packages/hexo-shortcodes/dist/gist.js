@@ -81,6 +81,7 @@ var fetch_raw_code = function (id, filename) {
     });
 };
 var gist = function (hexo) {
+    hexo.extend.tag.unregister('gist');
     hexo.extend.tag.register('gist', function (args) {
         nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
             noCache: true,

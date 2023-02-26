@@ -11,7 +11,7 @@ const content = fs.readFileSync(path.join(__dirname, 'hexo-shortcodes.md')).toSt
 
 writefile(path.join(siteProject, 'source/docs/hexo-shortcodes/index.md'), content);
 (async function () {
-  await spawn('yarn', ['build'], { cwd: __dirname });
-  await spawn('hexo', ['clean'], { cwd: siteProject });
-  await spawn('hexo', ['server'], { cwd: siteProject, stdio: 'inherit' });
+  await spawn('yarn', ['build'], { cwd: __dirname, shell: true });
+  await spawn('hexo', ['clean'], { cwd: siteProject, shell: true });
+  await spawn('hexo', ['server'], { cwd: siteProject, stdio: 'inherit', shell: true });
 })();
