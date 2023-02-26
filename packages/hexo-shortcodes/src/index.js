@@ -120,21 +120,24 @@ hexo.extend.tag.register('gist', async function (args) {
     raw_code: ''
   };
 
-  const result = nunjucks.renderString(fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(), payload);
-  if (typeof result !== 'string') {
-    //resolve(`ERROR(gist) cannot fetch raw ${gist_id}`);
-  } else {
-    writefile(path.join(__dirname, '../tmp/', gist_id + '.njk.txt'));
-    //resolve(result);
-  }
-
   try {
     const raw_code = await fetch_raw_code(gist_id, filename);
     payload.raw_code = raw_code;
     writefile(path.join(__dirname, '../tmp/', gist_id + '.txt'), raw_code);
     writefile(path.join(__dirname, '../tmp/', gist_id + '.json'), JSON.stringify(payload, null, 2));
+
+    const result = nunjucks.renderString(
+      fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
+      payload
+    );
+    if (typeof result !== 'string') {
+      return `ERROR(gist) cannot fetch raw ${gist_id}`;
+    } else {
+      writefile(path.join(__dirname, '../tmp/', gist_id + '.njk.txt'));
+      return result;
+    }
   } catch (message) {
-    return console.log(message);
+    console.log(message);
   }
 });
 
