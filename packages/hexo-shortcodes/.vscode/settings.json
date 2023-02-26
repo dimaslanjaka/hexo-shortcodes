@@ -78,5 +78,6 @@
   "eslint.run": "onSave",
   "eslint.useESLintClass": true,
   "npm.packageManager": "yarn",
-  "eslint.packageManager": "yarn"
+  "eslint.packageManager": "yarn",
+  "git.enabled": false
 }

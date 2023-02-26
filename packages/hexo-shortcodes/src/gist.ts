@@ -36,29 +36,30 @@ const fetch_raw_code = async function (id: string, filename: string) {
   });
 };
 
-hexo.extend.tag.register(
-  'gist',
-  function (args) {
-    return new Promise((resolve) => {
-      const id = args[0];
-      hexo.log.info(_hg_logname, id);
-      const filename = args[1];
-      const payload = {
-        id,
-        filename,
-        raw_code: ''
-      };
-      fetch_raw_code(id, filename)
-        .then((raw_code) => {
-          payload.raw_code = <string>raw_code;
-          writefile(path.join(TEMP_PATH, 'gist', id + '.txt'), raw_code);
-          writefile(path.join(TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
-        })
-        .catch((e) => {
-          payload.raw_code = JSON.stringifyWithCircularRefs(e, 2);
-        })
-        .finally(() => {
-          /*let result = '';
+export const gist = (hexo: import('hexo')) =>
+  hexo.extend.tag.register(
+    'gist',
+    function (args) {
+      return new Promise((resolve) => {
+        const id = args[0];
+        hexo.log.info(_hg_logname, id);
+        const filename = args[1];
+        const payload = {
+          id,
+          filename,
+          raw_code: ''
+        };
+        fetch_raw_code(id, filename)
+          .then((raw_code) => {
+            payload.raw_code = <string>raw_code;
+            writefile(path.join(TEMP_PATH, 'gist', id + '.txt'), raw_code);
+            writefile(path.join(TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
+          })
+          .catch((e) => {
+            payload.raw_code = JSON.stringifyWithCircularRefs(e, 2);
+          })
+          .finally(() => {
+            /*let result = '';
           if (filename) {
             result += `<script src="https://gist.github.com/${id}.js?file=${filename}"></script>`;
           } else {
@@ -70,11 +71,11 @@ hexo.extend.tag.register(
           </noscript>
           `;
           resolve(result);*/
-          nunjucks.render('hexo-gist.njk', payload, function (_err, result) {
-            writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), result);
-            resolve(result);
-          });
-          /*nunjucks.renderString(
+            nunjucks.render('hexo-gist.njk', payload, function (_err, result) {
+              writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), result);
+              resolve(result);
+            });
+            /*nunjucks.renderString(
             fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
             payload,
             function (err, result) {
@@ -89,8 +90,8 @@ hexo.extend.tag.register(
               }
             }
           );*/
-        });
-    });
-  },
-  { async: true }
-);
+          });
+      });
+    },
+    { async: true }
+  );

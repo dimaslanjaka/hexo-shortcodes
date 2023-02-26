@@ -21,7 +21,8 @@
     "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
     "update:ncu": "npx npm-check-updates -u -x hexo,hexo-fs",
     "update": "run-s update:** && npm install && node postinstall.js",
-    "build": "tsc -p tsconfig.build.json && node packer.js --yarn"
+    "build": "tsc -p tsconfig.build.json && node packer.js --yarn",
+    "dev": "tsc -p tsconfig.build.json --watch"
   },
   "keywords": [
     "website",
