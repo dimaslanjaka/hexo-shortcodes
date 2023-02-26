@@ -153,16 +153,10 @@ hexo.extend.tag.register('gist', (args) => {
 // /(?<fiddle>\w+)(?:\s+(?<sequence>[\w,]+))?(?:\s+(?<skin>\w+))?(?:\s+(?<height>\w+))?(?:\s+(?<width>\w+))?/
 
 hexo.extend.tag.register('jsfiddle', (args) => {
-  /**
-   * @type {import('hexo')}
-   */
-  const self = this;
   const id = args[0];
   const display = args[1] || 'js,resources,html,css,result';
   const outputAs = args[2] || 'script';
   const mode = args[3] || 'light';
-  hexo.log.info(_hg_logname, args);
-  hexo.log.info(_hg_logname, self.config.url);
 
   if (outputAs === 'script') {
     return `<script async src="//jsfiddle.net/${id}/embed/${display}/${mode}/"></script>`;
