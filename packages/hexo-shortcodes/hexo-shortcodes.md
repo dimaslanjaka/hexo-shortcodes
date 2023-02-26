@@ -26,6 +26,10 @@ Display a repo
 ### jsFiddle
 
 ```nunjucks
+{% jsfiddle username/id [tabs] [skin] [width] [height] %}
+```
+
+```nunjucks
 {% jsfiddle heera/A9RDk %}
 ```
 
