@@ -17,6 +17,7 @@ const GITHUB_CARD_ROUTE_NAME = 'js';
 const GITHUB_CARD_TAG_NAME = 'githubCard';
 const GITHUB_CARD_TEMPLATE = path.resolve(TEMPLATE_PATH, 'hexo-github-card.njk');
 const GITHUB_CARD_TEMPLATE_CONTENT = fs.readFileSync(GITHUB_CARD_TEMPLATE, 'utf-8');
+const TEMP_PATH = path.join(process.cwd(), 'tmp/hexo-shortcodes');
 
 nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
   noCache: true,
@@ -88,30 +89,7 @@ hexo.extend.tag.register(
 // You may optionally specify a `filename` after the `gist_id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
-async function fetch_raw_code(gist_id, filename) {
-  let url = `https://gist.githubusercontent.com/${gist_id}/raw`;
-  if (typeof filename === 'string') {
-    url = `${url}/${filename}`;
-  }
-  try {
-    const res = await axios.get(url);
-    return res.data;
-  } catch (e) {
-    hexo.log.error(_hg_logname, gist_id, `cannot get ${e.message}`, { url });
-    return `cannot fetch raw code ${JSON.stringify(
-      {
-        gist_id,
-        url,
-        errorMessage: e.message,
-        errorCode: e.code
-      },
-      null,
-      2
-    )}`;
-  }
-}
-
-hexo.extend.tag.register('gist', async function (args) {
+hexo.extend.tag.register('gist', function (args) {
   const gist_id = args[0];
   const filename = args[1];
   const payload = {
@@ -120,25 +98,58 @@ hexo.extend.tag.register('gist', async function (args) {
     raw_code: ''
   };
 
-  try {
-    const raw_code = await fetch_raw_code(gist_id, filename);
-    payload.raw_code = raw_code;
-    writefile(path.join(__dirname, '../tmp/', gist_id + '.txt'), raw_code);
-    writefile(path.join(__dirname, '../tmp/', gist_id + '.json'), JSON.stringify(payload, null, 2));
-
-    const result = nunjucks.renderString(
-      fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
-      payload
-    );
-    if (typeof result !== 'string') {
-      return `ERROR(gist) cannot fetch raw ${gist_id}`;
-    } else {
-      writefile(path.join(__dirname, '../tmp/', gist_id + '.njk.txt'));
-      return result;
+  const fetch_raw_code = async function (gist_id, filename) {
+    let url = `https://gist.githubusercontent.com/${gist_id}/raw`;
+    if (typeof filename === 'string') {
+      url = `${url}/${filename}`;
     }
-  } catch (message) {
-    console.log(message);
-  }
+    return new Promise((resolve) => {
+      axios
+        .get(url)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((e) => {
+          hexo.log.error(_hg_logname, gist_id, `cannot get ${e.message}`, { url });
+          resolve(
+            `cannot fetch raw code ${JSON.stringify(
+              {
+                gist_id,
+                url,
+                errorMessage: e.message,
+                errorCode: e.code
+              },
+              null,
+              2
+            )}`
+          );
+        });
+    });
+  };
+
+  return new Promise((resolve) => {
+    fetch_raw_code(gist_id, filename)
+      .then((raw_code) => {
+        payload.raw_code = raw_code;
+        writefile(path.join(TEMP_PATH, gist_id + '.txt'), raw_code);
+        writefile(path.join(TEMP_PATH, gist_id + '.json'), JSON.stringify(payload, null, 2));
+      })
+      .finally(() => {
+        nunjucks.renderString(
+          fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
+          payload,
+          function (err, result) {
+            if (typeof result !== 'string') {
+              resolve(`ERROR(gist) cannot fetch raw ${gist_id}. ${JSON.stringifyWithCircularRefs(err, null, 2)}`);
+            } else {
+              writefile(path.join(TEMP_PATH, gist_id + '.njk.txt'));
+              resolve(result);
+            }
+          }
+        );
+      })
+      .catch(console.log);
+  });
 });
 
 //
