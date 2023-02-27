@@ -79,5 +79,5 @@
   "eslint.useESLintClass": true,
   "npm.packageManager": "yarn",
   "eslint.packageManager": "yarn",
-  "git.enabled": false
+  "git.enabled": true
 }
