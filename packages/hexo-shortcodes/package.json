@@ -9,6 +9,7 @@
     "url": "https://github.com/dimaslanjaka/static-blog-generator-hexo.git",
     "directory": "packages/hexo-github-card"
   },
+  "homepage": "https://github.com/dimaslanjaka/static-blog-generator-hexo/tree/master/packages/hexo-shortcodes",
   "files": [
     "src",
     "template",
