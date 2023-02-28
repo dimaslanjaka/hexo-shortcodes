@@ -51,6 +51,7 @@
     "bluebird": "^3.7.2",
     "fs-extra": "^11.1.0",
     "hexo-util": "^3.0.1",
+    "nib": "^1.2.0",
     "nunjucks": "^3.2.3",
     "sbg-utility": "^1.0.4"
   },
