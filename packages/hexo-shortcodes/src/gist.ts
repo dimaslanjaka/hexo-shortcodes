@@ -5,7 +5,7 @@ import nunjucks from 'nunjucks';
 import path from 'path';
 import { writefile } from 'sbg-utility';
 import { LIB_PATH, TEMPLATE_PATH, TEMP_PATH } from './env';
-const _hg_logname = ansiColors.magentaBright('hexo-gist');
+const _hg_logname = ansiColors.magentaBright('hexo-shortcodes(gist)');
 
 // hexo-gist
 // gist shortcode
@@ -37,7 +37,7 @@ const fetch_raw_code = async function (id: string, filename: string) {
 };
 
 export const gist = (hexo: import('hexo')) => {
-  hexo.extend.tag.unregister('gist');
+  // hexo.extend.tag.unregister('gist');
   hexo.extend.tag.register(
     'gist',
     function (args) {

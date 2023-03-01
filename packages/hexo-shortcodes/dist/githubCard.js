@@ -4,22 +4,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.githubCard = void 0;
+var ansi_colors_1 = __importDefault(require("ansi-colors"));
 // const Promise = require('bluebird');
 var fs_1 = __importDefault(require("fs"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var env_1 = require("./env");
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes(githubCard)');
 // githubCard
 // show github profile or repositories
 function githubCard(hexo) {
     // Registers serving of the lib used by the plugin with Hexo.
+    var libRoute = "".concat(env_1.GITHUB_CARD_ROUTE_NAME, "/").concat(env_1.GITHUB_CARD_LIB_NAME);
     hexo.extend.generator.register(env_1.GITHUB_CARD_ROUTE_NAME, function () {
         return {
-            path: "".concat(env_1.GITHUB_CARD_ROUTE_NAME, "/").concat(env_1.GITHUB_CARD_LIB_NAME),
+            path: libRoute,
             data: function () { return fs_1.default.createReadStream(env_1.GITHUB_CARD_FILE_PATH); }
         };
     });
+    hexo.extend.filter.register('server_middleware', function (app) {
+        app.use(libRoute, function (_req, res) {
+            res.setHeader('content-type', 'text/javascript');
+            res.end(fs_1.default.readFileSync(env_1.GITHUB_CARD_FILE_PATH).toString());
+        });
+    });
     // Registers the new tag with Hexo.
-    hexo.extend.tag.register(env_1.GITHUB_CARD_TAG_NAME, function (args) {
+    hexo.extend.tag.register('githubCard', function (args) {
         nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
             noCache: true,
             watch: false
@@ -29,6 +38,7 @@ function githubCard(hexo) {
             var current = arg.split(':');
             argsObj[current[0]] = current[1];
         });
+        hexo.log.info(logname, argsObj);
         var user = argsObj.user, repo = argsObj.repo, width = argsObj.width || '400', height = argsObj.height || '200', theme = argsObj.theme || 'default', client_id = argsObj.client_id || '', client_secret = argsObj.client_secret || '', align = argsObj.align || 'center';
         var payload = {
             user: user,

@@ -1,5 +1,6 @@
 'use strict';
 
+import ansiColors from 'ansi-colors';
 // const Promise = require('bluebird');
 import fs from 'fs';
 import nunjucks from 'nunjucks';
@@ -7,11 +8,12 @@ import {
   GITHUB_CARD_FILE_PATH,
   GITHUB_CARD_LIB_NAME,
   GITHUB_CARD_ROUTE_NAME,
-  GITHUB_CARD_TAG_NAME,
   GITHUB_CARD_TEMPLATE,
   LIB_PATH,
   TEMPLATE_PATH
 } from './env';
+
+const logname = ansiColors.magentaBright('hexo-shortcodes(githubCard)');
 
 // githubCard
 // show github profile or repositories
@@ -32,21 +34,22 @@ export function githubCard(hexo: import('hexo')) {
     });
   });
 
+  nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
+    noCache: true,
+    watch: false
+  });
+
   // Registers the new tag with Hexo.
   hexo.extend.tag.register(
-    GITHUB_CARD_TAG_NAME,
+    'githubCard',
     function (args) {
-      nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
-        noCache: true,
-        watch: false
-      });
-
       const argsObj: Record<string, any> = {};
 
       args.forEach((arg) => {
         const current = arg.split(':');
         argsObj[current[0]] = current[1];
       });
+      hexo.log.info(logname, argsObj);
 
       const user = argsObj.user,
         repo = argsObj.repo,
