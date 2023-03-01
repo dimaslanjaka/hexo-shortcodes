@@ -21,7 +21,7 @@
       "cwd": "${workspaceFolder}/../../"
     },
     {
-      "command": "hexo s",
+      "command": "yarn workspace wmi run server",
       "name": "server [direct]",
       "request": "launch",
       "type": "node-terminal",

@@ -7,7 +7,7 @@ timezone: UTC
 
 url: https://hexo.io
 root: /
-permalink: news/:year/:month/:day/:title/
+permalink: :title.html
 archive_dir: news
 code_dir: downloads/code
 new_post_name: :year-:month-:day-:title.md # File name of new posts
@@ -17,7 +17,7 @@ pretty_urls:
   trailing_index: false
   trailing_html: false
 
-theme: landscape
+theme: minima
 
 highlight:
   enable: true

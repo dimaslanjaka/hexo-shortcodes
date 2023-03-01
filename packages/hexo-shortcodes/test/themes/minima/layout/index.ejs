@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="column">
+    <!-- Main information, edit it on theme/_config.yml -->
+    <h2 class="mb-2"><%= theme.owner %></h2>
+    <p><%= theme.info %></p>
+    <p><%= theme.desc %></p>
+  </div>
+</div>
+
+<h3>Recent Posts</h3>
+
+<% site.posts.sort('date', 'desc').limit(theme.max_post).forEach(function(post){ %>
+<div class="row">
+
+  <div class="three columns left lit">
+    <p class="bottom"><%- full_date(post.date, 'll') %></p>
+  </div>
+  <div class="nine columns left mb-3">
+    <a href="<%- url_for(post.path) %>" >
+      <% if (post.title == "") { %>
+        no title
+      <% } else { %>
+        <%- post.title %>
+      <% } %>
+    </a>
+  </div>
+</div>
+<% }) %>
+
+<h4> <a href="<%= config.root %>archives">All Posts</a></h4>

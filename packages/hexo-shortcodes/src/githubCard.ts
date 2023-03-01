@@ -18,11 +18,18 @@ import {
 
 export function githubCard(hexo: import('hexo')) {
   // Registers serving of the lib used by the plugin with Hexo.
+  const libRoute = `${GITHUB_CARD_ROUTE_NAME}/${GITHUB_CARD_LIB_NAME}`;
   hexo.extend.generator.register(GITHUB_CARD_ROUTE_NAME, () => {
     return {
-      path: `${GITHUB_CARD_ROUTE_NAME}/${GITHUB_CARD_LIB_NAME}`,
+      path: libRoute,
       data: () => fs.createReadStream(GITHUB_CARD_FILE_PATH)
     };
+  });
+  hexo.extend.filter.register('server_middleware', function (app) {
+    app.use(libRoute, function (_req, res) {
+      res.setHeader('content-type', 'text/javascript');
+      res.end(fs.readFileSync(GITHUB_CARD_FILE_PATH).toString());
+    });
   });
 
   // Registers the new tag with Hexo.

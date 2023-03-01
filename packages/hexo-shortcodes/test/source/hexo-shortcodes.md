@@ -1,7 +1,7 @@
+---
 title: hexo-shortcodes demo
 date: 2013-12-25 00:14:39
 updated: 2023-02-25T00:48:02+07:00
-type: page
 permalink: /docs/hexo-shortcodes/index.html
 ---
 
