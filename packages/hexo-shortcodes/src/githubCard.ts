@@ -12,6 +12,7 @@ import {
   ROUTE_NAME,
   TEMPLATE_PATH
 } from './env';
+import { url_for } from './utils';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(githubCard)');
 
@@ -21,7 +22,7 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
 export function githubCard(hexo: import('hexo')) {
   // Registers serving of the lib used by the plugin with Hexo.
   const libRoute = `${ROUTE_NAME}/${GITHUB_CARD_LIB_NAME}`;
-  hexo.extend.generator.register(ROUTE_NAME, () => {
+  hexo.extend.generator.register(url_for(libRoute), () => {
     return {
       path: libRoute,
       data: () => fs.createReadStream(GITHUB_CARD_FILE_PATH)

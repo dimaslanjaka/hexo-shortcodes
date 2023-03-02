@@ -6,6 +6,7 @@ import nunjucks from 'nunjucks';
 import path from 'path';
 import { writefile } from 'sbg-utility';
 import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH, TEMP_PATH } from './env';
+import { url_for } from './utils';
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
 
 // hexo-gist
@@ -46,7 +47,7 @@ export const gist = (hexo: import('hexo')) => {
   const libFilename = 'gist.css';
   const libRoute = `${ROUTE_NAME}/${libFilename}`;
   const libFilePath = path.resolve(LIB_PATH, libFilename);
-  hexo.extend.generator.register(ROUTE_NAME, () => {
+  hexo.extend.generator.register(url_for(libRoute), () => {
     return {
       path: libRoute,
       data: () => fs.createReadStream(libFilePath)

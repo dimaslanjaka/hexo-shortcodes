@@ -9,13 +9,14 @@ var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var fs_1 = __importDefault(require("fs"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var env_1 = require("./env");
+var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(githubCard)');
 // githubCard
 // show github profile or repositories
 function githubCard(hexo) {
     // Registers serving of the lib used by the plugin with Hexo.
     var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(env_1.GITHUB_CARD_LIB_NAME);
-    hexo.extend.generator.register(env_1.ROUTE_NAME, function () {
+    hexo.extend.generator.register((0, utils_1.url_for)(libRoute), function () {
         return {
             path: libRoute,
             data: function () { return fs_1.default.createReadStream(env_1.GITHUB_CARD_FILE_PATH); }

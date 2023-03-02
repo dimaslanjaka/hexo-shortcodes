@@ -48,6 +48,7 @@ var nunjucks_1 = __importDefault(require("nunjucks"));
 var path_1 = __importDefault(require("path"));
 var sbg_utility_1 = require("sbg-utility");
 var env_1 = require("./env");
+var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
@@ -89,7 +90,7 @@ var gist = function (hexo) {
     var libFilename = 'gist.css';
     var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(libFilename);
     var libFilePath = path_1.default.resolve(env_1.LIB_PATH, libFilename);
-    hexo.extend.generator.register(env_1.ROUTE_NAME, function () {
+    hexo.extend.generator.register((0, utils_1.url_for)(libRoute), function () {
         return {
             path: libRoute,
             data: function () { return fs_extra_1.default.createReadStream(libFilePath); }
