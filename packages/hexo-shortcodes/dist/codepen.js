@@ -19,8 +19,6 @@ function getMatches(string, regex, index) {
     var key = string + String(regex);
     var matches = matches_wrapper[key] || [];
     if (matches.length === 0) {
-        if (!regex.test(string))
-            return null;
         var match = void 0;
         while ((match = regex.exec(string))) {
             // matches.push(match[index]);
@@ -66,7 +64,6 @@ exports.array2obj = array2obj;
 function codepen(hexo) {
     hexo.extend.tag.register('codepen', function (args) {
         var urlOrid = args[0];
-        hexo.log.info(logname, urlOrid);
         var slug;
         var user;
         // get slug and user when first argument is url
@@ -80,6 +77,7 @@ function codepen(hexo) {
         else {
             hexo.log.error(logname, urlOrid, match);
         }
+        hexo.log.info(logname, { user: user, pen: slug });
         // parse `=` from all arguments
         var parse = args
             .map(function (str) {

@@ -2,7 +2,7 @@ import ansiColors from 'ansi-colors';
 import Hexo from 'hexo';
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(codepen)');
 
-const matches_wrapper: Record<string, any> = {};
+const matches_wrapper: Record<string, string | string[]> = {};
 
 /**
  * get matches from regex (cacheable).
@@ -30,9 +30,8 @@ function getMatches(string: string, regex: RegExp): string[] | null;
 function getMatches(string: string, regex: RegExp, index?: number): string | string[] | null {
   // index || (index = 1); // default to the first capturing group
   const key = string + String(regex);
-  const matches: string[] = matches_wrapper[key] || [];
+  const matches = (matches_wrapper[key] as string[]) || [];
   if (matches.length === 0) {
-    if (!regex.test(string)) return null;
     let match: RegExpExecArray;
     while ((match = regex.exec(string))) {
       // matches.push(match[index]);
@@ -41,6 +40,7 @@ function getMatches(string: string, regex: RegExp, index?: number): string | str
       });
     }
   }
+
   matches_wrapper[key] = matches;
   if (index) return matches[index];
   return matches;
@@ -85,7 +85,6 @@ interface codepenTagOptions {
 export function codepen(hexo: Hexo) {
   hexo.extend.tag.register('codepen', function (args) {
     const urlOrid = args[0];
-    hexo.log.info(logname, urlOrid);
 
     let slug: string;
     let user: string;
@@ -100,6 +99,8 @@ export function codepen(hexo: Hexo) {
     } else {
       hexo.log.error(logname, urlOrid, match);
     }
+
+    hexo.log.info(logname, { user, pen: slug });
 
     // parse `=` from all arguments
     const parse = args
