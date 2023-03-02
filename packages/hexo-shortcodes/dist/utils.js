@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.array2obj = exports.getMatches = exports.escapeHTML = exports.registerHexo = exports.url_for = void 0;
+exports.escapeRegex = exports.array2obj = exports.isEmptyObject = exports.isObject = exports.isArray = exports.getMatches = exports.escapeHTML = exports.registerHexo = exports.url_for = void 0;
 var hexo;
 /**
  * hexo-util.url_for alias
@@ -51,31 +51,53 @@ function getMatches(string, regex, index) {
 }
 exports.getMatches = getMatches;
 /**
+ * is actual array
+ * @param arr
+ * @returns
+ */
+var isArray = function (arr) { return Object.prototype.toString.call(arr) === '[object Array]'; };
+exports.isArray = isArray;
+/**
+ * is actual object
+ * @param obj
+ * @returns
+ */
+var isObject = function (obj) { return obj.constructor === Object; };
+exports.isObject = isObject;
+var isEmptyObject = function (obj) { return Object.keys(obj).length === 0 && obj.constructor === Object; };
+exports.isEmptyObject = isEmptyObject;
+/**
  * turn multidimensional array to single object.
  *
- * forked from @see {@link https://github.com/rmcfadzean/jekyll-codepen}
+ * - [typescript playground](https://www.typescriptlang.org/play?target=1&jsx=0&module=1&pretty=false&allowSyntheticDefaultImports=true#code/KYDwDg9gTgLgBAYwgOwM7wJaoIJSgQwE84BeOACnzwC459lCBKUgPjgHkAjAK2ARgB0YKBBijCYYALEBlGFAzIA5gIT4ANusp5mJPXABEAbQg8+8XAUIBdAwFgAUKEixEKdHCxde-UhVPctPRMrHABqu7yAK780KT63uYA3I7O0PBIaJioAKIAtmAwhIm+ZOQBQQy6bCWCANbAhKjlPIwC6sDKMAAW8WQADHAAZENhPBFZUDFiUH0cZvwpTuDpcABmUcj8GCh0eEQATAEAPAAqcKAwnQAmqHQMRtYs5Nf4MPi0p4yfRshReZxgFBrHAAN6OOCQuBQYAwKJQZBwV7vAQw64xYDkDZbGA7RHkYTAABulUIjwANIh4aTHsxwQ4oYy4AB6ZnrDAgOB5KLqXFIjB5TqoPEaPZWMJrODoBTKCFMyEdeDICAAd1oACU+NBrsdpYolJTgmwyKCAL5y+UYSXkLCWIjkBDwxh0i3yqHKlV+UFwIyOqBGfrWay0P1GACMIPNDLdUbdnmtAEIsPlCsUFjByB7ndDYfDEbUBPhUMKlMgCTCiZSs67Gaz2ZyqOKIJKAuY4DWoVaKF50w6ncwYXCEfMfIIiyWy4TK1SoIwO5Cu+QE3bCAJbftCOXidnB3mR+ZC8WMKXyGbKVPGEt5zmh-n04eJ1vp37L67TZSza+HFHHJlUBAOlUDoqHIL9mQAKj-eBOTIIwAHIoGoVA4MpOCwGoCA4OsAQ8nwMByGlUJpQEVAwHUDAMzg6g4OdVFgHRBBMWxbZdifSkXzBV1FTgD0NS1KAdT1ZRDQYY0wVjTtrXXKw+1nF1o3lD0vR9UNA2DGdw0jN9XV3YcC3HY9JwrKtVTnb8P1NL9f0iOBiFguCQGoQgULgOCPk4LCcLwgj5FCelGSgqUyIovxiNI8jKOoszGV0xFvSMcKKIDINaESmBNLgKNLLohimM2Fj8SndinU4hS3DQACpHUCAlDYmdosk7tUFqWSd1zPT7wMk8ivqnT2rirKLK-P9KvaGryCYcDmUcayKsA6rasbQ4AnIeDEOQ1D0Mw7DcPwwiSDYMLgsimjnTMkb5vGpbCCOHhVocpyXLc6gPJ27z9rYfyoUCtLQvkEjjvIKiaL628wR9NLkvUyGI0yxxLOdIA)
  * @param data
  * @returns
  */
 function array2obj(data) {
-    /*if (Array.isArray(data)) {
-        return data.reduce((obj, el, i) => (el && (obj[i] = multiDimensionalArrayToObject(el)), obj), {});
-      } else if (typeof data === 'object') {
-        return data.reduce(function (obj) {
-          return Object.assign({}, obj);
-        }, {});
-      }*/
-    if (Array.isArray(data)) {
-        return data.reduce(function (prev, cur) {
-            if (Array.isArray(prev))
-                return array2obj(prev);
-            // fix array of object
-            if (typeof cur === 'object' && !Array.isArray(cur))
-                return Object.assign(prev, cur);
-            if (!Array.isArray(prev))
-                return Object.assign({}, prev);
-        }, {});
-    }
-    return data;
+    return data.reduce(function (prev, cur) {
+        var _a;
+        // fix multi dimensional array of string
+        var now = {};
+        if ((0, exports.isArray)(cur)) {
+            now = (_a = {}, _a[cur[0]] = cur[1], _a);
+        }
+        if (!(0, exports.isEmptyObject)(now))
+            return Object.assign(prev, now);
+        // fix array of object
+        if ((0, exports.isObject)(cur))
+            return Object.assign(prev, cur);
+        if (!Array.isArray(prev))
+            return Object.assign({}, prev);
+        return Object.assign(prev, cur);
+    }, {});
 }
 exports.array2obj = array2obj;
+/**
+ * escape regex
+ * @param str
+ * @returns
+ */
+function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+exports.escapeRegex = escapeRegex;

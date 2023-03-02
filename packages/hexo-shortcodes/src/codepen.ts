@@ -13,6 +13,10 @@ interface codepenTagOptions {
   default_tab: string;
 }
 
+/**
+ * jekyll-codepen forked from https://github.com/rmcfadzean/jekyll-codepen
+ * @param hexo
+ */
 export function codepen(hexo: Hexo) {
   hexo.extend.tag.register('codepen', function (args) {
     const urlOrid = args[0];
@@ -43,7 +47,7 @@ export function codepen(hexo: Hexo) {
         };
       })
       .filter((o) => typeof o === 'object');
-    const overriden: codepenTagOptions = array2obj(parse);
+    const overriden = array2obj(parse) as codepenTagOptions;
 
     const config: codepenTagOptions = hexo.config.codepen || {};
     const url = `https://codepen.io/${user}/pen/${slug}`;

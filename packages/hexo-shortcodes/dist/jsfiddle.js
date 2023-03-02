@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.jsfiddle = void 0;
 // /(?<fiddle>\w+)(?:\s+(?<sequence>[\w,]+))?(?:\s+(?<skin>\w+))?(?:\s+(?<height>\w+))?(?:\s+(?<width>\w+))?/
 var jsfiddle = function (hexo) {
-    hexo.extend.tag.unregister('jsfiddle');
+    // hexo.extend.tag.unregister('jsfiddle');
     hexo.extend.tag.register('jsfiddle', function (args) {
         var id = args[0] || null;
         var display = args[1] || 'js,resources,html,css,result';

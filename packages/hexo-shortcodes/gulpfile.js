@@ -1,9 +1,17 @@
+/* eslint-disable no-useless-escape */
 const gulp = require('gulp');
 const path = require('path');
 
+const argv = require('minimist')(process.argv.slice(2));
+
+gulp.task('argv', function (done) {
+  console.log(argv);
+  done();
+});
+
 gulp.task('watch', function () {
   gulp.series('serve')();
-  gulp.watch(['src/**/*.ts', 'src/**/*.js', 'template/**/*'], gulp.series('build', 'serve'));
+  gulp.watch(['src/**/*.ts', 'src/**/*.js', 'template/**/*'], { delay: 1000 }, gulp.series('build', 'serve'));
 });
 
 gulp.task('build', function () {

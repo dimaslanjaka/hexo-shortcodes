@@ -9,7 +9,7 @@
 // /(?<fiddle>\w+)(?:\s+(?<sequence>[\w,]+))?(?:\s+(?<skin>\w+))?(?:\s+(?<height>\w+))?(?:\s+(?<width>\w+))?/
 
 export const jsfiddle = function (hexo: import('hexo')) {
-  hexo.extend.tag.unregister('jsfiddle');
+  // hexo.extend.tag.unregister('jsfiddle');
   hexo.extend.tag.register('jsfiddle', function (args) {
     const id = args[0] || null;
     const display = args[1] || 'js,resources,html,css,result';

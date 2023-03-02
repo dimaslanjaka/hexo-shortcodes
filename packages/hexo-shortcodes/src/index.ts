@@ -5,6 +5,7 @@ import { GITHUB_CARD_LIB_NAME } from './env';
 import { gist } from './gist';
 import { githubCard } from './githubCard';
 import { jsfiddle } from './jsfiddle';
+import { rssreader } from './rssreader';
 import { registerHexo, url_for } from './utils';
 
 if (typeof hexo !== 'undefined') {
@@ -17,6 +18,7 @@ if (typeof hexo !== 'undefined') {
   jsfiddle(hexo);
   codepen(hexo);
   dailymotion(hexo);
+  rssreader(hexo);
 
   // register assets before closing body
   hexo.extend.filter.register('after_render:html', function (data) {
