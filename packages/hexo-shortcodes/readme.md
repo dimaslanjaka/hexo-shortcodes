@@ -59,14 +59,7 @@ Display a repo
 
 ## codepen
 
-```yaml
-codepen:
-  theme: 11473
-  height: 300
-  preview: false
-  default_tab: result
-  version: 2
-```
+Example:
 
 ```nunjucks
 {% codepen https://codepen.io/blindingstars/pen/wBexpr %}

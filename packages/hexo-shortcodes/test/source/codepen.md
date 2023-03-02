@@ -2,7 +2,7 @@
 title: hexo-shortcodes codepen tag
 ---
 
-configurations at `_config.yml`
+you can specify default configurations at `_config.yml` or default options will be used
 ```yaml
 codepen:
   theme: 11473
