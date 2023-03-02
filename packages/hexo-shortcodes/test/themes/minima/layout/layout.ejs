@@ -34,7 +34,8 @@
   <% if (is_page()){ %>
   <meta name="description" content="<%= page.description %>">
   <% } else if (page.content){ %>
-  <meta name="description" content="<%= strip_html(page.content).replace(/\n/g, " ").replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
+  <meta name="description"
+    content="<%= strip_html(page.content).replace(/\n/g, " ").replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
   <% } else { %>
   <meta name="description" content="<%= config.description %>">
   <% } %>
@@ -57,7 +58,8 @@
   <% if (is_page()){ %>
   <meta property="og:description" content="<%= page.description %>">
   <% } else if (page.content){ %>
-  <meta property="og:description" content="<%= strip_html(page.content).replace(/\n/g, " ").replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
+  <meta property="og:description"
+    content="<%= strip_html(page.content).replace(/\n/g, " ").replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
   <% } else { %>
   <meta property="og:description" content="<%= config.description %>">
   <% } %>
@@ -68,7 +70,8 @@
   <% if (is_page()){ %>
   <meta name="twitter:description" content="<%= page.description %>">
   <% } else if (page.content){ %>
-  <meta name="twitter:description" content="<%= strip_html(page.content).replace(/\n/g, " ").replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
+  <meta name="twitter:description"
+    content="<%= strip_html(page.content).replace(/\n/g, " ").replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
   <% } else { %>
   <meta name="twitter:description" content="<%= config.description %>">
   <% } %>
@@ -101,12 +104,12 @@
   <%- css('css/prism-line-numbers.css') %>
   <!-- User css -->
   <% if (theme.usercss) { %>
-  <%- css(theme.usercss) %>
+  <%- css(url_for(theme.usercss)) %>
   <% } %>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="<%- theme.favicon %>">
+  <link rel="icon" type="image/png" href="<%- url_for(theme.favicon) %>">
 
   <!-- Custom Theme Color Style
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -117,11 +120,11 @@
   <%- partial('partial/google_analytics') %>
 
   <% if (theme.picjs) { %>
-  <script src="<%- theme.picjs %>" defer></script>
+  <script src="<%- url_for(theme.picjs) %>" defer></script>
   <% } %>
 
   <% if(config.search){ %>
-  <script src="/js/search.min.js" defer></script>
+  <script src="<%- url_for('/js/search.min.js') %>" defer></script>
   <% } %>
 
 </head>
@@ -142,7 +145,7 @@
     </div>
 
   </div>
-  <script src="<%- theme.nanobar %>"></script>
+  <script src="<%- url_for(theme.nanobar) %>"></script>
 
   <script>
     var options = {

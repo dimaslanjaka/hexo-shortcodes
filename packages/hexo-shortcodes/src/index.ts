@@ -4,22 +4,30 @@ import { codepen } from './codepen';
 import { gist } from './gist';
 import { githubCard } from './githubCard';
 import { jsfiddle } from './jsfiddle';
+import { registerHexo, url_for } from './utils';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes');
 
 if (typeof hexo !== 'undefined') {
+  // register hexo for utils
+  registerHexo(hexo);
+
   // register tags
   githubCard(hexo);
   gist(hexo);
   jsfiddle(hexo);
   codepen(hexo);
 
-  // register assets
-  hexo.extend.filter.register('after_post_render', function (data) {
-    data.content =
-      `<script src="/hexo-shortcodes-lib/githubcard.js"></script><link rel="stylesheet" href="/hexo-shortcodes-lib/gist.css" />` +
-      data.content;
-    return data;
+  // register assets before closing body
+  hexo.extend.filter.register('after_render:html', function (data) {
+    return data.replace(
+      '</body>',
+      `
+<script src="${url_for('/hexo-shortcodes-lib/abcdghirtu.js')}"></script>
+<link rel="stylesheet" href="${url_for('/hexo-shortcodes-lib/gist.css')}" />
+</body>
+      `
+    );
   });
 } else {
   console.error(logname, 'not running within hexo instance');

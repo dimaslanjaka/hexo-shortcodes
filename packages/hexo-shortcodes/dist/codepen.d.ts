@@ -1,6 +1,8 @@
 import Hexo from 'hexo';
 /**
- * turn multidimensional array to single object
+ * turn multidimensional array to single object.
+ *
+ * forked from @see {@link https://github.com/rmcfadzean/jekyll-codepen}
  * @param data
  * @returns
  */

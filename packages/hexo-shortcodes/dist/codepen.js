@@ -35,7 +35,9 @@ function getMatches(string, regex, index) {
     return matches;
 }
 /**
- * turn multidimensional array to single object
+ * turn multidimensional array to single object.
+ *
+ * forked from @see {@link https://github.com/rmcfadzean/jekyll-codepen}
  * @param data
  * @returns
  */
@@ -95,7 +97,7 @@ function codepen(hexo) {
             embed_version: parseInt(config.version) || 2,
             height: parseInt(config.height) || 300,
             preview: String(config.preview) === 'true' ? true : false,
-            theme_id: config.theme || 11473,
+            theme_id: config.theme_id || 11473,
             default_tab: config.default_tab || 'result',
             'data-user': user,
             'data-slug-hash': slug
@@ -104,7 +106,7 @@ function codepen(hexo) {
         var attr = Object.keys(overriden_options)
             .map(function (key) { return "".concat(key, "=\"").concat(defaults[key], "\""); })
             .join(' ');
-        var htm_tag = "<p ".concat(attr, ">See the <a href=\"").concat(url, "\">pen</a> on <a href=\"//codepen.io\" rel=\"nofollow noopener\">CodePen</a>.</p>");
+        var htm_tag = "<span>codepen user:<kbd>".concat(user, "</kbd> id:<kbd>").concat(slug, "</kbd></span><p ").concat(attr, ">See the <a href=\"").concat(url, "\">pen</a> on <a href=\"//codepen.io\" rel=\"nofollow noopener\">CodePen</a>.</p>");
         var htm_script = '<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>';
         return htm_tag + htm_script;
     });

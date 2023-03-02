@@ -4,7 +4,21 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
 
 const matches_wrapper: Record<string, any> = {};
 
+/**
+ * get matches from regex (cacheable).
+ * @param string
+ * @param regex
+ * @param index
+ * @returns
+ */
 function getMatches(string: string, regex: RegExp, index: number): string | null;
+/**
+ * get matches from regex (cacheable).
+ * @param string
+ * @param regex
+ * @param index
+ * @returns
+ */
 function getMatches(string: string, regex: RegExp): string[] | null;
 /**
  * get matches from regex (cacheable)
@@ -33,7 +47,9 @@ function getMatches(string: string, regex: RegExp, index?: number): string | str
 }
 
 /**
- * turn multidimensional array to single object
+ * turn multidimensional array to single object.
+ *
+ * forked from @see {@link https://github.com/rmcfadzean/jekyll-codepen}
  * @param data
  * @returns
  */
@@ -102,7 +118,7 @@ export function codepen(hexo: Hexo) {
       embed_version: parseInt(config.version) || 2,
       height: parseInt(config.height) || 300,
       preview: String(config.preview) === 'true' ? true : false,
-      theme_id: config.theme || 11_473,
+      theme_id: config.theme_id || 11_473,
       default_tab: config.default_tab || 'result',
       'data-user': user,
       'data-slug-hash': slug
@@ -113,7 +129,7 @@ export function codepen(hexo: Hexo) {
       .map((key) => `${key}="${defaults[key]}"`)
       .join(' ');
 
-    const htm_tag = `<p ${attr}>See the <a href="${url}">pen</a> on <a href="//codepen.io" rel="nofollow noopener">CodePen</a>.</p>`;
+    const htm_tag = `<span>codepen user:<kbd>${user}</kbd> id:<kbd>${slug}</kbd></span><p ${attr}>See the <a href="${url}">pen</a> on <a href="//codepen.io" rel="nofollow noopener">CodePen</a>.</p>`;
 
     const htm_script = '<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>';
 
