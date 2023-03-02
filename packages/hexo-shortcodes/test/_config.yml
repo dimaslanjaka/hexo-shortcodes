@@ -5,8 +5,8 @@ author: Hexo
 language: en
 timezone: UTC
 
-url: https://hexo.io
-root: /
+url: https://www.webmanajemen.com
+root: /docs/hexo-shortcodes/
 permalink: :title.html
 archive_dir: news
 code_dir: downloads/code
