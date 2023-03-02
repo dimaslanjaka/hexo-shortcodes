@@ -4,14 +4,7 @@ import ansiColors from 'ansi-colors';
 // const Promise = require('bluebird');
 import fs from 'fs';
 import nunjucks from 'nunjucks';
-import {
-  GITHUB_CARD_FILE_PATH,
-  GITHUB_CARD_LIB_NAME,
-  GITHUB_CARD_ROUTE_NAME,
-  GITHUB_CARD_TEMPLATE,
-  LIB_PATH,
-  TEMPLATE_PATH
-} from './env';
+import { GITHUB_CARD_FILE_PATH, GITHUB_CARD_LIB_NAME, GITHUB_CARD_ROUTE_NAME, LIB_PATH, TEMPLATE_PATH } from './env';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes(githubCard)');
 
@@ -39,9 +32,11 @@ export function githubCard(hexo: import('hexo')) {
     watch: false
   });
 
+  // hexo.extend.tag.unregister('githubCard');
+
   // Registers the new tag with Hexo.
   hexo.extend.tag.register(
-    'githubCard',
+    'githubCard-old',
     function (args) {
       const argsObj: Record<string, any> = {};
 
@@ -71,7 +66,7 @@ export function githubCard(hexo: import('hexo')) {
         style: `text-align: ${align}`
       };
 
-      return new Promise((resolve) => {
+      /*return new Promise((resolve) => {
         nunjucks.renderString(fs.readFileSync(GITHUB_CARD_TEMPLATE, 'utf-8'), payload, (err, res) => {
           if (err) {
             resolve('ERROR(githubCard)' + err.message);
@@ -79,7 +74,8 @@ export function githubCard(hexo: import('hexo')) {
             resolve(res);
           }
         });
-      });
+      });*/
+      return JSON.stringify(payload, null, 2);
     },
     {
       async: true

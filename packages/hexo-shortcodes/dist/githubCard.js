@@ -27,12 +27,13 @@ function githubCard(hexo) {
             res.end(fs_1.default.readFileSync(env_1.GITHUB_CARD_FILE_PATH).toString());
         });
     });
+    nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
+        noCache: true,
+        watch: false
+    });
+    // hexo.extend.tag.unregister('githubCard');
     // Registers the new tag with Hexo.
-    hexo.extend.tag.register('githubCard', function (args) {
-        nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
-            noCache: true,
-            watch: false
-        });
+    hexo.extend.tag.register('githubCard-old', function (args) {
         var argsObj = {};
         args.forEach(function (arg) {
             var current = arg.split(':');
@@ -50,16 +51,16 @@ function githubCard(hexo) {
             client_secret: client_secret,
             style: "text-align: ".concat(align)
         };
-        return new Promise(function (resolve) {
-            nunjucks_1.default.renderString(fs_1.default.readFileSync(env_1.GITHUB_CARD_TEMPLATE, 'utf-8'), payload, function (err, res) {
-                if (err) {
-                    resolve('ERROR(githubCard)' + err.message);
-                }
-                else {
-                    resolve(res);
-                }
-            });
-        });
+        /*return new Promise((resolve) => {
+          nunjucks.renderString(fs.readFileSync(GITHUB_CARD_TEMPLATE, 'utf-8'), payload, (err, res) => {
+            if (err) {
+              resolve('ERROR(githubCard)' + err.message);
+            } else {
+              resolve(res);
+            }
+          });
+        });*/
+        return JSON.stringify(payload, null, 2);
     }, {
         async: true
     });
