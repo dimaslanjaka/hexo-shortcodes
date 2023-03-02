@@ -60,40 +60,49 @@ function rssreader(hexo) {
     hexo.extend.tag.register('rssreader', function (args, template) {
         if (template === void 0) { template = ''; }
         return __awaiter(this, void 0, void 0, function () {
-            var url, options, feed, result, _loop_1, i;
+            var url, defaults, options, feed, result, _loop_1, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = args[0];
-                        options = (0, utils_1.array2obj)(args.splice(1).map(function (str) {
+                        defaults = {
+                            limit: '3',
+                            debug: 'false'
+                        };
+                        options = Object.assign(defaults, (0, utils_1.array2obj)(args.splice(1).map(function (str) {
                             var _a;
                             var split = str.split(':');
                             return _a = {}, _a[split[0]] = split[1], _a;
-                        }));
+                        })));
                         hexo.log.info(logname, url, options);
                         return [4 /*yield*/, parser.parseURL(url)];
                     case 1:
                         feed = _a.sent();
-                        // debugging
-                        if (options.debug === 'true') {
-                            return [2 /*return*/, "<pre><code class=\"highlight json\">".concat(JSON.stringifyWithCircularRefs(Object.keys(feed)), "</code></pre>")];
-                        }
                         result = [];
                         _loop_1 = function (i) {
                             var item = feed.items[i];
-                            var cloneTemplate = template
-                                .replace(/\$title/gim, '{{ title }}')
-                                .replace(/\$content/gim, '{{ content }}')
-                                .replace(/\$link/gim, '{{ link }}')
-                                .replace(/\$summary/gim, '{{ summary }}')
-                                .replace(/\$image/gim, '{{ image }}');
-                            Object.keys(item).forEach(function (key) {
-                                var regex = new RegExp((0, hexo_util_1.escapeRegExp)('$' + key), 'gmi');
-                                var replacement = '{{ ' + key + ' }}';
-                                hexo.log.debug(logname, regex, '->', replacement);
-                                cloneTemplate = cloneTemplate.replace(regex, replacement);
-                            });
-                            var rendered = env.renderString(cloneTemplate, item);
+                            var rendered = void 0;
+                            if (options.debug === 'true') {
+                                // debugging
+                                rendered = "<pre><code class=\"highlight json\">".concat(JSON.stringifyWithCircularRefs(Object.keys(item)), "</code></pre>");
+                            }
+                            else {
+                                // clone and modify template
+                                var cloneTemplate_1 = template
+                                    .replace(/\$title/gim, '{{ title }}')
+                                    .replace(/\$content/gim, '{{ content }}')
+                                    .replace(/\$link/gim, '{{ link }}')
+                                    .replace(/\$summary/gim, '{{ summary }}')
+                                    .replace(/\$image/gim, '{{ image }}');
+                                Object.keys(item).forEach(function (key) {
+                                    var regex = new RegExp((0, hexo_util_1.escapeRegExp)('$' + key), 'gmi');
+                                    var replacement = '{{ ' + key + ' }}';
+                                    hexo.log.debug(logname, regex, '->', replacement);
+                                    cloneTemplate_1 = cloneTemplate_1.replace(regex, replacement);
+                                });
+                                // render
+                                rendered = env.renderString(cloneTemplate_1, item);
+                            }
                             result.push(rendered);
                         };
                         for (i = 0; i < (options.limit || 3); i++) {

@@ -63,39 +63,52 @@ export function rssreader(hexo: Hexo) {
     'rssreader',
     async function (args, template = '') {
       const url = args[0];
-      const options = array2obj(
-        args.splice(1).map((str) => {
-          const split = str.split(':');
-          return { [split[0]]: split[1] };
-        })
-      ) as rssreaderOptions;
+      const defaults: rssreaderOptions = {
+        limit: '3',
+        debug: 'false'
+      };
+      const options = Object.assign(
+        defaults,
+        array2obj(
+          args.splice(1).map((str) => {
+            const split = str.split(':');
+            return { [split[0]]: split[1] };
+          })
+        )
+      );
 
       hexo.log.info(logname, url, options);
       const feed = await parser.parseURL(url);
-
-      // debugging
-      if (options.debug === 'true') {
-        return `<pre><code class="highlight json">${JSON.stringifyWithCircularRefs(Object.keys(feed))}</code></pre>`;
-      }
 
       // render
       const result = [] as string[];
       for (let i = 0; i < (options.limit || 3); i++) {
         const item = feed.items[i];
-        let cloneTemplate = template
-          .replace(/\$title/gim, '{{ title }}')
-          .replace(/\$content/gim, '{{ content }}')
-          .replace(/\$link/gim, '{{ link }}')
-          .replace(/\$summary/gim, '{{ summary }}')
-          .replace(/\$image/gim, '{{ image }}');
-        Object.keys(item).forEach((key) => {
-          const regex = new RegExp(escapeRegExp('$' + key), 'gmi');
-          const replacement = '{{ ' + key + ' }}';
-          hexo.log.debug(logname, regex, '->', replacement);
-          cloneTemplate = cloneTemplate.replace(regex, replacement);
-        });
 
-        const rendered = env.renderString(cloneTemplate, item);
+        let rendered: string;
+
+        if (options.debug === 'true') {
+          // debugging
+          rendered = `<pre><code class="highlight json">${JSON.stringifyWithCircularRefs(
+            Object.keys(item)
+          )}</code></pre>`;
+        } else {
+          // clone and modify template
+          let cloneTemplate = template
+            .replace(/\$title/gim, '{{ title }}')
+            .replace(/\$content/gim, '{{ content }}')
+            .replace(/\$link/gim, '{{ link }}')
+            .replace(/\$summary/gim, '{{ summary }}')
+            .replace(/\$image/gim, '{{ image }}');
+          Object.keys(item).forEach((key) => {
+            const regex = new RegExp(escapeRegExp('$' + key), 'gmi');
+            const replacement = '{{ ' + key + ' }}';
+            hexo.log.debug(logname, regex, '->', replacement);
+            cloneTemplate = cloneTemplate.replace(regex, replacement);
+          });
+          // render
+          rendered = env.renderString(cloneTemplate, item);
+        }
         result.push(rendered);
       }
       return result.join('\n');
