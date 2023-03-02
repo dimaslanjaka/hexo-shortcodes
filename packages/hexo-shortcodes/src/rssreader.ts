@@ -89,9 +89,9 @@ export function rssreader(hexo: Hexo) {
 
         if (options.debug === 'true') {
           // debugging
-          rendered = `<pre><code class="highlight json">${JSON.stringifyWithCircularRefs(
-            Object.keys(item)
-          )}</code></pre>`;
+          rendered = `<pre><code class="highlight json">${
+            (JSON.stringifyWithCircularRefs(Object.keys(item)), 2)
+          }</code></pre>`;
         } else {
           // clone and modify template
           let cloneTemplate = template

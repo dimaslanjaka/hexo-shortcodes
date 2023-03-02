@@ -84,7 +84,7 @@ function rssreader(hexo) {
                             var rendered = void 0;
                             if (options.debug === 'true') {
                                 // debugging
-                                rendered = "<pre><code class=\"highlight json\">".concat(JSON.stringifyWithCircularRefs(Object.keys(item)), "</code></pre>");
+                                rendered = "<pre><code class=\"highlight json\">".concat((JSON.stringifyWithCircularRefs(Object.keys(item)), 2), "</code></pre>");
                             }
                             else {
                                 // clone and modify template
