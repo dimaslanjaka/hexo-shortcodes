@@ -78,7 +78,7 @@ function codepen(hexo) {
             slug = match[2];
         }
         else {
-            hexo.log.error(logname, urlOrid);
+            hexo.log.error(logname, urlOrid, match);
         }
         // parse `=` from all arguments
         var parse = args
