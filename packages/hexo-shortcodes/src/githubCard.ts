@@ -4,9 +4,16 @@ import ansiColors from 'ansi-colors';
 // const Promise = require('bluebird');
 import fs from 'fs';
 import nunjucks from 'nunjucks';
-import { GITHUB_CARD_FILE_PATH, GITHUB_CARD_LIB_NAME, GITHUB_CARD_ROUTE_NAME, LIB_PATH, TEMPLATE_PATH } from './env';
+import {
+  GITHUB_CARD_FILE_PATH,
+  GITHUB_CARD_LIB_NAME,
+  GITHUB_CARD_ROUTE_NAME,
+  GITHUB_CARD_TEMPLATE,
+  LIB_PATH,
+  TEMPLATE_PATH
+} from './env';
 
-const logname = ansiColors.magentaBright('hexo-shortcodes(githubCard)');
+const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(githubCard)');
 
 // githubCard
 // show github profile or repositories
@@ -36,7 +43,7 @@ export function githubCard(hexo: import('hexo')) {
 
   // Registers the new tag with Hexo.
   hexo.extend.tag.register(
-    'githubCard-old',
+    'githubCard',
     function (args) {
       const argsObj: Record<string, any> = {};
 
@@ -75,7 +82,10 @@ export function githubCard(hexo: import('hexo')) {
           }
         });
       });*/
-      return JSON.stringify(payload, null, 2);
+      const rendered = nunjucks.renderString(fs.readFileSync(GITHUB_CARD_TEMPLATE, 'utf-8'), payload);
+      // return Promise.resolve(JSON.stringify(payload, null, 2));
+      console.log(rendered);
+      return Promise.resolve(rendered);
     },
     {
       async: true

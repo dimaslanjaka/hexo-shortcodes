@@ -9,7 +9,7 @@ var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var fs_1 = __importDefault(require("fs"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var env_1 = require("./env");
-var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes(githubCard)');
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(githubCard)');
 // githubCard
 // show github profile or repositories
 function githubCard(hexo) {
@@ -33,7 +33,7 @@ function githubCard(hexo) {
     });
     // hexo.extend.tag.unregister('githubCard');
     // Registers the new tag with Hexo.
-    hexo.extend.tag.register('githubCard-old', function (args) {
+    hexo.extend.tag.register('githubCard', function (args) {
         var argsObj = {};
         args.forEach(function (arg) {
             var current = arg.split(':');
@@ -60,7 +60,10 @@ function githubCard(hexo) {
             }
           });
         });*/
-        return JSON.stringify(payload, null, 2);
+        var rendered = nunjucks_1.default.renderString(fs_1.default.readFileSync(env_1.GITHUB_CARD_TEMPLATE, 'utf-8'), payload);
+        // return Promise.resolve(JSON.stringify(payload, null, 2));
+        console.log(rendered);
+        return Promise.resolve(rendered);
     }, {
         async: true
     });

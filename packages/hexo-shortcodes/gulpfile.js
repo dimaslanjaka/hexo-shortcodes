@@ -3,47 +3,67 @@ const path = require('path');
 
 gulp.task('watch', function () {
   gulp.series('serve')();
-  gulp.watch(['src/**/*.ts', 'src/**/*.js'], gulp.series('build', 'serve'));
+  gulp.watch(['src/**/*.ts', 'src/**/*.js', 'template/**/*'], gulp.series('build', 'serve'));
 });
 
 gulp.task('build', function () {
   return killableSpawn('yarn', ['build'], { cwd: __dirname, stdio: 'inherit', shell: true }, 'build');
 });
 
-gulp.task('serve', async function () {
-  return killableSpawn(
-    'yarn',
-    ['run', 'server'],
-    {
+/**
+ * @type {import('execa').ExecaChildProcess<string>}
+ */
+let subprocess;
+/**
+ * @type {AbortController}
+ */
+let abortController;
+gulp.task('serve', function () {
+  return (async function () {
+    const { execa } = await import('execa');
+    // hexo clean
+    await killableSpawn(
+      'hexo',
+      ['clean'],
+      {
+        signal: aborts.signal,
+        cwd: path.join(__dirname, 'test'),
+        stdio: 'inherit'
+      },
+      'clean'
+    );
+    // hexo serve
+    if (typeof subprocess !== 'undefined') {
+      if (!subprocess.killed) {
+        abortController.abort();
+        try {
+          await subprocess;
+        } catch (error) {
+          console.log(subprocess.pid, subprocess.killed ? 'killed' : 'kill failed'); // true
+          console.log(subprocess.pid, error.isCanceled ? 'cancelled' : 'cancel failed'); // true
+        }
+        if (subprocess.killed) {
+          subprocess = undefined;
+        }
+      }
+    }
+    abortController = new AbortController();
+    subprocess = execa('hexo', ['server'], {
       signal: abortController.signal,
       cwd: path.join(__dirname, 'test'),
       stdio: 'inherit'
-    },
-    'server'
-  );
-});
-
-gulp.task('serve:clean', async function () {
-  return killableSpawn(
-    'hexo',
-    ['clean'],
-    {
-      signal: abortController.signal,
-      cwd: path.join(__dirname, 'test'),
-      stdio: 'inherit'
-    },
-    'clean'
-  );
+    });
+  })();
 });
 
 /**
  * @type {Record<string, import('execa').ExecaChildProcess<string>>}
  */
-const subprocess = {};
+const childs = {};
 /**
  * @type {Record<string, AbortController>}
  */
-const abortController = {};
+const aborts = {};
 /**
  * killable spawner
  * @param {string} cmd
@@ -53,31 +73,36 @@ const abortController = {};
  */
 async function killableSpawn(cmd, args, opt, instanceName = String(Math.random().toFixed(2))) {
   const { execa } = await import('execa');
-  if (typeof subprocess[instanceName] !== 'undefined') {
-    if (!subprocess[instanceName].killed) {
-      abortController[instanceName].abort();
+  if (typeof childs[instanceName] !== 'undefined') {
+    if (!childs[instanceName].killed) {
+      aborts[instanceName].abort();
       try {
-        await subprocess[instanceName];
+        await childs[instanceName];
       } catch (error) {
-        console.log(subprocess[instanceName].pid, subprocess[instanceName].killed ? 'killed' : 'kill failed'); // true
-        console.log(subprocess[instanceName].pid, error.isCanceled ? 'cancelled' : 'cancel failed'); // true
+        console.log(childs[instanceName].pid, childs[instanceName].killed ? 'killed' : 'kill failed'); // true
+        console.log(childs[instanceName].pid, error.isCanceled ? 'cancelled' : 'cancel failed'); // true
       }
-      if (subprocess[instanceName].killed) {
-        subprocess[instanceName] = undefined;
+      if (childs[instanceName].killed) {
+        childs[instanceName] = undefined;
       }
     }
   }
-  abortController[instanceName] = new AbortController();
-  subprocess[instanceName] = execa(
+  aborts[instanceName] = new AbortController();
+  childs[instanceName] = execa(
     cmd,
     typeof args === 'string' ? [args] : args,
     Object.assign(
       {
-        signal: abortController.signal,
+        signal: aborts.signal,
         cwd: path.join(__dirname, 'test'),
         stdio: 'inherit'
       },
       opt
     )
   );
+  return new Promise((resolve) => {
+    childs[instanceName].once('exit', function () {
+      resolve();
+    });
+  });
 }

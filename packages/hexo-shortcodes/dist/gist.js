@@ -47,7 +47,7 @@ var nunjucks_1 = __importDefault(require("nunjucks"));
 var path_1 = __importDefault(require("path"));
 var sbg_utility_1 = require("sbg-utility");
 var env_1 = require("./env");
-var _hg_logname = ansi_colors_1.default.magentaBright('hexo-shortcodes(gist)');
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
 // https://github.com/jekyll/jekyll-gist
@@ -73,7 +73,7 @@ var fetch_raw_code = function (id, filename) {
                         resolve(res.data);
                     })
                         .catch(function (e) {
-                        hexo.log.error(_hg_logname, id, "cannot get ".concat(e.message), { url: url });
+                        hexo.log.error(logname, id, "cannot get ".concat(e.message), { url: url });
                         reject(e);
                     });
                 })];
@@ -89,7 +89,7 @@ var gist = function (hexo) {
         });
         return new Promise(function (resolve) {
             var id = args[0];
-            hexo.log.info(_hg_logname, id);
+            hexo.log.info(logname, id);
             var filename = args[1];
             var payload = {
                 id: id,

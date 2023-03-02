@@ -7,18 +7,10 @@ import { jsfiddle } from './jsfiddle';
 const logname = ansiColors.magentaBright('hexo-shortcodes');
 
 if (typeof hexo !== 'undefined') {
+  hexo.log.debug('starting shortcodes');
+  githubCard(hexo);
   gist(hexo);
   jsfiddle(hexo);
-  githubCard(hexo);
-
-  hexo.extend.tag.register(
-    'githubCard',
-    async function (args) {
-      hexo.log.info(args);
-      return JSON.stringify(args, null, 2);
-    },
-    { async: true }
-  );
 } else {
   console.error(logname, 'not running within hexo instance');
 }

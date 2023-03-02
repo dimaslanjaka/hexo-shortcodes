@@ -5,7 +5,7 @@ import nunjucks from 'nunjucks';
 import path from 'path';
 import { writefile } from 'sbg-utility';
 import { LIB_PATH, TEMPLATE_PATH, TEMP_PATH } from './env';
-const _hg_logname = ansiColors.magentaBright('hexo-shortcodes(gist)');
+const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
 
 // hexo-gist
 // gist shortcode
@@ -30,7 +30,7 @@ const fetch_raw_code = async function (id: string, filename: string) {
         resolve(res.data);
       })
       .catch(function (e) {
-        hexo.log.error(_hg_logname, id, `cannot get ${e.message}`, { url });
+        hexo.log.error(logname, id, `cannot get ${e.message}`, { url });
         reject(e);
       });
   });
@@ -48,7 +48,7 @@ export const gist = (hexo: import('hexo')) => {
 
       return new Promise((resolve) => {
         const id = args[0];
-        hexo.log.info(_hg_logname, id);
+        hexo.log.info(logname, id);
         const filename = args[1];
         const payload = {
           id,
