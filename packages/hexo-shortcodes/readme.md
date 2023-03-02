@@ -57,6 +57,21 @@ Display a repo
 {% githubCard user:dimaslanjaka repo:hexo-shortcodes %}
 ```
 
+## codepen
+
+```yaml
+codepen:
+  theme: 11473
+  height: 300
+  preview: false
+  default_tab: result
+  version: 2
+```
+
+```nunjucks
+{% codepen https://codepen.io/blindingstars/pen/wBexpr %}
+```
+
 License
 =======
 
