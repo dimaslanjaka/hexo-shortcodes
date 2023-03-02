@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const { spawn } = require('git-command-helper');
 const path = require('path');
 
 gulp.task('watch', function () {
@@ -8,37 +7,77 @@ gulp.task('watch', function () {
 });
 
 gulp.task('build', function () {
-  return spawn('yarn', ['build'], { cwd: __dirname, stdio: 'inherit', shell: true });
+  return killableSpawn('yarn', ['build'], { cwd: __dirname, stdio: 'inherit', shell: true }, 'build');
+});
+
+gulp.task('serve', async function () {
+  return killableSpawn(
+    'yarn',
+    ['run', 'server'],
+    {
+      signal: abortController.signal,
+      cwd: path.join(__dirname, 'test'),
+      stdio: 'inherit'
+    },
+    'server'
+  );
+});
+
+gulp.task('serve:clean', async function () {
+  return killableSpawn(
+    'hexo',
+    ['clean'],
+    {
+      signal: abortController.signal,
+      cwd: path.join(__dirname, 'test'),
+      stdio: 'inherit'
+    },
+    'clean'
+  );
 });
 
 /**
- * @type {import('execa').ExecaChildProcess<string>}
+ * @type {Record<string, import('execa').ExecaChildProcess<string>>}
  */
-let subprocess;
+const subprocess = {};
 /**
- * @type {AbortController}
+ * @type {Record<string, AbortController>}
  */
-let abortController;
-gulp.task('serve', async function () {
+const abortController = {};
+/**
+ * killable spawner
+ * @param {string} cmd
+ * @param {string|string[]} args
+ * @param {import('execa').Options} opt
+ * @param {string} instanceName
+ */
+async function killableSpawn(cmd, args, opt, instanceName = String(Math.random().toFixed(2))) {
   const { execa } = await import('execa');
-  if (typeof subprocess !== 'undefined') {
-    if (!subprocess.killed) {
-      abortController.abort();
+  if (typeof subprocess[instanceName] !== 'undefined') {
+    if (!subprocess[instanceName].killed) {
+      abortController[instanceName].abort();
       try {
-        await subprocess;
+        await subprocess[instanceName];
       } catch (error) {
-        console.log(subprocess.pid, subprocess.killed ? 'killed' : 'kill failed'); // true
-        console.log(subprocess.pid, error.isCanceled ? 'cancelled' : 'cancel failed'); // true
+        console.log(subprocess[instanceName].pid, subprocess[instanceName].killed ? 'killed' : 'kill failed'); // true
+        console.log(subprocess[instanceName].pid, error.isCanceled ? 'cancelled' : 'cancel failed'); // true
       }
-      if (subprocess.killed) {
-        subprocess = undefined;
+      if (subprocess[instanceName].killed) {
+        subprocess[instanceName] = undefined;
       }
     }
   }
-  abortController = new AbortController();
-  subprocess = execa('yarn', ['run', 'server'], {
-    signal: abortController.signal,
-    cwd: path.join(__dirname, 'test'),
-    stdio: 'inherit'
-  });
-});
+  abortController[instanceName] = new AbortController();
+  subprocess[instanceName] = execa(
+    cmd,
+    typeof args === 'string' ? [args] : args,
+    Object.assign(
+      {
+        signal: abortController.signal,
+        cwd: path.join(__dirname, 'test'),
+        stdio: 'inherit'
+      },
+      opt
+    )
+  );
+}

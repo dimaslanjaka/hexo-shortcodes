@@ -1,20 +1,27 @@
 // const Promise = require('bluebird');
+import ansiColors from 'ansi-colors';
 import { gist } from './gist';
 import { githubCard } from './githubCard';
 import { jsfiddle } from './jsfiddle';
 
-gist(hexo);
-jsfiddle(hexo);
-githubCard(hexo);
+const logname = ansiColors.magentaBright('hexo-shortcodes');
 
-hexo.extend.tag.register(
-  'githubCard',
-  async function (args) {
-    hexo.log.info(args);
-    return JSON.stringify(args, null, 2);
-  },
-  { async: true }
-);
+if (typeof hexo !== 'undefined') {
+  gist(hexo);
+  jsfiddle(hexo);
+  githubCard(hexo);
+
+  hexo.extend.tag.register(
+    'githubCard',
+    async function (args) {
+      hexo.log.info(args);
+      return JSON.stringify(args, null, 2);
+    },
+    { async: true }
+  );
+} else {
+  console.error(logname, 'not running within hexo instance');
+}
 
 /*const escapeHTML = (str) =>
   str.replace(

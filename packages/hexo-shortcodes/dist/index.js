@@ -35,22 +35,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // const Promise = require('bluebird');
+var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var gist_1 = require("./gist");
 var githubCard_1 = require("./githubCard");
 var jsfiddle_1 = require("./jsfiddle");
-(0, gist_1.gist)(hexo);
-(0, jsfiddle_1.jsfiddle)(hexo);
-(0, githubCard_1.githubCard)(hexo);
-hexo.extend.tag.register('githubCard', function (args) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            hexo.log.info(args);
-            return [2 /*return*/, JSON.stringify(args, null, 2)];
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes');
+if (typeof hexo !== 'undefined') {
+    (0, gist_1.gist)(hexo);
+    (0, jsfiddle_1.jsfiddle)(hexo);
+    (0, githubCard_1.githubCard)(hexo);
+    hexo.extend.tag.register('githubCard', function (args) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                hexo.log.info(args);
+                return [2 /*return*/, JSON.stringify(args, null, 2)];
+            });
         });
-    });
-}, { async: true });
+    }, { async: true });
+}
+else {
+    console.error(logname, 'not running within hexo instance');
+}
 /*const escapeHTML = (str) =>
   str.replace(
     /[&<>'"]/g,
