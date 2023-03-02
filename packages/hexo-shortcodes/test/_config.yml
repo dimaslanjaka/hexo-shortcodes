@@ -23,7 +23,7 @@ highlight:
   enable: true
   line_number: false
 
-disqus_shortname: hexojs
+disqus_shortname: dimaslanjaka
 google_analytics: UA-48498357-3
 fb_admins: 100000247608790
 algolia:
@@ -36,5 +36,9 @@ algolia:
   zh-cn:
     api_key: cdea7d4e47d84f6145b77e7f68689f35
     index_name: hexo_zh-cn
-twitter: hexojs
-github: hexojs/hexo
+
+nofollow:
+  enable: true
+  field: site
+  exclude:
+    - 'dimaslanjaka.github.io'
