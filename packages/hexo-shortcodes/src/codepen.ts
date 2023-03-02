@@ -93,8 +93,7 @@ export function codepen(hexo: Hexo) {
         };
       })
       .filter((o) => typeof o === 'object');
-    const parsed: codepenTagOptions = array2obj(parse);
-    console.log(parsed);
+    const overriden: codepenTagOptions = array2obj(parse);
 
     const config: codepenTagOptions = hexo.config.codepen || {};
     const url = `https://codepen.io/${user}/pen/${slug}`;
@@ -108,8 +107,9 @@ export function codepen(hexo: Hexo) {
       'data-user': user,
       'data-slug-hash': slug
     };
+    const overriden_options = Object.assign(defaults, overriden);
 
-    const attr = Object.keys(defaults)
+    const attr = Object.keys(overriden_options)
       .map((key) => `${key}="${defaults[key]}"`)
       .join(' ');
 

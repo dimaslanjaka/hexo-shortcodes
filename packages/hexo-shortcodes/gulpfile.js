@@ -106,3 +106,5 @@ async function killableSpawn(cmd, args, opt, instanceName = String(Math.random()
     });
   });
 }
+
+// gh-pages builder

@@ -62,7 +62,7 @@ Display a repo
 Example:
 
 ```nunjucks
-{% codepen https://codepen.io/blindingstars/pen/wBexpr %}
+{% codepen https://codepen.io/dimaslanjaka/pen/KowxjR %}
 ```
 
 License

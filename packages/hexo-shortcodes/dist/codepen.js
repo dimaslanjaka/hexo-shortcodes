@@ -87,8 +87,7 @@ function codepen(hexo) {
                 _a;
         })
             .filter(function (o) { return typeof o === 'object'; });
-        var parsed = array2obj(parse);
-        console.log(parsed);
+        var overriden = array2obj(parse);
         var config = hexo.config.codepen || {};
         var url = "https://codepen.io/".concat(user, "/pen/").concat(slug);
         var defaults = {
@@ -101,7 +100,8 @@ function codepen(hexo) {
             'data-user': user,
             'data-slug-hash': slug
         };
-        var attr = Object.keys(defaults)
+        var overriden_options = Object.assign(defaults, overriden);
+        var attr = Object.keys(overriden_options)
             .map(function (key) { return "".concat(key, "=\"").concat(defaults[key], "\""); })
             .join(' ');
         var htm_tag = "<p ".concat(attr, ">See the <a href=\"").concat(url, "\">pen</a> on <a href=\"//codepen.io\" rel=\"nofollow noopener\">CodePen</a>.</p>");

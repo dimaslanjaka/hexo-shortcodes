@@ -13,15 +13,15 @@ codepen:
 ```
 
 ```nunjucks
-{% codepen https://codepen.io/blindingstars/pen/wBexpr %}
+{% codepen https://codepen.io/dimaslanjaka/pen/KowxjR %}
 ```
 
-{% codepen https://codepen.io/blindingstars/pen/wBexpr %}
+{% codepen https://codepen.io/dimaslanjaka/pen/KowxjR %}
 
 overriden default configuration from `_config.yml`
 
 ```nunjucks
-{% codepen https://codepen.io/blindingstars/pen/wBexpr height=800 preview=true %}
+{% codepen https://codepen.io/dimaslanjaka/pen/KowxjR height=800 preview=true %}
 ```
 
-{% codepen https://codepen.io/blindingstars/pen/wBexpr height=800 preview=true %}
+{% codepen https://codepen.io/dimaslanjaka/pen/KowxjR height=800 preview=true %}
