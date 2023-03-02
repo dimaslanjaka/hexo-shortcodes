@@ -1,76 +1,7 @@
 import ansiColors from 'ansi-colors';
 import Hexo from 'hexo';
+import { array2obj, getMatches } from './utils';
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(codepen)');
-
-const matches_wrapper: Record<string, string | string[]> = {};
-
-/**
- * get matches from regex (cacheable).
- * @param string
- * @param regex
- * @param index
- * @returns
- */
-function getMatches(string: string, regex: RegExp, index: number): string | null;
-/**
- * get matches from regex (cacheable).
- * @param string
- * @param regex
- * @param index
- * @returns
- */
-function getMatches(string: string, regex: RegExp): string[] | null;
-/**
- * get matches from regex (cacheable)
- * @param string
- * @param regex
- * @param index
- * @returns
- */
-function getMatches(string: string, regex: RegExp, index?: number): string | string[] | null {
-  // index || (index = 1); // default to the first capturing group
-  const key = string + String(regex);
-  const matches = (matches_wrapper[key] as string[]) || [];
-  if (matches.length === 0) {
-    let match: RegExpExecArray;
-    while ((match = regex.exec(string))) {
-      // matches.push(match[index]);
-      match.forEach((m, i) => {
-        matches[i] = m;
-      });
-    }
-  }
-
-  matches_wrapper[key] = matches;
-  if (index) return matches[index];
-  return matches;
-}
-
-/**
- * turn multidimensional array to single object.
- *
- * forked from @see {@link https://github.com/rmcfadzean/jekyll-codepen}
- * @param data
- * @returns
- */
-export function array2obj<T extends any[][] | any[]>(data: T) {
-  /*if (Array.isArray(data)) {
-    return data.reduce((obj, el, i) => (el && (obj[i] = multiDimensionalArrayToObject(el)), obj), {});
-  } else if (typeof data === 'object') {
-    return data.reduce(function (obj) {
-      return Object.assign({}, obj);
-    }, {});
-  }*/
-  if (Array.isArray(data)) {
-    return data.reduce(function (prev, cur) {
-      if (Array.isArray(prev)) return array2obj(prev);
-      // fix array of object
-      if (typeof cur === 'object' && !Array.isArray(cur)) return Object.assign(prev, cur);
-      if (!Array.isArray(prev)) return Object.assign({}, prev);
-    }, <any>{});
-  }
-  return data;
-}
 
 interface codepenTagOptions {
   [key: string]: any;
