@@ -132,7 +132,7 @@ export function codepen(hexo: Hexo) {
       .map((key) => `${key}="${defaults[key]}"`)
       .join(' ');
 
-    const htm_tag = `<span>codepen user:<kbd>${user}</kbd> id:<kbd>${slug}</kbd></span><p ${attr}>See the <a href="${url}">pen</a> on <a href="//codepen.io" rel="nofollow noopener">CodePen</a>.</p>`;
+    const htm_tag = `<p ${attr}>See the <a href="${url}">pen</a> on <a href="//codepen.io" rel="nofollow noopener">CodePen</a>.</p>`;
 
     const htm_script = '<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>';
 

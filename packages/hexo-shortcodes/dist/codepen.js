@@ -107,7 +107,7 @@ function codepen(hexo) {
         var attr = Object.keys(overriden_options)
             .map(function (key) { return "".concat(key, "=\"").concat(defaults[key], "\""); })
             .join(' ');
-        var htm_tag = "<span>codepen user:<kbd>".concat(user, "</kbd> id:<kbd>").concat(slug, "</kbd></span><p ").concat(attr, ">See the <a href=\"").concat(url, "\">pen</a> on <a href=\"//codepen.io\" rel=\"nofollow noopener\">CodePen</a>.</p>");
+        var htm_tag = "<p ".concat(attr, ">See the <a href=\"").concat(url, "\">pen</a> on <a href=\"//codepen.io\" rel=\"nofollow noopener\">CodePen</a>.</p>");
         var htm_script = '<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>';
         return htm_tag + htm_script;
     });
