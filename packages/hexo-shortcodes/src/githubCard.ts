@@ -84,7 +84,7 @@ export function githubCard(hexo: import('hexo')) {
       });*/
       const rendered = nunjucks.renderString(fs.readFileSync(GITHUB_CARD_TEMPLATE, 'utf-8'), payload);
       // return Promise.resolve(JSON.stringify(payload, null, 2));
-      console.log(rendered);
+
       return Promise.resolve(rendered);
     },
     {

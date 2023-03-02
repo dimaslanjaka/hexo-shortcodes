@@ -15,7 +15,7 @@ Display user profile only
 
 Display a repo
 ```
-{% githubCard user:dimaslanjaka repo:hexo-shortcodes %}
+{% githubCard user:dimaslanjaka repo:static-blog-generator %}
 ```
 
-{% githubCard user:dimaslanjaka repo:hexo-shortcodes %}
+{% githubCard user:dimaslanjaka repo:static-blog-generator %}

@@ -62,7 +62,6 @@ function githubCard(hexo) {
         });*/
         var rendered = nunjucks_1.default.renderString(fs_1.default.readFileSync(env_1.GITHUB_CARD_TEMPLATE, 'utf-8'), payload);
         // return Promise.resolve(JSON.stringify(payload, null, 2));
-        console.log(rendered);
         return Promise.resolve(rendered);
     }, {
         async: true
