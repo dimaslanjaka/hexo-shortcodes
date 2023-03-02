@@ -7,9 +7,9 @@ import nunjucks from 'nunjucks';
 import {
   GITHUB_CARD_FILE_PATH,
   GITHUB_CARD_LIB_NAME,
-  GITHUB_CARD_ROUTE_NAME,
   GITHUB_CARD_TEMPLATE,
   LIB_PATH,
+  ROUTE_NAME,
   TEMPLATE_PATH
 } from './env';
 
@@ -20,8 +20,8 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
 
 export function githubCard(hexo: import('hexo')) {
   // Registers serving of the lib used by the plugin with Hexo.
-  const libRoute = `${GITHUB_CARD_ROUTE_NAME}/${GITHUB_CARD_LIB_NAME}`;
-  hexo.extend.generator.register(GITHUB_CARD_ROUTE_NAME, () => {
+  const libRoute = `${ROUTE_NAME}/${GITHUB_CARD_LIB_NAME}`;
+  hexo.extend.generator.register(ROUTE_NAME, () => {
     return {
       path: libRoute,
       data: () => fs.createReadStream(GITHUB_CARD_FILE_PATH)

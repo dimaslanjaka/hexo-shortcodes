@@ -11,6 +11,12 @@ if (typeof hexo !== 'undefined') {
   githubCard(hexo);
   gist(hexo);
   jsfiddle(hexo);
+  hexo.extend.filter.register('after_post_render', function (data) {
+    data.content =
+      `<script src="/hexo-shortcodes-lib/githubcard.js"></script><link rel="stylesheet" href="/hexo-shortcodes-lib/gist.css" />` +
+      data.content;
+    return data;
+  });
 } else {
   console.error(logname, 'not running within hexo instance');
 }

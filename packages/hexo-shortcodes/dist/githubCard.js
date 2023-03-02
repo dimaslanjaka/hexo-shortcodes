@@ -14,8 +14,8 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
 // show github profile or repositories
 function githubCard(hexo) {
     // Registers serving of the lib used by the plugin with Hexo.
-    var libRoute = "".concat(env_1.GITHUB_CARD_ROUTE_NAME, "/").concat(env_1.GITHUB_CARD_LIB_NAME);
-    hexo.extend.generator.register(env_1.GITHUB_CARD_ROUTE_NAME, function () {
+    var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(env_1.GITHUB_CARD_LIB_NAME);
+    hexo.extend.generator.register(env_1.ROUTE_NAME, function () {
         return {
             path: libRoute,
             data: function () { return fs_1.default.createReadStream(env_1.GITHUB_CARD_FILE_PATH); }

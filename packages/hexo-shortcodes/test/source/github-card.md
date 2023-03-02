@@ -13,7 +13,7 @@ Display user profile only
 
 Display a repo
 ```
-{% githubCard user:dimaslanjaka repo:hexo-shortcodes %}
+{% githubCard user:dimaslanjaka repo:hexo-seo %}
 ```
 
-{% githubCard user:dimaslanjaka repo:hexo-shortcodes %}
+{% githubCard user:dimaslanjaka repo:hexo-seo %}

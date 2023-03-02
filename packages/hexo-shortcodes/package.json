@@ -13,6 +13,7 @@
   "files": [
     "src",
     "template",
+    "template/*.njk",
     "lib",
     "readme.md",
     "dist"

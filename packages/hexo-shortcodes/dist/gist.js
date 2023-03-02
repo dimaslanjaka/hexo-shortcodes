@@ -43,6 +43,7 @@ exports.gist = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var axios_1 = __importDefault(require("axios"));
 var bluebird_1 = __importDefault(require("bluebird"));
+var fs_extra_1 = __importDefault(require("fs-extra"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var path_1 = __importDefault(require("path"));
 var sbg_utility_1 = require("sbg-utility");
@@ -81,12 +82,38 @@ var fetch_raw_code = function (id, filename) {
     });
 };
 var gist = function (hexo) {
+    nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
+        noCache: true,
+        watch: false
+    });
+    var libFilename = 'gist.css';
+    var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(libFilename);
+    var libFilePath = path_1.default.resolve(env_1.LIB_PATH, libFilename);
+    hexo.extend.generator.register(env_1.ROUTE_NAME, function () {
+        return {
+            path: libRoute,
+            data: function () { return fs_extra_1.default.createReadStream(libFilePath); }
+        };
+    });
+    hexo.extend.filter.register('server_middleware', function (app) {
+        app.use(libRoute, function (_req, res) {
+            res.setHeader('content-type', 'text/javascript');
+            res.end(fs_extra_1.default.readFileSync(libFilePath).toString());
+        });
+    });
     // hexo.extend.tag.unregister('gist');
     hexo.extend.tag.register('gist', function (args) {
-        nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
-            noCache: true,
-            watch: false
-        });
+        var id = args[0];
+        hexo.log.info(logname, id);
+        var filename = args[1];
+        var payload = {
+            id: id,
+            filename: filename,
+            raw_code: ''
+        };
+        return nunjucks_1.default.renderString(fs_extra_1.default.readFileSync(env_1.GIST_TEMPLATE).toString(), payload);
+    });
+    var _oldMethod = function (args) {
         return new Promise(function (resolve) {
             var id = args[0];
             hexo.log.info(logname, id);
@@ -139,6 +166,6 @@ var gist = function (hexo) {
               );*/
             });
         });
-    }, { async: true });
+    };
 };
 exports.gist = gist;
