@@ -9,6 +9,7 @@ codepen:
   height: 300
   preview: false
   default_tab: result
+  version: 2
 ```
 
 ```nunjucks
