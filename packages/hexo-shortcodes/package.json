@@ -1,6 +1,6 @@
 {
   "name": "hexo-shortcodes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
