@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // const Promise = require('bluebird');
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var codepen_1 = require("./codepen");
+var env_1 = require("./env");
 var gist_1 = require("./gist");
 var githubCard_1 = require("./githubCard");
 var jsfiddle_1 = require("./jsfiddle");
@@ -21,7 +22,7 @@ if (typeof hexo !== 'undefined') {
     (0, codepen_1.codepen)(hexo);
     // register assets before closing body
     hexo.extend.filter.register('after_render:html', function (data) {
-        return data.replace('</body>', "\n<script src=\"".concat((0, utils_1.url_for)('/hexo-shortcodes-lib/abcdghirtu.js'), "\"></script>\n<link rel=\"stylesheet\" href=\"").concat((0, utils_1.url_for)('/hexo-shortcodes-lib/gist.css'), "\" />\n</body>\n      "));
+        return data.replace('</body>', "\n<script src=\"".concat((0, utils_1.url_for)('/hexo-shortcodes-lib/' + env_1.GITHUB_CARD_LIB_NAME), "\"></script>\n<link rel=\"stylesheet\" href=\"").concat((0, utils_1.url_for)('/hexo-shortcodes-lib/gist.css'), "\" />\n</body>\n      "));
     });
 }
 else {

@@ -1,6 +1,7 @@
 // const Promise = require('bluebird');
 import ansiColors from 'ansi-colors';
 import { codepen } from './codepen';
+import { GITHUB_CARD_LIB_NAME } from './env';
 import { gist } from './gist';
 import { githubCard } from './githubCard';
 import { jsfiddle } from './jsfiddle';
@@ -23,7 +24,7 @@ if (typeof hexo !== 'undefined') {
     return data.replace(
       '</body>',
       `
-<script src="${url_for('/hexo-shortcodes-lib/abcdghirtu.js')}"></script>
+<script src="${url_for('/hexo-shortcodes-lib/' + GITHUB_CARD_LIB_NAME)}"></script>
 <link rel="stylesheet" href="${url_for('/hexo-shortcodes-lib/gist.css')}" />
 </body>
       `
