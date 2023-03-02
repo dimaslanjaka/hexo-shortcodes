@@ -1,13 +1,11 @@
 // const Promise = require('bluebird');
-import ansiColors from 'ansi-colors';
 import { codepen } from './codepen';
+import { dailymotion } from './dailymotion';
 import { GITHUB_CARD_LIB_NAME } from './env';
 import { gist } from './gist';
 import { githubCard } from './githubCard';
 import { jsfiddle } from './jsfiddle';
 import { registerHexo, url_for } from './utils';
-
-const logname = ansiColors.magentaBright('hexo-shortcodes');
 
 if (typeof hexo !== 'undefined') {
   // register hexo for utils
@@ -18,6 +16,7 @@ if (typeof hexo !== 'undefined') {
   gist(hexo);
   jsfiddle(hexo);
   codepen(hexo);
+  dailymotion(hexo);
 
   // register assets before closing body
   hexo.extend.filter.register('after_render:html', function (data) {
@@ -30,19 +29,4 @@ if (typeof hexo !== 'undefined') {
       `
     );
   });
-} else {
-  console.error(logname, 'not running within hexo instance');
 }
-
-/*const escapeHTML = (str) =>
-  str.replace(
-    /[&<>'"]/g,
-    (tag) =>
-      ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        "'": '&#39;',
-        '"': '&quot;'
-      }[tag])
-  );*/

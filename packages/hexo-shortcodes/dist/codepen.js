@@ -77,6 +77,9 @@ function codepen(hexo) {
             user = match[1];
             slug = match[2];
         }
+        else {
+            hexo.log.error(logname, urlOrid);
+        }
         // parse `=` from all arguments
         var parse = args
             .map(function (str) {

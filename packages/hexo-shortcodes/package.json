@@ -28,11 +28,11 @@
     "test": "node test.js"
   },
   "keywords": [
-    "website",
-    "blog",
     "hexo",
-    "shortcodes",
-    "shortcut"
+    "shortcode",
+    "shortcut",
+    "hexo-plugin",
+    "hexo-tag"
   ],
   "author": {
     "name": "Jason Jiang",

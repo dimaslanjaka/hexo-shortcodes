@@ -97,6 +97,8 @@ export function codepen(hexo: Hexo) {
       args[0] = '';
       user = match[1];
       slug = match[2];
+    } else {
+      hexo.log.error(logname, urlOrid, match);
     }
 
     // parse `=` from all arguments
