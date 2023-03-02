@@ -18,10 +18,31 @@ function codepen(hexo) {
             theme_id: 11473,
             default_tab: 'result'
         };
-        var regex = /codepen.io\/\w*\/pen\/(?<slug>\w*)/gm;
-        var test = regex.test(id);
-        console.log(test);
+        var regex = /codepen.io\/(\w*)\/pen\/(\w*)/gm;
+        var match = getMatches(id, regex, 1);
+        console.log(match);
         return '';
     });
 }
 exports.codepen = codepen;
+/**
+ * get matches from regex
+ * @param string
+ * @param regex
+ * @param index
+ * @returns
+ */
+function getMatches(string, regex, index) {
+    // index || (index = 1); // default to the first capturing group
+    var matches = [];
+    var match;
+    while ((match = regex.exec(string))) {
+        // matches.push(match[index]);
+        match.forEach(function (m, i) {
+            matches[i] = m;
+        });
+    }
+    if (index)
+        return matches[index];
+    return matches;
+}

@@ -15,10 +15,31 @@ export function codepen(hexo: Hexo) {
       default_tab: 'result'
     };
 
-    const regex = /codepen.io\/\w*\/pen\/(?<slug>\w*)/gm;
-    const test = regex.test(id);
-    console.log(test);
+    const regex = /codepen.io\/(\w*)\/pen\/(\w*)/gm;
+    const match = getMatches(id, regex, 1);
+    console.log(match);
 
     return '';
   });
+}
+
+/**
+ * get matches from regex
+ * @param string
+ * @param regex
+ * @param index
+ * @returns
+ */
+function getMatches(string: string, regex: RegExp, index?: number) {
+  // index || (index = 1); // default to the first capturing group
+  const matches: string[] = [];
+  let match: RegExpExecArray;
+  while ((match = regex.exec(string))) {
+    // matches.push(match[index]);
+    match.forEach((m, i) => {
+      matches[i] = m;
+    });
+  }
+  if (index) return matches[index];
+  return matches;
 }
