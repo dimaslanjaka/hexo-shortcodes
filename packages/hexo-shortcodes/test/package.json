@@ -24,7 +24,6 @@
     "hexo-renderers": "workspace:^",
     "hexo-server": "^3.0.0",
     "hexo-shortcodes": "workspace:^",
-    "hexo-uglify": "^2.0.0",
     "lunr": "2.3.9",
     "sharp": "^0.31.0"
   },

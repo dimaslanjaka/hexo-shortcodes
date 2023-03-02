@@ -1,14 +1,14 @@
-title: Hexo
-subtitle: "A fast, simple & powerful blog framework powered by Node.js."
-description: "Hexo is a fast, simple & powerful blog framework powered by Node.js."
-author: Hexo
+title: hexo-shortcodes documentation
+subtitle: "All in one shortcodes for hexo"
+description: "All in one collection shortcodes for hexo"
+author: Dimas Lanjaka
 language: en
 timezone: UTC
 
 url: https://www.webmanajemen.com
 root: /docs/hexo-shortcodes/
 permalink: :title.html
-archive_dir: news
+archive_dir: archive
 code_dir: downloads/code
 new_post_name: :year-:month-:day-:title.md # File name of new posts
 post_asset_folder: true
