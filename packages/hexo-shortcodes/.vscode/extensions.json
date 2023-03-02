@@ -4,6 +4,9 @@
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "formulahendry.code-runner",
-    "Natizyskunk.sftp"
+    "natizyskunk.sftp",
+    "eseom.nunjucks-template",
+    "digitalbrainstem.javascript-ejs-support",
+    "k--kato.intellij-idea-keybindings"
   ]
 }
