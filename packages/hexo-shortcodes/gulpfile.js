@@ -124,6 +124,7 @@ gulp.task('copy-pages', async function () {
   const dest = path.join(__dirname, '../../site/.deploy_git/docs/hexo-shortcodes');
   const src = path.join(__dirname, 'test/public');
   if (fs.existsSync(dest) && fs.existsSync(src)) {
-    fs.copySync(src, dest, { overwrite: true });
+    await fs.emptyDir(dest);
+    await fs.copy(src, dest, { overwrite: true });
   }
 });
