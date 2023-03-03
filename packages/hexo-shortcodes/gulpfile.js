@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 const gulp = require('gulp');
 const path = require('path');
+const fs = require('fs-extra');
 
 const argv = require('minimist')(process.argv.slice(2));
 
@@ -116,3 +117,13 @@ async function killableSpawn(cmd, args, opt, instanceName = String(Math.random()
 }
 
 // gh-pages builder
+gulp.task('build-pages', async function () {
+  await killableSpawn('hexo', ['generate'], { cwd: path.join(__dirname, 'test') });
+});
+gulp.task('copy-pages', async function () {
+  const dest = path.join(__dirname, '../../site/.deploy_git/docs/hexo-shortcodes');
+  const src = path.join(__dirname, 'test/public');
+  if (fs.existsSync(dest) && fs.existsSync(src)) {
+    fs.copySync(src, dest, { overwrite: true });
+  }
+});

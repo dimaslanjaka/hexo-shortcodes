@@ -54,7 +54,6 @@
     "fs-extra": "^11.1.0",
     "hexo-filter-nofollow": "^2.0.2",
     "hexo-util": "^3.0.1",
-    "nib": "^1.2.0",
     "nunjucks": "^3.2.3",
     "rss-parser": "^3.12.0",
     "sbg-utility": "^1.0.6"
