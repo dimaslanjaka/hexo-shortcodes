@@ -1,7 +1,7 @@
 # hexo-shortcodes
 Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.
 
-- [DEMO](https://www.webmanajemen.com/hexo-shortcodes)
+- [FULL DEMO and USAGES](https://www.webmanajemen.com/docs/hexo-shortcodes)
 
 NPM
 ```
