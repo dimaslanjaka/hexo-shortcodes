@@ -117,14 +117,19 @@ async function killableSpawn(cmd, args, opt, instanceName = String(Math.random()
 }
 
 // gh-pages builder
+
+const deployDest = path.join(__dirname, '../../site/.deploy_git/docs/hexo-shortcodes');
+const testCwd = path.join(__dirname, 'test');
+const testPublic = path.join(testCwd, 'public');
+gulp.task('dump-pages', async function () {
+  console.log({ testCwd, testPublic, deployDest });
+});
 gulp.task('build-pages', async function () {
-  await killableSpawn('hexo', ['generate'], { cwd: path.join(__dirname, 'test') });
+  await killableSpawn('hexo', ['generate'], { cwd: testCwd });
 });
 gulp.task('copy-pages', async function () {
-  const dest = path.join(__dirname, '../../site/.deploy_git/docs/hexo-shortcodes');
-  const src = path.join(__dirname, 'test/public');
-  if (fs.existsSync(dest) && fs.existsSync(src)) {
-    await fs.emptyDir(dest);
-    await fs.copy(src, dest, { overwrite: true });
+  if (fs.existsSync(deployDest) && fs.existsSync(testPublic)) {
+    await fs.emptyDir(deployDest);
+    await fs.copy(testPublic, deployDest, { overwrite: true });
   }
 });
