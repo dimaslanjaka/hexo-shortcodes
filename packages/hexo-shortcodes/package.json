@@ -35,17 +35,10 @@
     "hexo-tag"
   ],
   "author": {
-    "name": "Jason Jiang",
-    "email": "gisonrg@gmail.com",
-    "url": "https://gisonrg.me"
-  },
-  "contributors": [
-    {
       "email": "dimaslanjaka@gmail.com",
       "name": "Dimas Lanjaka",
       "url": "https://www.webmanajemen.com"
-    }
-  ],
+    }, 
   "license": "MIT",
   "dependencies": {
     "ansi-colors": "^4.1.3",
