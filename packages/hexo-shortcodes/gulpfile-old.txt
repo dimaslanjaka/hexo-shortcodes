@@ -11,16 +11,12 @@ gulp.task('argv', function (done) {
 });
 
 gulp.task('watch', function () {
-  gulp.series('test')();
-  gulp.watch(['src/**/*.ts', 'src/**/*.js', 'template/**/*'], { delay: 1000 }, gulp.series('test'));
+  gulp.series('serve')();
+  gulp.watch(['src/**/*.ts', 'src/**/*.js', 'template/**/*'], { delay: 1000 }, gulp.series('build', 'serve'));
 });
 
 gulp.task('build', function () {
   return killableSpawn('yarn', ['build'], { cwd: __dirname, stdio: 'inherit', shell: true }, 'build');
-});
-
-gulp.task('test', function () {
-  return killableSpawn('yarn', ['test'], { cwd: __dirname, stdio: 'inherit', shell: true }, 'test');
 });
 
 /**
