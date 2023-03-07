@@ -17,6 +17,7 @@ const dest = path.resolve(__dirname, '../../../dimaslanjaka.github.io/docs/hexo-
 
   await spawn('git', ['add', '.'], { cwd: dest });
   await spawn('git', ['commit', '-m', message], { cwd: dest });
-  await spawn('git', ['pull', '-X', 'ours'], { cwd: dest });
+  await spawn('git', ['checkout', 'master'], { cwd: dest });
+  await spawn('git', ['pull', 'origin', 'master', '-X', 'ours'], { cwd: dest });
   await spawn('git', ['push'], { cwd: dest });
 })();
