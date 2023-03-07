@@ -1,9 +1,21 @@
 {
   "name": "hexo-shortcodes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [
+    "hexo",
+    "shortcode",
+    "shortcut",
+    "hexo-plugin",
+    "hexo-tag"
+  ],
+  "author": {
+    "email": "dimaslanjaka@gmail.com",
+    "name": "Dimas Lanjaka",
+    "url": "https://www.webmanajemen.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/dimaslanjaka/static-blog-generator-hexo.git",
@@ -27,18 +39,6 @@
     "dev": "tsc -p tsconfig.build.json --watch",
     "test": "node test.js"
   },
-  "keywords": [
-    "hexo",
-    "shortcode",
-    "shortcut",
-    "hexo-plugin",
-    "hexo-tag"
-  ],
-  "author": {
-      "email": "dimaslanjaka@gmail.com",
-      "name": "Dimas Lanjaka",
-      "url": "https://www.webmanajemen.com"
-    }, 
   "license": "MIT",
   "dependencies": {
     "ansi-colors": "^4.1.3",
