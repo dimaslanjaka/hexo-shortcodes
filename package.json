@@ -38,5 +38,6 @@
     "eslint": "^8.35.0",
     "npm-check-updates": "^16.7.10",
     "prettier": "^2.8.4"
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }

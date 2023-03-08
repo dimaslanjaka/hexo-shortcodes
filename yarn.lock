@@ -4702,15 +4702,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hexo-renderers@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "hexo-renderers@npm:1.0.6"
+"hexo-renderers@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "hexo-renderers@npm:1.0.7"
   dependencies:
     ansi-colors: ^4.1.3
     ejs: ^3.1.8
     fs-extra: ^11.1.0
     hexo-util: ^3.0.1
     lodash.toarray: ^4.4.0
+    nib: ^1.2.0
     node-sass: ^8.0.0
     nunjucks: ^3.2.3
     pug: ^3.0.2
@@ -4718,7 +4719,7 @@ __metadata:
     sbg-utility: ^1.0.6
     stylus: ^0.59.0
     upath: ^2.0.1
-  checksum: b5b773aa3f0db58bbb51a49249cf7e4220fc78f6133af2310b1c5daa82e85802740b454f561a9855f870ce7c82accba2486fb749a54537c4baa0d1ff810221a3
+  checksum: 891e7908551fa1e026d768395a43fc544740bbbf564ede142189c13405cb5fe2bf838fe8d0b72d5e39d609ba78d09553e6338c7133f9023012746074e1061645
   languageName: node
   linkType: hard
 
@@ -4748,7 +4749,7 @@ __metadata:
     hexo: ^6.3.0
     hexo-browsersync: "github:hexojs/hexo-browsersync"
     hexo-renderer-markdown-it: "github:hexojs/hexo-renderer-markdown-it"
-    hexo-renderers: ^1.0.6
+    hexo-renderers: ^1.0.7
     hexo-server: ^3.0.0
     hexo-shortcodes: "workspace:^"
     js-yaml: ^4.1.0
@@ -7118,6 +7119,15 @@ __metadata:
   version: 1.1.0
   resolution: "next-tick@npm:1.1.0"
   checksum: 83b5cf36027a53ee6d8b7f9c0782f2ba87f4858d977342bfc3c20c21629290a2111f8374d13a81221179603ffc4364f38374b5655d17b6a8f8a8c77bdea4fe8b
+  languageName: node
+  linkType: hard
+
+"nib@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "nib@npm:1.2.0"
+  peerDependencies:
+    stylus: "*"
+  checksum: c45c185ae2d8c92727d0e34bea8050a5fc17dc767a8259784c01708aa00ed82263c1c6f346cff699529ad20577341160c725f55571b34ed91f083a3b50484869
   languageName: node
   linkType: hard
 
