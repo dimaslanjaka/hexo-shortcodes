@@ -18,10 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dimaslanjaka/static-blog-generator-hexo.git",
-    "directory": "packages/hexo-shortcodes"
+    "url": "git+https://github.com/dimaslanjaka/hexo-shortcodes.git"
   },
-  "homepage": "https://github.com/dimaslanjaka/static-blog-generator-hexo/tree/master/packages/hexo-shortcodes",
+  "bugs": {
+    "url": "https://github.com/dimaslanjaka/hexo-shortcodes/issues"
+  },
+  "homepage": "https://github.com/dimaslanjaka/hexo-shortcodes#readme",
   "files": [
     "src",
     "template",
