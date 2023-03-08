@@ -1,4 +1,3 @@
-import Hexo from 'hexo';
 /**
  * hexo-util.url_for alias
  * @param url

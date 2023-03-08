@@ -35,15 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rssreader = void 0;
-var ansi_colors_1 = __importDefault(require("ansi-colors"));
+var ansi_colors_1 = require("ansi-colors");
 var hexo_util_1 = require("hexo-util");
-var nunjucks_1 = __importDefault(require("nunjucks"));
-var rss_parser_1 = __importDefault(require("rss-parser"));
+var nunjucks_1 = require("nunjucks");
+var rss_parser_1 = require("rss-parser");
 var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(rssreader)');
 function rssreader(hexo) {

@@ -1,10 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.codepen = void 0;
-var ansi_colors_1 = __importDefault(require("ansi-colors"));
+var ansi_colors_1 = require("ansi-colors");
 var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(codepen)');
 /**
