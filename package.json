@@ -14,13 +14,17 @@
     "type": "git",
     "url": "git+https://github.com/dimaslanjaka/hexo-shortcodes.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/dimaslanjaka/hexo-shortcodes/issues"
   },
   "homepage": "https://github.com/dimaslanjaka/hexo-shortcodes#readme",
+  "keywords": [],
+  "author": {
+    "email": "dimaslanjaka@gmail.com",
+    "name": "Dimas Lanjaka",
+    "url": "https://www.webmanajemen.com"
+  },
+  "license": "MIT",
   "workspaces": [
     "test",
     "packages"
