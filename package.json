@@ -28,7 +28,7 @@
   "license": "MIT",
   "workspaces": [
     "test",
-    "packages"
+    "package"
   ],
   "devDependencies": {
     "@types/eslint": "^8",
