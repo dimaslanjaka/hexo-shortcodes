@@ -35,14 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.gist = void 0;
-var ansi_colors_1 = require("ansi-colors");
-var axios_1 = require("axios");
-var bluebird_1 = require("bluebird");
-var fs_extra_1 = require("fs-extra");
-var nunjucks_1 = require("nunjucks");
-var path_1 = require("path");
+var ansi_colors_1 = __importDefault(require("ansi-colors"));
+var axios_1 = __importDefault(require("axios"));
+var bluebird_1 = __importDefault(require("bluebird"));
+var fs_extra_1 = __importDefault(require("fs-extra"));
+var nunjucks_1 = __importDefault(require("nunjucks"));
+var path_1 = __importDefault(require("path"));
 var sbg_utility_1 = require("sbg-utility");
 var env_1 = require("./env");
 var utils_1 = require("./utils");
@@ -144,7 +147,7 @@ var gist = function (hexo) {
               `;
               resolve(result);*/
                 nunjucks_1.default.render('hexo-gist.njk', payload, function (_err, result) {
-                    (0, sbg_utility_1.writefile)(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.njk.txt'), result);
+                    (0, sbg_utility_1.writefile)(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
                     resolve(result);
                 });
                 /*nunjucks.renderString(
