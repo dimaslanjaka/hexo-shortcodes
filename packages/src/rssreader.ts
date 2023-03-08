@@ -45,7 +45,9 @@ export type rssreaderOptions = {
   debug?: string;
 };
 
-const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(rssreader)');
+const logname =
+  ansiColors.magentaBright('hexo-shortcodes') +
+  ansiColors.blueBright('(rssreader)');
 
 export function rssreader(hexo: Hexo) {
   const parser = new rssParser({

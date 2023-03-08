@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TEMP_PATH = exports.GIST_TEMPLATE = exports.GITHUB_CARD_TEMPLATE = exports.GITHUB_CARD_TAG_NAME = exports.GITHUB_CARD_FILE_PATH = exports.GITHUB_CARD_LIB_NAME = exports.ROUTE_NAME = exports.TEMPLATE_PATH = exports.LIB_PATH = void 0;
-var fs_1 = require("fs");
-var path_1 = require("path");
+var fs_1 = __importDefault(require("fs"));
+var path_1 = __importDefault(require("path"));
 exports.LIB_PATH = path_1.default.resolve(__dirname, '../lib');
 exports.TEMPLATE_PATH = path_1.default.resolve(__dirname, '../template');
 exports.ROUTE_NAME = 'hexo-shortcodes-lib';

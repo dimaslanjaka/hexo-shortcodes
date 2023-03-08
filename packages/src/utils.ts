@@ -7,19 +7,19 @@ let hexo: Hexo;
  * @param url
  * @returns
  */
-export const url_for = (url: string) => (hexo.config.root + url).replace(/\/+/gm, '/');
+export const url_for = (url: string) =>
+  (hexo.config.root + url).replace(/\/+/gm, '/');
 export const registerHexo = (instance: Hexo) => (hexo = instance);
 export const escapeHTML = (str: string) =>
   str.replace(
     /[&<>'"]/g,
-    (tag) =>
-      ({
+    (tag) => <any>{
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
         "'": '&#39;',
         '"': '&quot;'
-      }[tag])
+      }[tag]
   );
 
 const matches_wrapper: Record<string, string | string[]> = {};
@@ -31,7 +31,11 @@ const matches_wrapper: Record<string, string | string[]> = {};
  * @param index
  * @returns
  */
-export function getMatches(string: string, regex: RegExp, index: number): string | null;
+export function getMatches(
+  string: string,
+  regex: RegExp,
+  index: number
+): string | null;
 /**
  * get matches from regex (cacheable).
  * @param string
@@ -47,12 +51,16 @@ export function getMatches(string: string, regex: RegExp): string[] | null;
  * @param index
  * @returns
  */
-export function getMatches(string: string, regex: RegExp, index?: number): string | string[] | null {
+export function getMatches(
+  string: string,
+  regex: RegExp,
+  index?: number
+): string | string[] | null {
   // index || (index = 1); // default to the first capturing group
   const key = string + String(regex);
   const matches = (matches_wrapper[key] as string[]) || [];
   if (matches.length === 0) {
-    let match: RegExpExecArray;
+    let match: RegExpExecArray | null;
     while ((match = regex.exec(string))) {
       // matches.push(match[index]);
       match.forEach((m, i) => {
@@ -71,7 +79,8 @@ export function getMatches(string: string, regex: RegExp, index?: number): strin
  * @param arr
  * @returns
  */
-export const isArray = (arr: any) => Object.prototype.toString.call(arr) === '[object Array]';
+export const isArray = (arr: any) =>
+  Object.prototype.toString.call(arr) === '[object Array]';
 
 /**
  * is actual object
@@ -80,7 +89,8 @@ export const isArray = (arr: any) => Object.prototype.toString.call(arr) === '[o
  */
 export const isObject = (obj: any) => obj.constructor === Object;
 
-export const isEmptyObject = (obj: any) => Object.keys(obj).length === 0 && obj.constructor === Object;
+export const isEmptyObject = (obj: any) =>
+  Object.keys(obj).length === 0 && obj.constructor === Object;
 
 /**
  * turn multidimensional array to single object.

@@ -1,9 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.codepen = void 0;
-var ansi_colors_1 = require("ansi-colors");
+var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var utils_1 = require("./utils");
-var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(codepen)');
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') +
+    ansi_colors_1.default.blueBright('(codepen)');
 /**
  * jekyll-codepen forked from https://github.com/rmcfadzean/jekyll-codepen
  * @param hexo
@@ -11,8 +15,8 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
 function codepen(hexo) {
     hexo.extend.tag.register('codepen', function (args) {
         var urlOrid = args[0];
-        var slug;
-        var user;
+        var slug = null;
+        var user = null;
         // get slug and user when first argument is url
         var regex = /codepen.io\/(\w*)\/pen\/(\w*)/gm;
         var match = (0, utils_1.getMatches)(urlOrid, regex);
@@ -43,12 +47,14 @@ function codepen(hexo) {
         var defaults = {
             class: config.class || 'codepen',
             embed_version: parseInt(config.version) || 2,
-            height: parseInt(config.height) || 300,
+            height: parseInt(String(config.height)) || 300,
             preview: String(config.preview) === 'true' ? true : false,
             theme_id: config.theme_id || 11473,
             default_tab: config.default_tab || 'result',
             'data-user': user,
-            'data-slug-hash': slug
+            'data-slug-hash': slug,
+            theme: 'light',
+            version: '2.0'
         };
         var overriden_options = Object.assign(defaults, overriden);
         var attr = Object.keys(overriden_options)

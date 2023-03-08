@@ -1,10 +1,13 @@
 'use strict';
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.githubCard = void 0;
-var ansi_colors_1 = require("ansi-colors");
+var ansi_colors_1 = __importDefault(require("ansi-colors"));
 // const Promise = require('bluebird');
-var fs_1 = require("fs");
-var nunjucks_1 = require("nunjucks");
+var fs_1 = __importDefault(require("fs"));
+var nunjucks_1 = __importDefault(require("nunjucks"));
 var env_1 = require("./env");
 var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(githubCard)');
