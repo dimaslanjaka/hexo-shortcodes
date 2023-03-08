@@ -37,7 +37,7 @@
     "update": "run-s update:** && npm install && node postinstall.js",
     "build": "tsc -p tsconfig.build.json && node packer.js --yarn",
     "dev": "tsc -p tsconfig.build.json --watch",
-    "test": "node test.js"
+    "test": "node page-test.js"
   },
   "license": "MIT",
   "dependencies": {
