@@ -19,11 +19,17 @@ const dest = path.resolve(__dirname, '../../../dimaslanjaka.github.io/docs/hexo-
 
   // copy start
   if (fs.existsSync(dest)) await fs.emptyDir(dest);
-  await fs.copy(src, dest);
+  await fs.copy(src, dest, { overwrite: true });
 
-  await spawn('git', ['add', '.'], { cwd: dest, shell: true });
-  await spawn('git', ['commit', '-m', message], { cwd: dest, shell: true });
-  await spawn('git', ['checkout', 'master'], { cwd: dest, shell: true });
-  await spawn('git', ['pull', 'origin', 'master', '-X', 'ours'], { cwd: dest, shell: true });
-  await spawn('git', ['push'], { cwd: dest, shell: true });
+  try {
+    console.log('add', dest);
+    await spawn('git', ['add', '.'], { cwd: dest, shell: true });
+    console.log('commiting');
+    await spawn('git', ['commit', '-m', message], { cwd: dest, shell: true });
+    await spawn('git', ['checkout', 'master'], { cwd: dest, shell: true });
+    await spawn('git', ['pull', 'origin', 'master', '-X', 'ours'], { cwd: dest, shell: true });
+    await spawn('git', ['push'], { cwd: dest, shell: true });
+  } catch (e) {
+    console.error('cannot push', e);
+  }
 })();
