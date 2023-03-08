@@ -8,12 +8,8 @@ process.cwd = () => cwd;
 (async function () {
   const spawnOpt = { cwd, stdio: 'inherit', shell: true };
   const lockfile = path.join(cwd, 'yarn.lock');
-  if (!fs.existsSync(lockfile)) {
-    fs.writeFileSync(lockfile, '');
-    await spawn('yarn', ['install'], spawnOpt);
-  } else {
-    await spawn('yarn', ['add', '../'], spawnOpt);
-  }
+  if (!fs.existsSync(lockfile)) fs.writeFileSync(lockfile, '');
+  await spawn('yarn', ['install'], spawnOpt);
   await spawn('hexo', ['clean'], spawnOpt);
   await spawn('hexo', ['server'], spawnOpt);
 })();
