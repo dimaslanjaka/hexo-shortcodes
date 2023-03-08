@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/dimaslanjaka/hexo-shortcodes#readme",
   "files": [
-    "src",
     "template",
     "template/*.njk",
     "lib",
