@@ -50,12 +50,12 @@
     "hexo-util": "^3.0.1",
     "nunjucks": "^3.2.3",
     "rss-parser": "^3.12.0",
-    "sbg-utility": "^1.0.6"
+    "sbg-utility": "^1.0.8"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
     "@types/hexo": "https://github.com/dimaslanjaka/nodejs-package-types/tarball/hexo",
-    "@types/node": "^18.14.2",
+    "@types/node": "^18.14.6",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "^7.0.3",
     "eslint": "^8.35.0",
