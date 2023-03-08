@@ -4767,6 +4767,7 @@ __metadata:
     "@types/prettier": ^2
     eslint: ^8.35.0
     npm-check-updates: ^16.7.10
+    open: ^8.4.2
     prettier: ^2.8.4
   languageName: unknown
   linkType: soft
@@ -7757,7 +7758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open@npm:^8.0.9":
+"open@npm:^8.0.9, open@npm:^8.4.2":
   version: 8.4.2
   resolution: "open@npm:8.4.2"
   dependencies:

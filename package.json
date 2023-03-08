@@ -8,10 +8,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "cd test && hexo clean && hexo server",
+    "test": "cd test && hexo clean && hexo server -p 4000 && open http://localhost:4000",
     "build": "yarn workspace hexo-shortcodes build",
     "patch": "yarn workspace hexo-shortcodes version patch",
-    "update": "yarn workspaces foreach run update:ncu"
+    "update": "yarn workspaces foreach run update:ncu",
+    "postupdate": "yarn cache clean && yarn install"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "@types/prettier": "^2",
     "eslint": "^8.35.0",
     "npm-check-updates": "^16.7.10",
+    "open": "^8.4.2",
     "prettier": "^2.8.4"
   },
   "packageManager": "yarn@3.4.1"
