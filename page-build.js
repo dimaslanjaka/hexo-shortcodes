@@ -30,7 +30,7 @@ const dest = path.resolve(__dirname, '../dimaslanjaka.github.io/docs/hexo-shortc
     await spawn('git', ['commit', '-m', `"${message}"`], { cwd: dest, shell: true });
     await spawn('git', ['checkout', 'master'], { cwd: dest, shell: true });
     await spawn('git', ['pull', 'origin', 'master', '-X', 'ours'], { cwd: dest, shell: true });
-    await spawn('git', ['push'], { cwd: dest, shell: true });
+    await spawn('git', ['push', '-u', 'origin', 'master'], { cwd: dest, shell: true });
   } catch (e) {
     console.error('cannot push', e);
   }
