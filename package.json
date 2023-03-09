@@ -34,8 +34,13 @@
   ],
   "devDependencies": {
     "@types/eslint": "^8",
+    "@types/gulp": "^4",
+    "@types/minimist": "^1",
     "@types/prettier": "^2",
     "eslint": "^8.35.0",
+    "execa": "^7.0.0",
+    "gulp": "^4.0.2",
+    "minimist": "^1.2.8",
     "npm-check-updates": "^16.7.10",
     "open": "^8.4.2",
     "prettier": "^2.8.4"
