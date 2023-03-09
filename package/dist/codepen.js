@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.codepen = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var utils_1 = require("./utils");
-var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') +
-    ansi_colors_1.default.blueBright('(codepen)');
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(codepen)');
 /**
  * jekyll-codepen forked from https://github.com/rmcfadzean/jekyll-codepen
  * @param hexo

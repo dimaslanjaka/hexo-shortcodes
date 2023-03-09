@@ -7,9 +7,7 @@ var hexo;
  * @param url
  * @returns
  */
-var url_for = function (url) {
-    return (hexo.config.root + url).replace(/\/+/gm, '/');
-};
+var url_for = function (url) { return (hexo.config.root + url).replace(/\/+/gm, '/'); };
 exports.url_for = url_for;
 var registerHexo = function (instance) { return (hexo = instance); };
 exports.registerHexo = registerHexo;
@@ -55,9 +53,7 @@ exports.getMatches = getMatches;
  * @param arr
  * @returns
  */
-var isArray = function (arr) {
-    return Object.prototype.toString.call(arr) === '[object Array]';
-};
+var isArray = function (arr) { return Object.prototype.toString.call(arr) === '[object Array]'; };
 exports.isArray = isArray;
 /**
  * is actual object
@@ -66,9 +62,7 @@ exports.isArray = isArray;
  */
 var isObject = function (obj) { return obj.constructor === Object; };
 exports.isObject = isObject;
-var isEmptyObject = function (obj) {
-    return Object.keys(obj).length === 0 && obj.constructor === Object;
-};
+var isEmptyObject = function (obj) { return Object.keys(obj).length === 0 && obj.constructor === Object; };
 exports.isEmptyObject = isEmptyObject;
 /**
  * turn multidimensional array to single object.

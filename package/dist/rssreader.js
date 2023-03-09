@@ -45,8 +45,7 @@ var hexo_util_1 = require("hexo-util");
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var rss_parser_1 = __importDefault(require("rss-parser"));
 var utils_1 = require("./utils");
-var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') +
-    ansi_colors_1.default.blueBright('(rssreader)');
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(rssreader)');
 function rssreader(hexo) {
     var parser = new rss_parser_1.default({
         customFields: {
@@ -85,7 +84,7 @@ function rssreader(hexo) {
                             var rendered = void 0;
                             if (options.debug === 'true') {
                                 // debugging
-                                rendered = "<pre><code class=\"highlight json\">".concat((JSON.stringifyWithCircularRefs(Object.keys(item)), 2), "</code></pre>");
+                                rendered = "<pre><code class=\"highlight json\">".concat(JSON.stringify(Object.keys(item), null, 2), "</code></pre>");
                             }
                             else {
                                 // clone and modify template
