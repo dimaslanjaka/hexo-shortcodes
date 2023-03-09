@@ -1,9 +1,7 @@
 import ansiColors from 'ansi-colors';
 import Hexo from 'hexo';
 import { array2obj, getMatches } from './utils';
-const logname =
-  ansiColors.magentaBright('hexo-shortcodes') +
-  ansiColors.blueBright('(codepen)');
+const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(codepen)');
 
 interface codepenTagOptions {
   [key: string]: any;
@@ -73,8 +71,7 @@ export function codepen(hexo: Hexo) {
 
     const htm_tag = `<p ${attr}>See the <a href="${url}">pen</a> on <a href="//codepen.io" rel="nofollow noopener">CodePen</a>.</p>`;
 
-    const htm_script =
-      '<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>';
+    const htm_script = '<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>';
 
     return htm_tag + htm_script;
   });

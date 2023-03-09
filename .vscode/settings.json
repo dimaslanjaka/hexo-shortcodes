@@ -39,12 +39,7 @@
     "editor.formatOnSave": true
   },
   "prettier.endOfLine": "lf",
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "code-runner.clearPreviousOutput": true,
   "code-runner.saveAllFilesBeforeRun": true,
   "code-runner.runInTerminal": true,
@@ -85,5 +80,6 @@
   },
   "terminal.integrated.env.windows": {
     "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${workspaceFolder}\\bin"
-  }
+  },
+  "eslint.debug": true
 }
