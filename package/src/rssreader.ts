@@ -45,9 +45,7 @@ export type rssreaderOptions = {
   debug?: string;
 };
 
-const logname =
-  ansiColors.magentaBright('hexo-shortcodes') +
-  ansiColors.blueBright('(rssreader)');
+const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(rssreader)');
 
 export function rssreader(hexo: Hexo) {
   const parser = new rssParser({
@@ -91,9 +89,9 @@ export function rssreader(hexo: Hexo) {
 
         if (options.debug === 'true') {
           // debugging
-          rendered = `<pre><code class="highlight json">${
-            (JSON.stringifyWithCircularRefs(Object.keys(item)))
-          }</code></pre>`;
+          rendered = `<pre><code class="highlight json">${JSON.stringifyWithCircularRefs(
+            Object.keys(item)
+          )}</code></pre>`;
         } else {
           // clone and modify template
           let cloneTemplate = template
