@@ -8,11 +8,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "cd test && hexo clean && hexo server -p 4000 && open http://localhost:4000",
+    "test": "yarn build && cd test && hexo clean && hexo server -p 4000",
     "build": "yarn workspace hexo-shortcodes build",
     "patch": "yarn workspace hexo-shortcodes version patch",
-    "update": "yarn workspaces foreach run update:ncu",
-    "postupdate": "yarn cache clean && yarn install"
+    "update": "yarn workspaces foreach run update:ncu && yarn cache clean && yarn install"
   },
   "repository": {
     "type": "git",
