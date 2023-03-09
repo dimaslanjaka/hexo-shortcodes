@@ -14,7 +14,7 @@ const dest = path.resolve(__dirname, '../dimaslanjaka.github.io/docs/hexo-shortc
   // commit start
   const projectGit = new gch(__dirname, 'master');
   const commit = await projectGit.latestCommit(__dirname);
-  const repo = new URL((await projectGit.getremote()).fetch.url).pathname.replace(/^\//, '');
+  const repo = (await projectGit.getremote()).fetch.url;
   const message = `chore: update from ${repo}@${commit}`;
 
   // copy start
@@ -25,12 +25,13 @@ const dest = path.resolve(__dirname, '../dimaslanjaka.github.io/docs/hexo-shortc
   await fs.copy(src, dest, { overwrite: true });
 
   try {
-    await spawn('git', ['remote', 'set-url', 'origin', 'https://github.com/dimaslanjaka/docs.git'], { cwd: dest, shell: true })
-    await spawn('git', ['add', '.'], { cwd: dest, shell: true });
-    await spawn('git', ['commit', '-m', `"${message}"`], { cwd: dest, shell: true });
-    await spawn('git', ['checkout', 'master'], { cwd: dest, shell: true });
-    await spawn('git', ['pull', 'origin', 'master', '-X', 'ours'], { cwd: dest, shell: true });
-    await spawn('git', ['push', '-u', 'origin', 'master'], { cwd: dest, shell: true });
+    const destSpawnOpt = { cwd: dest, shell: true, stdio: 'inherit' };
+    await spawn('git', ['remote', 'set-url', 'origin', 'https://github.com/dimaslanjaka/docs.git'], destSpawnOpt);
+    await spawn('git', ['add', '.'], destSpawnOpt);
+    await spawn('git', ['commit', '-m', `"${message}"`], destSpawnOpt);
+    await spawn('git', ['checkout', 'master'], destSpawnOpt);
+    await spawn('git', ['pull', 'origin', 'master', '-X', 'ours'], destSpawnOpt);
+    await spawn('git', ['push', '-u', 'origin', 'master'], destSpawnOpt);
   } catch (e) {
     console.error('cannot push', e);
   }
