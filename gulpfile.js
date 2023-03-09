@@ -12,11 +12,15 @@ gulp.task('argv', function (done) {
 
 gulp.task('watch', function () {
   gulp.series('serve')();
-  gulp.watch(['src/**/*.ts', 'src/**/*.js', 'template/**/*'], { delay: 1000 }, gulp.series('build', 'serve'));
+  gulp.watch(
+    ['package/src/**/*.ts', 'package/src/**/*.js', 'package/template/**/*', 'test/source/**/*'],
+    { delay: 1000 },
+    gulp.series('build', 'serve')
+  );
 });
 
 gulp.task('build', function () {
-  return killableSpawn('yarn', ['build'], { cwd: __dirname + '/test', stdio: 'inherit', shell: true }, 'build');
+  return killableSpawn('yarn', ['build'], { cwd: __dirname, stdio: 'inherit', shell: true }, 'build');
 });
 
 /**
