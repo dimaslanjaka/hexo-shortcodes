@@ -439,6 +439,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/expect@npm:^1.20.4":
+  version: 1.20.4
+  resolution: "@types/expect@npm:1.20.4"
+  checksum: c09a9abec2c1776dd8948920dc3bad87b1206c843509d3d3002040983b1769b2e3914202a6c20b72e5c3fb5738a1ab87cb7be9d3fe9efabf2a324173b222a224
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:^4.17.33":
   version: 4.17.33
   resolution: "@types/express-serve-static-core@npm:4.17.33"
@@ -469,6 +476,37 @@ __metadata:
     "@types/jsonfile": "*"
     "@types/node": "*"
   checksum: 3e930346e5d84f419deb8ced1c582beef8cb20d0bd8a0eb145a37d75bab0572a1895f0e48a0d681d386b3a58b9a992b2d2acecc464bcaec2548f53ea00718651
+  languageName: node
+  linkType: hard
+
+"@types/glob-stream@npm:*":
+  version: 6.1.1
+  resolution: "@types/glob-stream@npm:6.1.1"
+  dependencies:
+    "@types/glob": "*"
+    "@types/node": "*"
+  checksum: df74a95e11635bae7527e02cbd0406e0de76839c937af8285c7c8c9b008cf0718802acfaf5bc56a7eb5b00c8aff5bc81d13e9d829a5a04dc34f2351349779dda
+  languageName: node
+  linkType: hard
+
+"@types/glob@npm:*":
+  version: 8.1.0
+  resolution: "@types/glob@npm:8.1.0"
+  dependencies:
+    "@types/minimatch": ^5.1.2
+    "@types/node": "*"
+  checksum: 9101f3a9061e40137190f70626aa0e202369b5ec4012c3fabe6f5d229cce04772db9a94fa5a0eb39655e2e4ad105c38afbb4af56a56c0996a8c7d4fc72350e3d
+  languageName: node
+  linkType: hard
+
+"@types/gulp@npm:^4":
+  version: 4.0.10
+  resolution: "@types/gulp@npm:4.0.10"
+  dependencies:
+    "@types/undertaker": ">=1.2.6"
+    "@types/vinyl-fs": "*"
+    chokidar: ^3.3.1
+  checksum: ac85fc1ad53bf3e093b72e88700db61b10997e9facf82fe6dc0dd50fcd89af39ef1342baaaf34609174601e84066607e29598d0b99fe9e75e1f197097cba0308
   languageName: node
   linkType: hard
 
@@ -527,7 +565,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/minimist@npm:^1.2.0, @types/minimist@npm:^1.2.2":
+"@types/minimatch@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "@types/minimatch@npm:5.1.2"
+  checksum: 0391a282860c7cb6fe262c12b99564732401bdaa5e395bee9ca323c312c1a0f45efbf34dce974682036e857db59a5c9b1da522f3d6055aeead7097264c8705a8
+  languageName: node
+  linkType: hard
+
+"@types/minimist@npm:^1, @types/minimist@npm:^1.2.0, @types/minimist@npm:^1.2.2":
   version: 1.2.2
   resolution: "@types/minimist@npm:1.2.2"
   checksum: b8da83c66eb4aac0440e64674b19564d9d86c80ae273144db9681e5eeff66f238ade9515f5006ffbfa955ceff8b89ad2bd8ec577d7caee74ba101431fb07045d
@@ -576,6 +621,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/rimraf@npm:^2.0.3":
+  version: 2.0.5
+  resolution: "@types/rimraf@npm:2.0.5"
+  dependencies:
+    "@types/glob": "*"
+    "@types/node": "*"
+  checksum: e388f546840704a240fb31536498921623bca4ec1230925013d6b6d7c7d2211c8ec07fcbbd2606151d7549cbbc28a01c18fb0df502107a9293860a5ff64bc147
+  languageName: node
+  linkType: hard
+
 "@types/serve-static@npm:*":
   version: 1.15.1
   resolution: "@types/serve-static@npm:1.15.1"
@@ -590,6 +645,46 @@ __metadata:
   version: 1.11.4
   resolution: "@types/underscore@npm:1.11.4"
   checksum: db9f8486bc851b732259e51f42d62aad1ae2158be5724612dc125ece5f5d61c51447f9dea28284c2a0f79cb95e788d01cb5ce97709880019213e69fab0dd1696
+  languageName: node
+  linkType: hard
+
+"@types/undertaker-registry@npm:*":
+  version: 1.0.1
+  resolution: "@types/undertaker-registry@npm:1.0.1"
+  checksum: aa064331b4bdb91c8da44c0a0520be6fa447be482526998ffb98e2b7f9319ebdee278167729943b6f809891f1d3b2b4dea978b2e2211a4d117a44b1d3935fe9b
+  languageName: node
+  linkType: hard
+
+"@types/undertaker@npm:>=1.2.6":
+  version: 1.2.8
+  resolution: "@types/undertaker@npm:1.2.8"
+  dependencies:
+    "@types/node": "*"
+    "@types/undertaker-registry": "*"
+    async-done: ~1.3.2
+  checksum: c17c88b54c199bdbc115d5e50839291fd096d99db69e663ae244136b3254b57913bdf4bd3bfd02ef32c99677bd12ac945df5fd990e08282abd633e59cc5c3e94
+  languageName: node
+  linkType: hard
+
+"@types/vinyl-fs@npm:*":
+  version: 3.0.1
+  resolution: "@types/vinyl-fs@npm:3.0.1"
+  dependencies:
+    "@types/glob-stream": "*"
+    "@types/node": "*"
+    "@types/rimraf": ^2.0.3
+    "@types/vinyl": "*"
+  checksum: 3d5749caa60c18e5bcf14e24eb503548a8436e6cd316d80b21d2a792d5a8b05aae66d4cdf0ddedca7d64c2358131b89d566588a0d78437cd474fe1cf2a79750c
+  languageName: node
+  linkType: hard
+
+"@types/vinyl@npm:*":
+  version: 2.0.7
+  resolution: "@types/vinyl@npm:2.0.7"
+  dependencies:
+    "@types/expect": ^1.20.4
+    "@types/node": "*"
+  checksum: 8e6e341860a2a024d5802517fb171ffc66bfbd91b0eefe8dd4376e08733e468781417ba861b9d32bb8207707cf554e3aeb60d08297c5e666a40520af95082e2d
   languageName: node
   linkType: hard
 
@@ -1029,7 +1124,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async-done@npm:^1.2.0, async-done@npm:^1.2.2":
+"async-done@npm:^1.2.0, async-done@npm:^1.2.2, async-done@npm:~1.3.2":
   version: 1.3.2
   resolution: "async-done@npm:1.3.2"
   dependencies:
@@ -1788,7 +1883,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:>=3.0.0 <4.0.0, chokidar@npm:^3.0.0, chokidar@npm:^3.5.1":
+"chokidar@npm:>=3.0.0 <4.0.0, chokidar@npm:^3.0.0, chokidar@npm:^3.3.1, chokidar@npm:^3.5.1":
   version: 3.5.3
   resolution: "chokidar@npm:3.5.3"
   dependencies:
@@ -4611,8 +4706,13 @@ __metadata:
   resolution: "hexo-shortcodes-workspace@workspace:."
   dependencies:
     "@types/eslint": ^8
+    "@types/gulp": ^4
+    "@types/minimist": ^1
     "@types/prettier": ^2
     eslint: ^8.35.0
+    execa: ^7.0.0
+    gulp: ^4.0.2
+    minimist: ^1.2.8
     npm-check-updates: ^16.7.10
     open: ^8.4.2
     prettier: ^2.8.4
@@ -4630,14 +4730,11 @@ __metadata:
     ansi-colors: ^4.1.3
     axios: ^1.3.4
     bluebird: ^3.7.2
-    cross-spawn: ^7.0.3
-    execa: ^7.0.0
+    cross-spawn: "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private"
     fs-extra: ^11.1.0
     git-command-helper: ^1.1.8
-    gulp: ^4.0.2
     hexo-filter-nofollow: ^2.0.2
     hexo-util: ^3.0.1
-    minimist: ^1.2.8
     nunjucks: ^3.2.3
     rss-parser: ^3.12.0
     sbg-utility: ^1.0.8

@@ -57,11 +57,8 @@
     "@types/hexo": "https://github.com/dimaslanjaka/nodejs-package-types/tarball/hexo",
     "@types/node": "^18.14.6",
     "@types/nunjucks": "^3.2.2",
-    "cross-spawn": "^7.0.3",
-    "execa": "^7.0.0",
-    "git-command-helper": "^1.1.8",
-    "gulp": "^4.0.2",
-    "minimist": "^1.2.8"
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
+    "git-command-helper": "^1.1.8"
   },
   "engines": {
     "hexo": ">= 3.0.0"
