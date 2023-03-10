@@ -4887,6 +4887,7 @@ __metadata:
     "@types/fs-extra": ^11.0.1
     "@types/gulp": ^4
     "@types/minimist": ^1
+    "@types/node": ^18.14.6
     "@types/prettier": ^2
     "@typescript-eslint/eslint-plugin": ^5.54.1
     "@typescript-eslint/parser": ^5.54.1
@@ -4900,6 +4901,9 @@ __metadata:
     minimist: ^1.2.8
     npm-check-updates: ^16.7.10
     prettier: ^2.8.4
+  dependenciesMeta:
+    axios:
+      optional: true
   languageName: unknown
   linkType: soft
 
