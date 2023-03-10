@@ -1,5 +1,5 @@
 {
-  "files.autoSave": "onWindowChange",
+  "files.autoSave": "off",
   "files.exclude": {
     "**/node_modules": true
   },
@@ -81,5 +81,8 @@
   "terminal.integrated.env.windows": {
     "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${workspaceFolder}\\bin"
   },
-  "eslint.debug": true
+  "eslint.debug": true,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "html.format.enable": true
 }

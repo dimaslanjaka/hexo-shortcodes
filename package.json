@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "package/dist/index.js",
+  "types": "package/dist/index.d.ts",
   "directories": {
     "test": "test"
   },
@@ -37,6 +38,7 @@
     "@types/fs-extra": "^11.0.1",
     "@types/gulp": "^4",
     "@types/minimist": "^1",
+    "@types/node": "^18.14.6",
     "@types/prettier": "^2",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
