@@ -64,8 +64,5 @@
   "engines": {
     "hexo": ">= 3.0.0"
   },
-  "packageManager": "yarn@3.4.1",
-  "resolutions": {
-    "git-embed": "https://github.com/dimaslanjaka/embed-like-gist/tarball/private"
-  }
+  "packageManager": "yarn@3.4.1"
 }
