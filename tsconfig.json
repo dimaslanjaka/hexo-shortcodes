@@ -1,20 +1,26 @@
 {
-	"compilerOptions": {
-		/* Basic Options */
-		"target": "es5",
-		"module": "commonjs",
-		"lib": ["ESNext"],
-		//"composite": true,
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["ESNext"],
+    //"composite": true,
 
-		/* Strict Type-Checking Options */
-		"strict": true,
+    /* Strict Type-Checking Options */
+    "strict": true,
 
-		/* Module Resolution Options */
-		"moduleResolution": "node",
-		"esModuleInterop": true,
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "esModuleInterop": true,
 
-		/* Advanced Options */
-		"forceConsistentCasingInFileNames": true,
-		"skipLibCheck": true
-	}
+    /* Advanced Options */
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    //"tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "allowJs": true,
+    "checkJs": false
+  },
+  "include": ["./src/**/*", "./src/*"],
+  "exclude": ["**/dist/**"]
 }
