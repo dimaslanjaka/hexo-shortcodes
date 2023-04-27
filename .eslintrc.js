@@ -1,4 +1,4 @@
-const prettier = require('./.prettierrc.json');
+const prettier = require('./.prettierrc.json')
 
 /**
  * @type {import('eslint').ESLint.ConfigData}
@@ -64,6 +64,6 @@ const config = {
     'arrow-body-style': 'off',
     'prefer-arrow-callback': 'off'
   }
-};
+}
 
-module.exports = config;
+module.exports = config
