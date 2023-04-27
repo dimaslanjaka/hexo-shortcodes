@@ -105,7 +105,7 @@ function rssreader(hexo) {
                             }
                             result.push(rendered);
                         };
-                        for (i = 0; i < (options.limit || 3); i++) {
+                        for (i = 0; i < (parseInt(String(options.limit)) || 3); i++) {
                             _loop_1(i);
                         }
                         return [2 /*return*/, result.join('\n')];
