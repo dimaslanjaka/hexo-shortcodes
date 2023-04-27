@@ -6,3 +6,7 @@
 	path = package
 	url = https://github.com/dimaslanjaka/hexo-shortcodes.git
 	branch = pre-release
+[submodule "packages/git-embed"]
+	path = packages/git-embed
+	url = https://github.com/dimaslanjaka/embed-like-gist.git
+	branch = private
