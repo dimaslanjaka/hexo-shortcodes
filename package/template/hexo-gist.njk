@@ -1,8 +1,0 @@
-{% if filename %}
-  <script src="https://gist.github.com/{{ id | safe }}.js?file={{ filename }}"></script>
-{% else %}
-  <script src="https://gist.github.com/{{ id | safe }}.js"></script>
-{% endif %}
-<noscript>
-  <pre><code>{{ raw_code | safe }}</code></pre>
-</noscript>
