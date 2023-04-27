@@ -55,7 +55,6 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
-    "@types/hexo": "https://github.com/dimaslanjaka/nodejs-package-types/tarball/hexo",
     "@types/node": "^18.14.6",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
