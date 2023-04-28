@@ -15,7 +15,8 @@
     "patch": "yarn workspace hexo-shortcodes version patch",
     "update:ncu": "npx npm-check-updates -u",
     "update": "yarn workspaces foreach run update:ncu && yarn cache clean && yarn install",
-    "serve": "yarn workspace hexo-shortcodes-test run serve"
+    "prestart": "yarn build",
+    "start": "yarn workspace hexo-shortcodes-test run serve"
   },
   "repository": {
     "type": "git",
