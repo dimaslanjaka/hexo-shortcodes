@@ -33,7 +33,7 @@
   "license": "MIT",
   "workspaces": [
     "test",
-    "package",
+    "lib",
     "packages/git-embed",
     "packages/hexo"
   ],
