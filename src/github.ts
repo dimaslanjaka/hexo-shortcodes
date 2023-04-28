@@ -1,8 +1,9 @@
 import ansiColors from 'ansi-colors';
+import Hexo from 'hexo';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(github)');
 
-export function githubEmbed(hexo: import('hexo')) {
+export function githubEmbed(hexo: Hexo) {
   hexo.extend.tag.register(
     'github',
     async function (params) {
