@@ -1,0 +1,101 @@
+name: Workspace Build Release
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  packer:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['14.x', '16.x', '18.x']
+      fail-fast: false
+    env:
+      NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
+      YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          ref: 'monorepo-v7'
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Enable corepack
+        shell: bash
+        run: corepack enable
+
+      - name: Set env
+        id: set-env
+        shell: bash
+        run: |
+          echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+          echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_OUTPUT
+          echo "GITHUB_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "GITHUB_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+          echo "GITHUB_COMMIT_URL=https://github.com/${{github.repository}}/commit/$(echo $GITHUB_SHA)" >> $GITHUB_ENV
+          echo "GITHUB_COMMIT_URL=https://github.com/${{github.repository}}/commit/$(echo $GITHUB_SHA)" >> $GITHUB_OUTPUT
+          echo "GITHUB_RUNNER_URL=https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}" >> $GITHUB_ENV
+          echo "GITHUB_RUNNER_URL=https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}" >> $GITHUB_OUTPUT
+          echo "CACHE_NPM=$(npm config get cache)" >> $GITHUB_ENV
+          echo "cache-npm=$(npm config get cache)" >> $GITHUB_OUTPUT
+          YARN_CURRENT=$(yarn -v)
+          YARN_BERRY=3.2.1
+          if [[ "ok" == "$(echo | awk "(${YARN_CURRENT} > ${YARN_BERRY}) { print \"ok\"; }")" ]]; then
+            echo "CACHE_YARN=$(yarn config get cacheFolder)" >> $GITHUB_ENV
+            echo "cache-yarn=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+          else
+            echo "CACHE_YARN=$(yarn cache dir)" >> $GITHUB_ENV
+            echo "cache-yarn=$(yarn cache dir)" >> $GITHUB_OUTPUT
+          fi
+          echo "architecture=$(getconf LONG_BIT)" >> $GITHUB_ENV
+
+      - name: Install Dependencies
+        run: touch yarn.lock && yarn install
+        shell: bash
+      - name: Build
+        run: yarn build
+        shell: bash
+        id: build
+
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            **/.yarn
+            **/tmp
+            ./yarn.lock
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-
+
+      - name: what changes
+        id: changes
+        run: |
+          totalCached=$(git diff --cached --numstat | wc -l)
+          totalCommits=$(git diff origin/master..HEAD --numstat | wc -l)
+          totalReleases=$(git diff --numstat -- releases | wc -l)
+          echo "total staged $totalCached"
+          echo "total unpushed commits $totalCommits"
+          echo "cached=$(git diff --cached --numstat | wc -l)" >> $GITHUB_OUTPUT
+          echo "commits=$(git diff origin/master..HEAD --numstat | wc -l)" >> $GITHUB_OUTPUT
+          echo "releases=$(git diff --numstat -- releases | wc -l)" >> $GITHUB_OUTPUT
+
+      - name: Push
+        if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && (steps.changes.outputs.cached > 0 || steps.changes.outputs.commits > 0)
+        run: |
+          git config --global user.name 'dimaslanjaka'
+          git config --global user.email 'dimaslanjaka@gmail.com'
+          git add .
+          git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+          git push
