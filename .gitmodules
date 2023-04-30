@@ -10,7 +10,3 @@
 	path = packages/git-embed
 	url = https://github.com/dimaslanjaka/embed-like-gist.git
 	branch = private
-[submodule "packages/hexo"]
-	path = packages/hexo
-	url = https://github.com/dimaslanjaka/hexo.git
-	branch = monorepo-v7
