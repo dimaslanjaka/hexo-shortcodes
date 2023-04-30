@@ -25,11 +25,12 @@
   },
   "homepage": "https://github.com/dimaslanjaka/hexo-shortcodes#readme",
   "files": [
-    "template",
-    "template/*.njk",
-    "lib",
-    "readme.md",
-    "dist"
+    "./template",
+    "./template/*.njk",
+    "./lib",
+    "./readme.md",
+    "./dist",
+    "!**/release/**"
   ],
   "scripts": {
     "update:postinstall": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js",
