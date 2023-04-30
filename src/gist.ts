@@ -4,7 +4,7 @@ import Bluebird from 'bluebird';
 import fs from 'fs-extra';
 import nunjucks from 'nunjucks';
 import path from 'path';
-import { writefile } from 'sbg-utility';
+import utility from 'sbg-utility';
 import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH, TEMP_PATH } from './env';
 import { url_for } from './utils';
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
@@ -87,11 +87,11 @@ export const gist = (hexo: import('hexo')) => {
       fetch_raw_code(id, filename)
         .then((raw_code) => {
           payload.raw_code = <string>raw_code;
-          writefile(path.join(TEMP_PATH, 'gist', id + '.txt'), raw_code);
-          writefile(path.join(TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
+          utility.writefile(path.join(TEMP_PATH, 'gist', id + '.txt'), raw_code);
+          utility.writefile(path.join(TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
         })
         .catch((e) => {
-          payload.raw_code = JSON.stringifyWithCircularRefs(e, 2);
+          payload.raw_code = utility.jsonStringifyWithCircularRefs(e);
         })
         .finally(() => {
           /*let result = '';
@@ -107,7 +107,7 @@ export const gist = (hexo: import('hexo')) => {
         `;
         resolve(result);*/
           nunjucks.render('hexo-gist.njk', payload, function (_err, result) {
-            writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
+            utility.writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
             resolve(result);
           });
           /*nunjucks.renderString(
