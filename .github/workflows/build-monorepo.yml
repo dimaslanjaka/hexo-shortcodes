@@ -91,9 +91,9 @@ jobs:
             **/.yarn
             **/tmp
             ./yarn.lock
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-${{ hashFiles('**/package.json') }}
             ${{ runner.os }}-
 
       - name: what changes
