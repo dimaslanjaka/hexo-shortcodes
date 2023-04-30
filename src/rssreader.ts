@@ -61,7 +61,7 @@ export function rssreader(hexo: Hexo) {
 
   hexo.extend.tag.register(
     'rssreader',
-    async function (args, template = '') {
+    async function (args: any[], template = '') {
       const url = args[0];
       const defaults: rssreaderOptions = {
         limit: '3',
@@ -82,7 +82,7 @@ export function rssreader(hexo: Hexo) {
 
       // render
       const result = [] as string[];
-      for (let i = 0; i < (options.limit || 3); i++) {
+      for (let i = 0; i < (parseInt(String(options.limit)) || 3); i++) {
         const item = feed.items[i];
 
         let rendered: string;
