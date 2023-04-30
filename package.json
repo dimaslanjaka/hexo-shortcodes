@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18.16.2",
+    "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
     "git-command-helper": "^1.1.9"
