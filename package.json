@@ -65,7 +65,8 @@
     "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
-    "git-command-helper": "^1.1.9"
+    "git-command-helper": "^1.1.9",
+    "typescript": "^5.0.4"
   },
   "engines": {
     "hexo": ">= 3.0.0"
