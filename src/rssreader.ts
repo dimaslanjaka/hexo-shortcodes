@@ -1,5 +1,4 @@
 import ansiColors from 'ansi-colors';
-import Hexo from 'hexo';
 import * as hexoUtil from 'hexo-util';
 import nunjucks from 'nunjucks';
 import rssParser from 'rss-parser';
@@ -47,7 +46,7 @@ export type rssreaderOptions = {
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(rssreader)');
 
-export function rssreader(hexo: Hexo) {
+export function rssreader(hexo: import('hexo')) {
   const parser = new rssParser({
     customFields: {
       item: [['media:content', 'media:content', { keepArray: true }]]
