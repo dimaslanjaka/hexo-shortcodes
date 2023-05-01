@@ -35,9 +35,9 @@
   },
   "license": "MIT",
   "workspaces": [
-    "test",
+    "packages/git-embed",
     "lib",
-    "packages/git-embed"
+    "test"
   ],
   "devDependencies": {
     "@types/eslint": "^8",
