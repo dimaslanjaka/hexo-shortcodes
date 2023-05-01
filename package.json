@@ -1,6 +1,6 @@
 {
   "name": "hexo-shortcodes",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,7 +36,7 @@
     "update:postinstall": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js",
     "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
     "update:ncu": "npm-check-updates -u -x hexo,hexo-fs",
-    "update": "run-s update:**",
+    "update": "nrs update:*",
     "build": "tsc -p tsconfig.build.json",
     "pack": "node packer.js --yarn",
     "dev": "tsc -p tsconfig.build.json --watch",
@@ -59,6 +59,7 @@
     "sbg-utility": "^1.0.9"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.38",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
