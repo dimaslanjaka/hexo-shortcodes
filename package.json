@@ -10,14 +10,17 @@
   },
   "scripts": {
     "test": "yarn build && cd test && hexo clean && hexo server -p 4000",
-    "build": "yarn workspace hexo-shortcodes run build",
+    "build:git-embed": "npm run build --workspace=git-embed",
+    "build:hexo-shortcodes": "npm run build --workspace=hexo-shortcodes",
+    "build": "nrs build:* && yarn run pack",
     "pack": "yarn workspace hexo-shortcodes run pack",
     "patch": "yarn workspace hexo-shortcodes version patch",
     "update:ncu": "npx npm-check-updates -u",
     "update": "yarn workspaces foreach run update:ncu && yarn cache clean && yarn install",
     "prestart": "yarn build",
     "start": "yarn workspace hexo-shortcodes-test run serve",
-    "clean": "yarn workspace hexo-shortcodes run clean"
+    "clean": "yarn workspace hexo-shortcodes run clean",
+    "post-install": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -62,10 +65,13 @@
   },
   "packageManager": "yarn@3.5.0",
   "dependencies": {
-    "fs-extra": "^11.1.1"
+    "fs-extra": "^11.1.1",
+    "upath": "^2.0.1"
   },
   "resolutions": {
     "hexo": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo.tgz",
+    "hexo-log": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo-log.tgz",
+    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo-util.tgz",
     "hexo-front-matter": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo-front-matter.tgz",
     "hexo-asset-link": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo-asset-link.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz",
