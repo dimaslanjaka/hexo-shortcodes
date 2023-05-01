@@ -40,7 +40,8 @@
     "build": "tsc -p tsconfig.build.json",
     "pack": "node packer.js --yarn",
     "dev": "tsc -p tsconfig.build.json --watch",
-    "test": "node page-test.js"
+    "test": "node page-test.js",
+    "clean": "rm -rf dist"
   },
   "license": "MIT",
   "peerDependencies": {
