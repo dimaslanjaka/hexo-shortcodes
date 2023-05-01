@@ -10,12 +10,12 @@
   },
   "/release/hexo-shortcodes.tgz": {
     "integrity": {
-      "sha1": "4c1e69c658392751fc6c6a1214e4f945fb038c83",
-      "sha256": "9kn+My6P+Crij+NmtNblYqaVGUpKBMT+bpIo4hiHVDQ=",
-      "md5": "c694f5c18a125136c454366764155665",
-      "sha512": "A+yKxFPL6jTCL3VW9+rpfb2KWWtfMLj8VUmbCRBk6t/M9Of8D+AufcCR/x/HimoHzLPhxF6biGinVKSaNcLZvA=="
+      "sha1": "c283c671ef7358b3082d43357485930bfbe0c792",
+      "sha256": "Zpe71KZO5ESdTrpZLgsUEupBXHfx9tto1rZrm1C4lOU=",
+      "md5": "64b02e75e33e095bda51301efd91dc64",
+      "sha512": "Re164T7gl6mwrp2VI8XjndZPsASj2V22Bv5/2ek3djEJo1IC91yEBGo5aNRVkn0T+vM05eC1KBLpeLDeXU+Y5A=="
     },
-    "size": "12.76 KB"
+    "size": "13.74 KB"
   },
   "/yarn.lock": {
     "integrity": {
@@ -52,5 +52,14 @@
       "sha512": "A+yKxFPL6jTCL3VW9+rpfb2KWWtfMLj8VUmbCRBk6t/M9Of8D+AufcCR/x/HimoHzLPhxF6biGinVKSaNcLZvA=="
     },
     "size": "12.76 KB"
+  },
+  "/release/hexo-shortcodes-1.0.5.tgz": {
+    "integrity": {
+      "sha1": "c283c671ef7358b3082d43357485930bfbe0c792",
+      "sha256": "Zpe71KZO5ESdTrpZLgsUEupBXHfx9tto1rZrm1C4lOU=",
+      "md5": "64b02e75e33e095bda51301efd91dc64",
+      "sha512": "Re164T7gl6mwrp2VI8XjndZPsASj2V22Bv5/2ek3djEJo1IC91yEBGo5aNRVkn0T+vM05eC1KBLpeLDeXU+Y5A=="
+    },
+    "size": "13.74 KB"
   }
 }

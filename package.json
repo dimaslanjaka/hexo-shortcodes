@@ -64,6 +64,7 @@
     "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo.tgz",
     "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
+    "binary-collections": "git+https://github.com/dimaslanjaka/bin.git",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
     "git-command-helper": "^1.1.9",
     "typescript": "^5.0.4"
