@@ -16,7 +16,8 @@
     "update:ncu": "npx npm-check-updates -u",
     "update": "yarn workspaces foreach run update:ncu && yarn cache clean && yarn install",
     "prestart": "yarn build",
-    "start": "yarn workspace hexo-shortcodes-test run serve"
+    "start": "yarn workspace hexo-shortcodes-test run serve",
+    "clean": "yarn workspace hexo-shortcodes run clean"
   },
   "repository": {
     "type": "git",
