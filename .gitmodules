@@ -1,0 +1,4 @@
+[submodule "src/hexo-tag-embed"]
+	path = src/hexo-tag-embed
+	url = https://github.com/dimaslanjaka/hexo-tag-embed.git
+	branch = monorepo
