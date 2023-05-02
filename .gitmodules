@@ -2,7 +2,7 @@
 	path = test
 	url = https://github.com/dimaslanjaka/site.git
 	branch = hexo-shortcodes
-[submodule "package"]
+[submodule "lib"]
 	path = lib
 	url = https://github.com/dimaslanjaka/hexo-shortcodes.git
 	branch = pre-release
