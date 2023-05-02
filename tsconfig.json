@@ -16,6 +16,7 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "outDir": "./dist",
     //"tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "allowJs": true,
