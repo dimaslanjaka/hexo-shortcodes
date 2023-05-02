@@ -42,8 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.githubEmbed = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var git_embed_1 = __importDefault(require("git-embed"));
-var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') +
-    ansi_colors_1.default.blueBright('(github)');
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(github)');
 /**
  * hexo shortcode to embed file
  * @param hexo
@@ -79,17 +78,11 @@ function githubEmbed(hexo) {
                         else {
                             splitcolon = params.map(function (str) { return String(str).split(':'); });
                             splitcolon.forEach(function (split) {
-                                ;
                                 config_1[split[0].trim()] = split[1].trim();
                             });
                             parseURL = new URL('https://github.com');
                             // merge pathname
-                            parseURL.pathname = [
-                                config_1.repo,
-                                'blob',
-                                config_1.ref,
-                                config_1.file
-                            ].join('/');
+                            parseURL.pathname = [config_1.repo, 'blob', config_1.ref, config_1.file].join('/');
                             // fix line
                             if (!config_1.line.includes('L')) {
                                 splithypen = config_1.line.split('-');
