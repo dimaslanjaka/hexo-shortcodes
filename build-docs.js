@@ -3,12 +3,16 @@ const path = require('upath');
 const fs = require('fs-extra');
 const git = require('git-command-helper');
 
+// build documentation site
+
 const base = path.join(__dirname, 'test');
 process.cwd = () => base;
 
 const Hexo = require('./test/node_modules/hexo');
 
 (async function main() {
+  await cp.async('npm', ['run', 'build'], { stdio: 'inherit', cwd: __dirname });
+
   // clone
   await cp.async('git', ['clone', 'https://github.com/dimaslanjaka/docs.git', '.deploy_git'], {
     cwd: base
@@ -42,6 +46,8 @@ const Hexo = require('./test/node_modules/hexo');
       ghcr.origin + ghcr.pathname.replace(/.git$/, '') + '/commit/' + (await ghl.latestCommit())
     ].join(' ');
     await gh.commit(msg, '-m');
-    console.log(await gh.canPush())
+    if (await gh.canPush()) {
+      await gh.push();
+    }
   }
 })();
