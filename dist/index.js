@@ -7,6 +7,8 @@ var env_1 = require("./env");
 var gist_1 = require("./gist");
 var github_1 = require("./github");
 var githubCard_1 = require("./githubCard");
+var vimeo_1 = require("./hexo-tag-embed/lib/tags/vimeo");
+var youtube_1 = require("./hexo-tag-embed/lib/tags/youtube");
 var jsfiddle_1 = require("./jsfiddle");
 var rssreader_1 = require("./rssreader");
 var utils_1 = require("./utils");
@@ -26,6 +28,9 @@ if (typeof hexo !== 'undefined') {
     (0, dailymotion_1.dailymotion)(hexo);
     (0, rssreader_1.rssreader)(hexo);
     (0, github_1.githubEmbed)(hexo);
+    // register hexo-tag-embed
+    hexo.extend.tag.register('vimeo', vimeo_1.vimeoTag);
+    hexo.extend.tag.register('youtube', youtube_1.youtubeTag);
     // register assets before closing body
     hexo.extend.filter.register('after_render:html', function (data) {
         return data.replace('</body>', "\n<script src=\"".concat((0, utils_1.url_for)('/hexo-shortcodes-lib/' + env_1.GITHUB_CARD_LIB_NAME), "\"></script>\n<link rel=\"stylesheet\" href=\"").concat((0, utils_1.url_for)('/hexo-shortcodes-lib/gist.css'), "\" />\n</body>\n      "));

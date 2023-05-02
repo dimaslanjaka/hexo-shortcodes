@@ -5,6 +5,8 @@ import { GITHUB_CARD_LIB_NAME } from './env';
 import { gist } from './gist';
 import { githubEmbed } from './github';
 import { githubCard } from './githubCard';
+import { vimeoTag } from './hexo-tag-embed/lib/tags/vimeo';
+import { youtubeTag } from './hexo-tag-embed/lib/tags/youtube';
 import { jsfiddle } from './jsfiddle';
 import { rssreader } from './rssreader';
 import { registerHexo, url_for } from './utils';
@@ -27,6 +29,10 @@ if (typeof hexo !== 'undefined') {
   dailymotion(hexo as any);
   rssreader(hexo as any);
   githubEmbed(hexo as any);
+
+  // register hexo-tag-embed
+  hexo.extend.tag.register('vimeo', <any>vimeoTag);
+  hexo.extend.tag.register('youtube', <any>youtubeTag);
 
   // register assets before closing body
   hexo.extend.filter.register('after_render:html', function (data) {
