@@ -49,14 +49,14 @@
     "@types/minimist": "^1",
     "@types/node": "^18.16.3",
     "@types/prettier": "^2",
-    "@typescript-eslint/eslint-plugin": "^5.59.1",
-    "@typescript-eslint/parser": "^5.59.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
     "binary-collections": "https://github.com/dimaslanjaka/bin.git",
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "execa": "^7.1.1",
-    "git-command-helper": "^1.1.9",
+    "git-command-helper": "^1.1.10",
     "gulp": "^4.0.2",
     "minimist": "^1.2.8",
     "nodemon": "^2.0.22",
@@ -76,6 +76,6 @@
     "hexo-front-matter": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo-front-matter.tgz",
     "hexo-asset-link": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo-asset-link.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz",
-    "git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/monorepo/release/git-command-helper.tgz"
+    "git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/ed3198e3c1f4d590a812bd44280b5ea6606a58fd/release/git-command-helper.tgz"
   }
 }
