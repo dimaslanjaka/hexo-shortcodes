@@ -71,7 +71,7 @@
   "resolutions": {
     "hexo": "https://github.com/dimaslanjaka/hexo/raw/a7e09431/releases/hexo.tgz",
     "hexo-asset-link": "https://github.com/dimaslanjaka/hexo/raw/4ce9acab/releases/hexo-asset-link.tgz",
-    "hexo-cli": "https://github.com/dimaslanjaka/hexo/raw/b2788726/releases/hexo-cli.tgz",
+    "hexo-cli": "https://github.com/dimaslanjaka/hexo/raw/ca6f1f3f/releases/hexo-cli.tgz",
     "hexo-front-matter": "https://github.com/dimaslanjaka/hexo/raw/b2788726/releases/hexo-front-matter.tgz",
     "hexo-log": "https://github.com/dimaslanjaka/hexo/raw/8a00c35d/releases/hexo-log.tgz",
     "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/9476cf4b/releases/hexo-util.tgz",
