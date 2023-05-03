@@ -20,7 +20,7 @@
     "prestart": "npm run build",
     "start": "yarn workspace hexo-shortcodes-test run serve",
     "clean": "yarn workspace hexo-shortcodes run clean",
-    "postinstall": "npm run build"
+    "post-install": "npm run build"
   },
   "repository": {
     "type": "git",
