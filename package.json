@@ -17,7 +17,7 @@
     "patch": "yarn workspace hexo-shortcodes version patch",
     "update:ncu": "npx npm-check-updates -u",
     "update": "yarn workspaces foreach run update:ncu && yarn cache clean && yarn install",
-    "prestart": "yarn build",
+    "prestart": "npm run build",
     "start": "yarn workspace hexo-shortcodes-test run serve",
     "clean": "yarn workspace hexo-shortcodes run clean",
     "postinstall": "npm run build"
