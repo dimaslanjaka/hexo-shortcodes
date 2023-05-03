@@ -1,11 +1,20 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    //"tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "outDir": "./tmp/dist",
+    "tsBuildInfoFile": "./tmp/tsconfig.tsbuildinfo",
     "allowJs": true,
-    "checkJs": false
+    "checkJs": false,
+    "composite": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "paths": {
+      "git-embed": ["../packages/git-embed/src"]
+    }
   },
   "include": ["./src/**/*", "./src/*"],
-  "exclude": ["**/dist/**"]
+  "exclude": ["**/dist/**"],
+  "references": [{ "path": "../packages/git-embed" }]
 }
