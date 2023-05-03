@@ -10,6 +10,7 @@ on:
       - '**garbage-collector**'
       - '**codeql**'
   pull_request:
+    branches: ['monorepo']
     types:
       - closed
     paths-ignore:
@@ -19,8 +20,7 @@ on:
       - '**/test*/**'
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: write-all
 
 jobs:
   packer:
