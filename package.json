@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "yarn build && cd test && hexo clean && hexo server -p 4000",
+    "test": "npm run build && cd test && hexo clean && hexo server -p 4000",
     "build:git-embed": "npm run build --workspace=git-embed",
     "build:hexo-shortcodes": "npm run build --workspace=hexo-shortcodes",
     "build": "nrs build:* && yarn run pack",
@@ -20,7 +20,7 @@
     "prestart": "npm run build",
     "start": "yarn workspace hexo-shortcodes-test run serve",
     "clean": "yarn workspace hexo-shortcodes run clean",
-    "post-install": "npm run build"
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -58,6 +58,8 @@
     "execa": "^7.1.1",
     "git-command-helper": "^1.1.10",
     "gulp": "^4.0.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
     "minimist": "^1.2.8",
     "nodemon": "^2.0.22",
     "npm-check-updates": "^16.10.9",
