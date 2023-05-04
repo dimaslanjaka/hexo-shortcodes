@@ -46,7 +46,7 @@ var bluebird_1 = __importDefault(require("bluebird"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var path_1 = __importDefault(require("path"));
-var sbg_utility_1 = require("sbg-utility");
+var sbg_utility_1 = __importDefault(require("sbg-utility"));
 var env_1 = require("./env");
 var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
@@ -60,7 +60,7 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
 //
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
-var fetch_raw_code = function (id, filename) {
+var fetch_raw_code = function (hexo, id, filename) {
     return __awaiter(this, void 0, void 0, function () {
         var url;
         return __generator(this, function (_a) {
@@ -124,14 +124,14 @@ var gist = function (hexo) {
                 filename: filename,
                 raw_code: ''
             };
-            fetch_raw_code(id, filename)
+            fetch_raw_code(hexo, id, filename)
                 .then(function (raw_code) {
                 payload.raw_code = raw_code;
-                (0, sbg_utility_1.writefile)(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.txt'), raw_code);
-                (0, sbg_utility_1.writefile)(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
+                sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.txt'), raw_code);
+                sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
             })
                 .catch(function (e) {
-                payload.raw_code = JSON.stringifyWithCircularRefs(e, 2);
+                payload.raw_code = sbg_utility_1.default.jsonStringifyWithCircularRefs(e);
             })
                 .finally(function () {
                 /*let result = '';
@@ -147,7 +147,7 @@ var gist = function (hexo) {
               `;
               resolve(result);*/
                 nunjucks_1.default.render('hexo-gist.njk', payload, function (_err, result) {
-                    (0, sbg_utility_1.writefile)(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
+                    sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
                     resolve(result);
                 });
                 /*nunjucks.renderString(

@@ -1,6 +1,5 @@
 import ansiColors from 'ansi-colors';
-import Hexo from 'hexo';
-import { escapeRegExp } from 'hexo-util';
+import * as hexoUtil from 'hexo-util';
 import nunjucks from 'nunjucks';
 import rssParser from 'rss-parser';
 import { array2obj } from './utils';
@@ -47,7 +46,7 @@ export type rssreaderOptions = {
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(rssreader)');
 
-export function rssreader(hexo: Hexo) {
+export function rssreader(hexo: import('hexo')) {
   const parser = new rssParser({
     customFields: {
       item: [['media:content', 'media:content', { keepArray: true }]]
@@ -61,7 +60,7 @@ export function rssreader(hexo: Hexo) {
 
   hexo.extend.tag.register(
     'rssreader',
-    async function (args, template = '') {
+    async function (args: any[], template = '') {
       const url = args[0];
       const defaults: rssreaderOptions = {
         limit: '3',
@@ -82,7 +81,7 @@ export function rssreader(hexo: Hexo) {
 
       // render
       const result = [] as string[];
-      for (let i = 0; i < (options.limit || 3); i++) {
+      for (let i = 0; i < (parseInt(String(options.limit)) || 3); i++) {
         const item = feed.items[i];
 
         let rendered: string;
@@ -99,7 +98,7 @@ export function rssreader(hexo: Hexo) {
             .replace(/\$summary/gim, '{{ summary }}')
             .replace(/\$image/gim, '{{ image }}');
           Object.keys(item).forEach((key) => {
-            const regex = new RegExp(escapeRegExp('$' + key), 'gmi');
+            const regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
             const replacement = '{{ ' + key + ' }}';
             hexo.log.debug(logname, regex, '->', replacement);
             cloneTemplate = cloneTemplate.replace(regex, replacement);

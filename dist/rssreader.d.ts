@@ -1,4 +1,3 @@
-import Hexo from 'hexo';
 export type RSSType = {
     items: Array<{
         title: string;
@@ -37,4 +36,4 @@ export type rssreaderOptions = {
     limit?: string;
     debug?: string;
 };
-export declare function rssreader(hexo: Hexo): void;
+export declare function rssreader(hexo: import('hexo')): void;
