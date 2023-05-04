@@ -143,7 +143,11 @@ jobs:
           echo "total staged files is $countStaged"
           countCommits=$(git diff origin/${{ steps.set-env.outputs.GITHUB_BRANCH }}..HEAD --numstat | wc -l)
           echo "total unpushed commits is $countCommits"
-          countReleases=$(git diff --numstat -- releases | wc -l)
+          if [ -d "releases" ]; then
+            countReleases=$(git diff --numstat -- releases | wc -l)
+          else
+            countReleases=$(git diff --numstat -- release | wc -l)
+          fi
           echo "total releases changed is $countReleases"
           echo "staged=$countStaged" >> $GITHUB_OUTPUT
           echo "commits=$countCommits" >> $GITHUB_OUTPUT
