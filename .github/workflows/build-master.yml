@@ -58,11 +58,19 @@ jobs:
           ref: 'master'
       - name: update submodules
         run: |
-          mkdir bin
+          echo "init submodules"
+          git submodule init
+          git submodule foreach "git submodule init"
+          echo "sync submodules"
+          git submodule sync
+          git submodule foreach "git submodule sync"
+          echo "update submodules"
+          mkdir -p bin >/dev/null 2>&1
           curl -L https://github.com/dimaslanjaka/bin/raw/master/bin/submodule-install > bin/submodule-install
+          rm -rf .git/modules
           bash ./bin/submodule-install
         shell: bash
-        if: ${{ false }}
+        #if: ${{ false }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
