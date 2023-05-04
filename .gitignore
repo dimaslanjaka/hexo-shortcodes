@@ -6,8 +6,6 @@
 **/.yarn/versions
 **/dist/*.tsbuildinfo
 **/db.json
-dist/
-release/hexo-shortcodes-*.tgz
 /lib/*
 !/lib/gist.css
 !/lib/github*.js
