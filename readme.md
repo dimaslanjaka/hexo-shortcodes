@@ -1,6 +1,8 @@
 # hexo-shortcodes
 Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.
 
+[![Build Master](https://github.com/dimaslanjaka/hexo-shortcodes/actions/workflows/build-master.yml/badge.svg)](https://github.com/dimaslanjaka/hexo-shortcodes/actions/workflows/build-master.yml)
+
 NPM
 ```
 npm install --save hexo-shortcodes
