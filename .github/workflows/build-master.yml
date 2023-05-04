@@ -58,6 +58,7 @@ jobs:
           ref: 'master'
       - name: update submodules
         run: |
+          mkdir bin
           curl -L https://github.com/dimaslanjaka/bin/raw/master/bin/submodule-install > bin/submodule-install
           bash ./bin/submodule-install
         shell: bash
