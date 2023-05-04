@@ -25,12 +25,11 @@
   },
   "homepage": "https://github.com/dimaslanjaka/hexo-shortcodes#readme",
   "files": [
-    "./template",
-    "./template/*.njk",
-    "./lib",
-    "./readme.md",
-    "./dist",
-    "!**/release/**"
+    "template",
+    "template/*.njk",
+    "lib",
+    "readme.md",
+    "dist"
   ],
   "scripts": {
     "update:postinstall": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js",
@@ -61,7 +60,7 @@
   "devDependencies": {
     "@types/bluebird": "^3.5.38",
     "@types/fs-extra": "^11.0.1",
-    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/monorepo-v7/releases/hexo.tgz",
+    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/dcde2bb4d007670846ed5416e0d206ef358f2ed8/releases/hexo.tgz",
     "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
@@ -70,5 +69,6 @@
   },
   "engines": {
     "hexo": ">= 3.0.0"
-  }
+  },
+  "packageManager": "yarn@3.5.1"
 }
