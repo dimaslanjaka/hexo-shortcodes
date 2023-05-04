@@ -40,7 +40,6 @@
   },
   "license": "MIT",
   "workspaces": [
-    "packages/binary-collections",
     "packages/git-embed",
     "lib/src/hexo-tag-embed",
     "lib",

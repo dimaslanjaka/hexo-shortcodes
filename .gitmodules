@@ -10,7 +10,3 @@
 	path = packages/git-embed
 	url = https://github.com/dimaslanjaka/embed-like-gist.git
 	branch = private
-[submodule "packages/binary-collections"]
-	path = packages/binary-collections
-	url = https://github.com/dimaslanjaka/bin.git
-	branch = master
