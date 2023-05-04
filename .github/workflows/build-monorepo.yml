@@ -102,15 +102,21 @@ jobs:
 
       - name: what changes
         id: changes
+        shell: bash
         run: |
-          totalCached=$(git diff --cached --numstat | wc -l)
-          totalCommits=$(git diff origin/master..HEAD --numstat | wc -l)
-          totalReleases=$(git diff --numstat -- releases | wc -l)
-          echo "total staged $totalCached"
-          echo "total unpushed commits $totalCommits"
-          echo "cached=$(git diff --cached --numstat | wc -l)" >> $GITHUB_OUTPUT
-          echo "commits=$(git diff origin/master..HEAD --numstat | wc -l)" >> $GITHUB_OUTPUT
-          echo "releases=$(git diff --numstat -- releases | wc -l)" >> $GITHUB_OUTPUT
+          git status
+          echo ""
+          countChanges=$(git whatchanged -1 --format=oneline | wc -l)
+          echo "total changed files is $countChanges"
+          countStaged=$(git diff --cached --numstat | wc -l)
+          echo "total staged files is $countStaged"
+          countCommits=$(git diff origin/${{ steps.set-env.outputs.GITHUB_BRANCH }}..HEAD --numstat | wc -l)
+          echo "total unpushed commits is $countCommits"
+          countReleases=$(git diff --numstat -- releases | wc -l)
+          echo "total releases changed is $countReleases"
+          echo "staged=$countStaged" >> $GITHUB_OUTPUT
+          echo "commits=$countCommits" >> $GITHUB_OUTPUT
+          echo "releases=$countReleases" >> $GITHUB_OUTPUT
 
       - name: Push
         if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && (steps.changes.outputs.cached > 0 || steps.changes.outputs.commits > 0)
