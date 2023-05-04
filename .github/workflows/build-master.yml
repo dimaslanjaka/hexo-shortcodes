@@ -62,6 +62,7 @@ jobs:
           curl -L https://github.com/dimaslanjaka/bin/raw/master/bin/submodule-install > bin/submodule-install
           bash ./bin/submodule-install
         shell: bash
+        if: ${{ false }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
