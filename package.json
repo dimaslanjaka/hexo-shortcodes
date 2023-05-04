@@ -40,7 +40,8 @@
     "pack": "node packer.js --yarn",
     "dev": "tsc -p tsconfig.build.json --watch",
     "test": "node page-test.js",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "prepare": "husky install"
   },
   "license": "MIT",
   "peerDependencies": {
@@ -65,6 +66,8 @@
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
     "git-command-helper": "^1.1.10",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
     "typescript": "^5.0.4"
   },
   "engines": {
