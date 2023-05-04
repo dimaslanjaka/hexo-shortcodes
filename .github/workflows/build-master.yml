@@ -129,6 +129,7 @@ jobs:
         id: build
       - run: git add release
       - run: git add dist
+      - run: git add yarn.lock
 
       - name: what changes
         id: changes
