@@ -46,9 +46,13 @@ jobs:
           submodules: recursive
           token: '${{ secrets.GITHUB_TOKEN }}'
           ref: 'monorepo'
-      - run: git submodule init
+      - run: |
+          git submodule init
+          git submodule foreach "git submodule init"
         name: init submodules
-      - run: git submodule sync
+      - run: |
+          git submodule sync
+          git submodule foreach "git submodule sync"
         name: sync submodules
       - name: update submodules
         run: |
