@@ -4,9 +4,10 @@ import Bluebird from 'bluebird';
 import fs from 'fs-extra';
 import nunjucks from 'nunjucks';
 import path from 'path';
-import { writefile } from 'sbg-utility';
+import utility from 'sbg-utility';
 import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH, TEMP_PATH } from './env';
 import { url_for } from './utils';
+
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
 
 // hexo-gist
@@ -20,7 +21,7 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
-const fetch_raw_code = async function (id: string, filename: string) {
+const fetch_raw_code = async function (hexo: import('hexo'), id: string, filename: string) {
   let url = `https://gist.githubusercontent.com/${id}/raw`;
   if (typeof filename === 'string') {
     url = `${url}/${filename}`;
@@ -84,14 +85,14 @@ export const gist = (hexo: import('hexo')) => {
         filename,
         raw_code: ''
       };
-      fetch_raw_code(id, filename)
+      fetch_raw_code(hexo, id, filename)
         .then((raw_code) => {
           payload.raw_code = <string>raw_code;
-          writefile(path.join(TEMP_PATH, 'gist', id + '.txt'), raw_code);
-          writefile(path.join(TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
+          utility.writefile(path.join(TEMP_PATH, 'gist', id + '.txt'), raw_code);
+          utility.writefile(path.join(TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
         })
         .catch((e) => {
-          payload.raw_code = JSON.stringifyWithCircularRefs(e, 2);
+          payload.raw_code = utility.jsonStringifyWithCircularRefs(e);
         })
         .finally(() => {
           /*let result = '';
@@ -107,7 +108,7 @@ export const gist = (hexo: import('hexo')) => {
         `;
         resolve(result);*/
           nunjucks.render('hexo-gist.njk', payload, function (_err, result) {
-            writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
+            utility.writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
             resolve(result);
           });
           /*nunjucks.renderString(

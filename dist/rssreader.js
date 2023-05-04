@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,7 +64,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rssreader = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
-var hexo_util_1 = require("hexo-util");
+var hexoUtil = __importStar(require("hexo-util"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var rss_parser_1 = __importDefault(require("rss-parser"));
 var utils_1 = require("./utils");
@@ -95,7 +118,7 @@ function rssreader(hexo) {
                                     .replace(/\$summary/gim, '{{ summary }}')
                                     .replace(/\$image/gim, '{{ image }}');
                                 Object.keys(item).forEach(function (key) {
-                                    var regex = new RegExp((0, hexo_util_1.escapeRegExp)('$' + key), 'gmi');
+                                    var regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
                                     var replacement = '{{ ' + key + ' }}';
                                     hexo.log.debug(logname, regex, '->', replacement);
                                     cloneTemplate_1 = cloneTemplate_1.replace(regex, replacement);
@@ -105,7 +128,7 @@ function rssreader(hexo) {
                             }
                             result.push(rendered);
                         };
-                        for (i = 0; i < (options.limit || 3); i++) {
+                        for (i = 0; i < (parseInt(String(options.limit)) || 3); i++) {
                             _loop_1(i);
                         }
                         return [2 /*return*/, result.join('\n')];

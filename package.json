@@ -1,6 +1,6 @@
 {
   "name": "hexo-shortcodes",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,33 +35,40 @@
     "update:postinstall": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js",
     "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
     "update:ncu": "npm-check-updates -u -x hexo,hexo-fs",
-    "update": "run-s update:**",
-    "build": "tsc -p tsconfig.build.json && node packer.js --yarn",
+    "update": "nrs update:*",
+    "build": "tsc -p tsconfig.build.json",
+    "pack": "node packer.js --yarn",
     "dev": "tsc -p tsconfig.build.json --watch",
-    "test": "node page-test.js"
+    "test": "node page-test.js",
+    "clean": "rm -rf dist"
   },
   "license": "MIT",
+  "peerDependencies": {
+    "hexo": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
+  },
   "dependencies": {
     "ansi-colors": "^4.1.3",
-    "axios": "^1.3.4",
+    "axios": "^1.4.0",
     "bluebird": "^3.7.2",
-    "fs-extra": "^11.1.0",
-    "hexo-filter-nofollow": "^2.0.2",
+    "fs-extra": "^11.1.1",
+    "git-embed": "^0.1.0",
     "hexo-util": "^3.0.1",
-    "nunjucks": "^3.2.3",
-    "rss-parser": "^3.12.0",
-    "sbg-utility": "^1.0.8"
+    "nunjucks": "^3.2.4",
+    "rss-parser": "^3.13.0",
+    "sbg-utility": "^1.0.9"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.38",
     "@types/fs-extra": "^11.0.1",
-    "@types/hexo": "https://github.com/dimaslanjaka/nodejs-package-types/tarball/hexo",
-    "@types/node": "^18.14.6",
+    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/dcde2bb4d007670846ed5416e0d206ef358f2ed8/releases/hexo.tgz",
+    "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
-    "git-command-helper": "^1.1.8"
+    "git-command-helper": "^1.1.10",
+    "typescript": "^5.0.4"
   },
   "engines": {
     "hexo": ">= 3.0.0"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.5.1"
 }
