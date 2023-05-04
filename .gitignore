@@ -8,3 +8,4 @@
 **/db.json
 dist/
 release/hexo-shortcodes-*.tgz
+/lib
