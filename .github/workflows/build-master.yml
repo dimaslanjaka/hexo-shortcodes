@@ -1,6 +1,24 @@
 name: Build Master
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: ['master']
+    paths-ignore:
+      - '**/*.tgz'
+      - '**/*.gz'
+      - '**/release/**'
+      - '**garbage-collector**'
+      - '**codeql**'
+  pull_request:
+    branches: ['master']
+    types:
+      - closed
+    paths-ignore:
+      - '**/release/**'
+      - '**/*.tgz'
+      - '**/*.gz'
+      - '**/test*/**'
+  workflow_dispatch:
 
 permissions: write-all
 
