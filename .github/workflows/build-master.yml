@@ -141,13 +141,13 @@ jobs:
           echo "total changed files is $countChanges"
           countStaged=$(git diff --cached --numstat | wc -l)
           echo "total staged files is $countStaged"
-          countCommits=$(git diff origin/master..HEAD --numstat | wc -l)
+          countCommits=$(git diff origin/${{ steps.set-env.outputs.GITHUB_BRANCH }}..HEAD --numstat | wc -l)
           echo "total unpushed commits is $countCommits"
           countReleases=$(git diff --numstat -- releases | wc -l)
           echo "total releases changed is $countReleases"
           echo "staged=$countStaged" >> $GITHUB_OUTPUT
-          echo "commits=$(git diff origin/master..HEAD --numstat | wc -l)" >> $GITHUB_OUTPUT
-          echo "releases=$(git diff --numstat -- releases | wc -l)" >> $GITHUB_OUTPUT
+          echo "commits=$countCommits" >> $GITHUB_OUTPUT
+          echo "releases=$countReleases" >> $GITHUB_OUTPUT
 
       - name: Dump
         run: |
