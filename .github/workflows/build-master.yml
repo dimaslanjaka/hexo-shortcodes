@@ -144,7 +144,7 @@ jobs:
           echo "total unpushed commits is $countCommits"
           countReleases=$(git diff --numstat -- releases | wc -l)
           echo "total releases changed is $countReleases"
-          echo "staged=$(countStaged)" >> $GITHUB_OUTPUT
+          echo "staged=$countStaged" >> $GITHUB_OUTPUT
           echo "commits=$(git diff origin/master..HEAD --numstat | wc -l)" >> $GITHUB_OUTPUT
           echo "releases=$(git diff --numstat -- releases | wc -l)" >> $GITHUB_OUTPUT
 
