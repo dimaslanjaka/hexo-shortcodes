@@ -148,6 +148,10 @@ jobs:
           echo "commits=$(git diff origin/master..HEAD --numstat | wc -l)" >> $GITHUB_OUTPUT
           echo "releases=$(git diff --numstat -- releases | wc -l)" >> $GITHUB_OUTPUT
 
+      - name: Dump
+        run: |
+          echo "steps.changes.outputs.staged=${{ steps.changes.outputs.staged }}"
+
       - name: Push
         if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.staged != '0'
         run: |
