@@ -8,7 +8,9 @@
 **/db.json
 dist/
 release/hexo-shortcodes-*.tgz
-/lib
+/lib/*
+!/lib/gist.css
+!/lib/github*.js
 yarn.lock
 packager-lock.json
 /test
