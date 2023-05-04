@@ -80,7 +80,7 @@ jobs:
         run: touch yarn.lock && yarn install
         shell: bash
       - name: Build
-        run: yarn build
+        run: npm run build
         shell: bash
         id: build
 
