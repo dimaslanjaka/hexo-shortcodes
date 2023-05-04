@@ -22,6 +22,11 @@ on:
 
 permissions: write-all
 
+# run single job
+concurrency:
+  group: build-workspace
+  cancel-in-progress: true
+
 jobs:
   packer:
     runs-on: ${{ matrix.os }}
