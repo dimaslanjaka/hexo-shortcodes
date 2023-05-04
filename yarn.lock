@@ -1479,7 +1479,7 @@ __metadata:
   dependencies:
     shebang-command: ^2.0.0
     which: ^3.0.0
-  checksum: 0baad950b8c37a09990a92e4a771e632e60b17e8d664841c049019a71055ccbe24a69091c14cb08ed0c3fd2df463e4d1bf1a531644128e0382d3226d2f05d3e7
+  checksum: cdd488304c7506dbe310e21ae5fe7a33edb484731a8d238dd49e1da4f657cc69160ea2075100836347172b4d690e650c28998f0ef327d9526f8f48603df657db
   languageName: node
   linkType: hard
 
