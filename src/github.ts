@@ -1,6 +1,7 @@
 import ansiColors from 'ansi-colors'
 import Hexo from 'hexo'
-import gitembed from 'git-embed'
+import gitEmbed from 'git-embed'
+import * as hexoUtils from 'hexo-util'
 
 const logname =
   ansiColors.magentaBright('hexo-shortcodes') +
@@ -55,7 +56,9 @@ export function githubEmbed(hexo: Hexo) {
           if (!config.line.includes('L')) {
             // fix line to #L{number}-L{number}
             const splithypen = config.line.split('-')
-            parseURL.hash = '#L' + splithypen[0] + '-L' + splithypen[1]
+            if (splithypen.length === 2) {
+              parseURL.hash = '#L' + splithypen[0] + '-L' + splithypen[1]
+            }
           } else {
             parseURL.hash = config.line
           }
@@ -64,11 +67,33 @@ export function githubEmbed(hexo: Hexo) {
 
         hexo.log.i(logname, 'embed', parseURL.pathname + parseURL.hash)
         config.line = parseURL.hash
-        const embed = await gitembed(url, { tabSize: 2 })
-        return embed.result
+        const embed = await gitEmbed(url, { tabSize: 2 })
+        const content = embed.result
+
+        // If neither highlight.js nor prism.js is enabled, return escaped code directly
+        if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+          return `<pre><code>${hexoUtils.escapeHTML(content)}</code></pre>`
+        }
+
+        const options = {
+          lines_length: content.split('\n').length,
+          lang: embed.parseResult.language,
+          caption: embed.parseResult.language
+        }
+
+        // forked from https://github.com/hexojs/hexo/blob/8b95bbc722e5c77a7e8125441ed64d2ea3524ac0/lib/plugins/tag/code.js#L141-L148
+        const newContent = hexo.extend.highlight.exec(
+          hexo.config.syntax_highlighter,
+          {
+            context: hexo,
+            args: [content, options]
+          }
+        )
+
+        return newContent.replace(/{/g, '&#123;').replace(/}/g, '&#125;')
       }
 
-      return ''
+      return ['cannot embed', ...params].join(' ')
     },
     { async: true }
   )

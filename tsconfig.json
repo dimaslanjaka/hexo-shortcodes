@@ -20,8 +20,14 @@
     "outDir": "./dist",
     //"tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "allowJs": true,
-    "checkJs": false
+    "checkJs": false,
+    "composite": true,
+    "noEmit": true,
+    "paths": {
+      "git-embed": ["../packages/git-embed/src"]
+    }
   },
   "include": ["./src/**/*", "./src/*"],
-  "exclude": ["**/dist/**"]
+  "exclude": ["**/dist/**"],
+  "references": [{ "path": "../packages/git-embed" }]
 }

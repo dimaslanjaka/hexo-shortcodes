@@ -1,6 +1,6 @@
 {
   "name": "hexo-shortcodes",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -51,9 +51,8 @@
     "axios": "^1.4.0",
     "bluebird": "^3.7.2",
     "fs-extra": "^11.1.1",
-    "git-embed": "^0.0.3",
-    "hexo-log": "https://github.com/dimaslanjaka/hexo/raw/dcde2bb4d007670846ed5416e0d206ef358f2ed8/releases/hexo-log.tgz",
-    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/dcde2bb4d007670846ed5416e0d206ef358f2ed8/releases/hexo.tgz",
+    "git-embed": "^0.1.0",
+    "hexo-util": "^3.0.1",
     "nunjucks": "^3.2.4",
     "rss-parser": "^3.13.0",
     "sbg-utility": "^1.0.9"
@@ -64,9 +63,8 @@
     "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/dcde2bb4d007670846ed5416e0d206ef358f2ed8/releases/hexo.tgz",
     "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
-    "binary-collections": "git+https://github.com/dimaslanjaka/bin.git",
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/e5c4f6200a97cba60fcdec614c9ce278c12fa633",
-    "depcheck": "^1.4.3",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
+    "git-command-helper": "^1.1.10",
     "typescript": "^5.0.4"
   },
   "engines": {
