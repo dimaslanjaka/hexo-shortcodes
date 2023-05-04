@@ -54,6 +54,7 @@ jobs:
         run: |
           mkdir bin
           curl -L https://github.com/dimaslanjaka/bin/raw/master/bin/submodule-install > bin/submodule-install
+          rm -rf .git/modules
           bash ./bin/submodule-install
         shell: bash
       - name: Use Node.js ${{ matrix.node-version }}
