@@ -9,3 +9,7 @@
 dist/
 release/hexo-shortcodes-*.tgz
 /lib
+yarn.lock
+packager-lock.json
+/test
+/packages
