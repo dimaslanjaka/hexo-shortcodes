@@ -39,6 +39,7 @@
   "license": "MIT",
   "workspaces": [
     "packages/git-embed",
+    "lib/src/hexo-tag-embed",
     "lib",
     "test"
   ],
