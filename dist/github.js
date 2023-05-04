@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,6 +58,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -42,7 +74,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.githubEmbed = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var git_embed_1 = __importDefault(require("git-embed"));
-var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(github)');
+var hexoUtils = __importStar(require("hexo-util"));
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') +
+    ansi_colors_1.default.blueBright('(github)');
 /**
  * hexo shortcode to embed file
  * @param hexo
@@ -50,7 +84,7 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
 function githubEmbed(hexo) {
     hexo.extend.tag.register('github', function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var url, parseURL, config_1, splitcolon, splithypen, embed;
+            var url, parseURL, config_1, splitcolon, splithypen, embed, content, options, newContent;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -78,15 +112,23 @@ function githubEmbed(hexo) {
                         else {
                             splitcolon = params.map(function (str) { return String(str).split(':'); });
                             splitcolon.forEach(function (split) {
+                                ;
                                 config_1[split[0].trim()] = split[1].trim();
                             });
                             parseURL = new URL('https://github.com');
                             // merge pathname
-                            parseURL.pathname = [config_1.repo, 'blob', config_1.ref, config_1.file].join('/');
+                            parseURL.pathname = [
+                                config_1.repo,
+                                'blob',
+                                config_1.ref,
+                                config_1.file
+                            ].join('/');
                             // fix line
                             if (!config_1.line.includes('L')) {
                                 splithypen = config_1.line.split('-');
-                                parseURL.hash = '#L' + splithypen[0] + '-L' + splithypen[1];
+                                if (splithypen.length === 2) {
+                                    parseURL.hash = '#L' + splithypen[0] + '-L' + splithypen[1];
+                                }
                             }
                             else {
                                 parseURL.hash = config_1.line;
@@ -98,8 +140,22 @@ function githubEmbed(hexo) {
                         return [4 /*yield*/, (0, git_embed_1.default)(url, { tabSize: 2 })];
                     case 1:
                         embed = _a.sent();
-                        return [2 /*return*/, embed.result];
-                    case 2: return [2 /*return*/, ''];
+                        content = embed.result;
+                        // If neither highlight.js nor prism.js is enabled, return escaped code directly
+                        if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+                            return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(content), "</code></pre>")];
+                        }
+                        options = {
+                            lines_length: content.split('\n').length,
+                            lang: embed.parseResult.language,
+                            caption: embed.parseResult.language
+                        };
+                        newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
+                            context: hexo,
+                            args: [content, options]
+                        });
+                        return [2 /*return*/, newContent.replace(/{/g, '&#123;').replace(/}/g, '&#125;')];
+                    case 2: return [2 /*return*/, __spreadArray(['cannot embed'], params, true).join(' ')];
                 }
             });
         });
