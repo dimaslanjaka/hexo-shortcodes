@@ -12,7 +12,7 @@
     "test": "npm run build && cd test && hexo clean && hexo server -p 4000",
     "build:git-embed": "npm run build --workspace=git-embed",
     "build:hexo-shortcodes": "npm run build --workspace=hexo-shortcodes",
-    "build": "nrs build:* && yarn run pack",
+    "build": "nrs build:** && yarn run pack",
     "pack": "yarn workspace hexo-shortcodes run pack",
     "patch": "yarn workspace hexo-shortcodes version patch",
     "update:ncu": "npx npm-check-updates -u",
@@ -21,7 +21,6 @@
     "start": "yarn workspace hexo-shortcodes-test run serve",
     "clean:ge": "yarn workspace hexo-shortcodes run clean",
     "clean:hs": "yarn workspace hexo-shortcodes run clean",
-    "clean:test": "yarn workspace hexo-shortcodes-test run clean",
     "clean": "nrs clean:**",
     "prepare": "husky install"
   },
@@ -41,6 +40,7 @@
   },
   "license": "MIT",
   "workspaces": [
+    "packages/binary-collections",
     "packages/git-embed",
     "lib/src/hexo-tag-embed",
     "lib",
