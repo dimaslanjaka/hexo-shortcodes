@@ -11,3 +11,4 @@
 !/lib/github*.js
 /test
 /packages
+bin/submodule-install
