@@ -25,7 +25,7 @@ const deployDir = path.resolve(testDir, '.deploy_git/hexo-shortcodes');
   const projectGit = new gch(__dirname, 'master');
   const commit = await projectGit.latestCommit(__dirname);
   const repo = new URL((await projectGit.getremote()).fetch.url).pathname.replace(/^\/+/gm, '');
-  const message = `chore: update from ${repo}@${commit}`;
+  const message = `chore: update from ${repo}/commit/${commit}`;
 
   // copy start
   if (fs.existsSync(deployDir)) {
