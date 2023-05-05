@@ -28,6 +28,6 @@
     }
   },
   "include": ["./src/**/*", "./src/*"],
-  "exclude": ["**/dist/**"],
+  "exclude": ["**/dist/**", "**/node_modules/**"],
   "references": [{ "path": "../packages/git-embed" }]
 }
