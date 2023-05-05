@@ -151,7 +151,7 @@ jobs:
           git config --global user.name 'dimaslanjaka'
           git config --global user.email 'dimaslanjaka@gmail.com'
           git add release
-          git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
           git push
 
       - name: Push
