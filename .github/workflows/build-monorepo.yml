@@ -46,6 +46,13 @@ jobs:
           submodules: recursive
           token: '${{ secrets.GITHUB_TOKEN }}'
           ref: 'monorepo'
+      - name: Checkout lib
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          ref: 'pre-release'
+          path: 'lib'
       - name: update submodules
         run: |
           echo "init submodules"
@@ -60,6 +67,19 @@ jobs:
           rm -rf .git/modules
           bash ./bin/submodule-install
         shell: bash
+
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            **/.yarn
+            **/tmp
+            ./yarn.lock
+          key: ${{ runner.os }}-${{ github.ref_name }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.ref_name }}
+            ${{ runner.os }}-
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -100,18 +120,14 @@ jobs:
         run: npm run build
         shell: bash
         id: build
-
-      - uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            **/.yarn
-            **/tmp
-            ./yarn.lock
-          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ hashFiles('**/package.json') }}
-            ${{ runner.os }}-
+      - name: push lib
+        working-directory: lib
+        run: |
+          git config --global user.name 'dimaslanjaka'
+          git config --global user.email 'dimaslanjaka@gmail.com'
+          git add release
+          git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+          git push
 
       - name: what changes
         id: changes
