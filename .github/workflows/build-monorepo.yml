@@ -151,14 +151,22 @@ jobs:
           git config --global user.name 'dimaslanjaka'
           git config --global user.email 'dimaslanjaka@gmail.com'
           git add release
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
-          git push || echo "no commit to push"
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+            git push
+          else
+            echo "no changes";
+          fi
 
       - name: Push
         if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
         run: |
-          git config --global user.name 'dimaslanjaka'
-          git config --global user.email 'dimaslanjaka@gmail.com'
-          git add .
-          git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
-          git push
+          if [ -n "$(git status --porcelain)" ]; then
+            git config --global user.name 'dimaslanjaka'
+            git config --global user.email 'dimaslanjaka@gmail.com'
+            git add .
+            git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+            git push
+          else
+            echo "no changes"
+          fi
