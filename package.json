@@ -84,7 +84,6 @@
     "hexo-log": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo-log.tgz",
     "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo-util.tgz",
     "warehouse": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/warehouse.tgz",
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz",
-    "git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/monorepo/release/git-command-helper.tgz"
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz"
   }
 }
