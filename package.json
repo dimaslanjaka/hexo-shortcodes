@@ -10,8 +10,8 @@
   },
   "scripts": {
     "test": "npm run build && cd test && hexo clean && hexo server -p 4000",
-    "build:git-embed": "npm run build --workspace=git-embed",
-    "build:hexo-shortcodes": "npm run build --workspace=hexo-shortcodes",
+    "build:git-embed": "yarn workspace git-embed run build",
+    "build:hexo-shortcodes": "yarn workspace hexo-shortcodes run build",
     "build": "nrs build:** && yarn run pack",
     "pack": "yarn workspace hexo-shortcodes run pack",
     "patch": "yarn workspace hexo-shortcodes version patch",
