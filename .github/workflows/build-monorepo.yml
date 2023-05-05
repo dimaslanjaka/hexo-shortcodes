@@ -120,14 +120,6 @@ jobs:
         run: npm run build
         shell: bash
         id: build
-      - name: push lib
-        working-directory: lib
-        run: |
-          git config --global user.name 'dimaslanjaka'
-          git config --global user.email 'dimaslanjaka@gmail.com'
-          git add release
-          git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
-          git push
 
       - name: what changes
         id: changes
@@ -150,6 +142,16 @@ jobs:
           echo "staged=$countStaged" >> $GITHUB_OUTPUT
           echo "commits=$countCommits" >> $GITHUB_OUTPUT
           echo "releases=$countReleases" >> $GITHUB_OUTPUT
+
+      - name: push lib
+        if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && (steps.changes.outputs.staged > 0 || steps.changes.outputs.commits > 0)
+        working-directory: lib
+        run: |
+          git config --global user.name 'dimaslanjaka'
+          git config --global user.email 'dimaslanjaka@gmail.com'
+          git add release
+          git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+          git push
 
       - name: Push
         if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && (steps.changes.outputs.staged > 0 || steps.changes.outputs.commits > 0)
