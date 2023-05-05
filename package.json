@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run build && cd test && hexo clean && hexo server -p 4000",
+    "test": "yarn build && cd test && hexo clean && hexo server -p 4000",
     "build:git-embed": "yarn workspace git-embed run build",
     "build:hexo-shortcodes": "yarn workspace hexo-shortcodes run build",
     "build": "nrs 'build:**' && yarn run pack",
@@ -17,7 +17,7 @@
     "patch": "yarn workspace hexo-shortcodes version patch",
     "update:ncu": "npx npm-check-updates -u",
     "update": "yarn workspaces foreach run update:ncu && yarn cache clean && yarn install",
-    "prestart": "npm run build",
+    "prestart": "yarn build",
     "start": "yarn workspace hexo-shortcodes-test run serve",
     "clean:ge": "yarn workspace hexo-shortcodes run clean",
     "clean:hs": "yarn workspace hexo-shortcodes run clean",
