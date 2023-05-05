@@ -20,7 +20,7 @@ on:
       - '**/test*/**'
   workflow_dispatch:
 
-permissions: write-all
+#permissions: write-all
 
 # run single job
 concurrency:
