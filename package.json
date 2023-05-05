@@ -53,7 +53,7 @@
     "bluebird": "^3.7.2",
     "fs-extra": "^11.1.1",
     "git-embed": "^0.1.0",
-    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/9476cf4b/releases/hexo-util.tgz",
+    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo-util.tgz",
     "nunjucks": "^3.2.4",
     "rss-parser": "^3.13.0",
     "sbg-utility": "^1.0.9"
@@ -61,11 +61,11 @@
   "devDependencies": {
     "@types/bluebird": "^3.5.38",
     "@types/fs-extra": "^11.0.1",
-    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/a7e09431/releases/hexo.tgz",
+    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo.tgz",
     "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
-    "git-command-helper": "^1.1.10",
+    "git-command-helper": "^1.2.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "typescript": "^5.0.4"
@@ -75,12 +75,12 @@
   },
   "packageManager": "yarn@3.5.1",
   "resolutions": {
-    "hexo": "https://github.com/dimaslanjaka/hexo/raw/a7e09431/releases/hexo.tgz",
-    "hexo-asset-link": "https://github.com/dimaslanjaka/hexo/raw/4ce9acab/releases/hexo-asset-link.tgz",
-    "hexo-cli": "https://github.com/dimaslanjaka/hexo/raw/ca6f1f3f/releases/hexo-cli.tgz",
-    "hexo-front-matter": "https://github.com/dimaslanjaka/hexo/raw/b2788726/releases/hexo-front-matter.tgz",
-    "hexo-log": "https://github.com/dimaslanjaka/hexo/raw/8a00c35d/releases/hexo-log.tgz",
-    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/9476cf4b/releases/hexo-util.tgz",
-    "warehouse": "https://github.com/dimaslanjaka/hexo/raw/806f1798/releases/warehouse.tgz"
+    "hexo": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo.tgz",
+    "hexo-asset-link": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo-asset-link.tgz",
+    "hexo-cli": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo-cli.tgz",
+    "hexo-front-matter": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo-front-matter.tgz",
+    "hexo-log": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo-log.tgz",
+    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/hexo-util.tgz",
+    "warehouse": "https://github.com/dimaslanjaka/hexo/raw/6eac761/releases/warehouse.tgz"
   }
 }
