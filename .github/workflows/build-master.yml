@@ -55,7 +55,6 @@ jobs:
         with:
           submodules: recursive
           token: '${{ secrets.ACCESS_TOKEN }}'
-          ref: 'master'
       - name: update submodules
         run: |
           echo "init submodules"
