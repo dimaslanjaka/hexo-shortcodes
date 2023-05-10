@@ -1,6 +1,22 @@
-# Release `hexo-shortcodes` Tarball
+# Release `hexo-shortcodes` tarball
+## Releases
+| version | tarball url |
+| :--- | :--- |
+| latest | https://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@github.com/dimaslanjaka/hexo-shortcodes/raw/2428e75/release/hexo-shortcodes.tgz |
+| latest | https://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@github.com/dimaslanjaka/hexo-shortcodes/raw/pre-release/release/hexo-shortcodes.tgz |
 
-## Get URL of `hexo-shortcodes` Release Tarball
+use this tarball with `resolutions`:
+```json
+{
+  "resolutions": {
+    "hexo-shortcodes": "<url of tarball>"
+  }
+}
+```
+
+## Releases
+
+    ## Get URL of `hexo-shortcodes` Release Tarball
 - select tarball file
 ![gambar](https://user-images.githubusercontent.com/12471057/203216375-8af4b5d9-00c2-40fb-8d3d-d220beaabd46.png)
 - copy raw url
