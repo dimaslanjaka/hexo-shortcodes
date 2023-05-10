@@ -75,9 +75,9 @@ jobs:
             **/.yarn
             **/tmp
             ./yarn.lock
-          key: ${{ runner.os }}-${{ github.ref_name }}
+          key: ${{ runner.os }}-${{ matrix.node-version }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.ref_name }}
+            ${{ runner.os }}-${{ matrix.node-version }}
             ${{ runner.os }}-
 
       - name: Use Node.js ${{ matrix.node-version }}
