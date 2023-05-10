@@ -68,7 +68,7 @@
     "@types/node": "^18.16.3",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/5560156be9745d682c7a5e727cffeee0b0179ab1",
-    "git-command-helper": "^1.2.0",
+    "git-command-helper": "^1.2.2",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "typescript": "^5.0.4"
