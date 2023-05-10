@@ -68,6 +68,11 @@ jobs:
           bash ./bin/submodule-install
         shell: bash
 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
       - uses: actions/cache@v3
         id: cache
         with:
@@ -80,10 +85,6 @@ jobs:
             ${{ runner.os }}-${{ matrix.node-version }}
             ${{ runner.os }}-
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
       - name: Enable corepack
         shell: bash
         run: corepack enable
