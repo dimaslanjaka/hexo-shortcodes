@@ -1,12 +1,7 @@
 import ansiColors from 'ansi-colors';
 import { default as axios } from 'axios';
 import Bluebird from 'bluebird';
-import fs from 'fs-extra';
-import nunjucks from 'nunjucks';
 import path from 'upath';
-import utility from 'sbg-utility';
-import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH, TEMP_PATH } from './env';
-import { url_for } from './utils';
 import * as hexoUtils from 'hexo-util';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
@@ -41,100 +36,6 @@ const fetch_raw_code = async function (hexo: import('hexo'), id: string, filenam
 };
 
 export const gist = (hexo: import('hexo')) => {
-  nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
-    noCache: true,
-    watch: false
-  });
-
-  const libFilename = 'gist.css';
-  const libRoute = `${ROUTE_NAME}/${libFilename}`;
-  const libFilePath = path.resolve(LIB_PATH, libFilename);
-  hexo.extend.generator.register(url_for(libRoute), () => {
-    return {
-      path: libRoute,
-      data: () => fs.createReadStream(libFilePath)
-    };
-  });
-  hexo.extend.filter.register('server_middleware', function (app) {
-    app.use(libRoute, function (_req, res) {
-      res.setHeader('content-type', 'text/javascript');
-      res.end(fs.readFileSync(libFilePath).toString());
-    });
-  });
-
-  /**
-   * render using nunjucks
-   * @param args
-   * @returns
-   */
-  function _nunjucksMethod(args: Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[0]) {
-    const id = args[0];
-    hexo.log.info(logname, id);
-    const filename = args[1];
-    const payload = {
-      id,
-      filename,
-      raw_code: ''
-    };
-
-    return nunjucks.renderString(fs.readFileSync(GIST_TEMPLATE).toString(), payload);
-  }
-
-  const _oldMethod = function (args: string[]) {
-    return new Promise((resolve) => {
-      const id = args[0];
-      hexo.log.info(logname, id);
-      const filename = args[1];
-      const payload = {
-        id,
-        filename,
-        raw_code: ''
-      };
-      fetch_raw_code(hexo, id, filename)
-        .then((raw_code) => {
-          payload.raw_code = <string>raw_code;
-          utility.writefile(path.join(TEMP_PATH, 'gist', id + '.txt'), raw_code);
-          utility.writefile(path.join(TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
-        })
-        .catch((e) => {
-          payload.raw_code = utility.jsonStringifyWithCircularRefs(e);
-        })
-        .finally(() => {
-          /*let result = '';
-        if (filename) {
-          result += `<script src="https://gist.github.com/${id}.js?file=${filename}"></script>`;
-        } else {
-          result += `<script src="https://gist.github.com/${id}.js"></script>`;
-        }
-        result += `
-        <noscript>
-          <pre><code>${payload.raw_code}</code></pre>
-        </noscript>
-        `;
-        resolve(result);*/
-          nunjucks.render('hexo-gist.njk', payload, function (_err, result) {
-            utility.writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
-            resolve(result);
-          });
-          /*nunjucks.renderString(
-          fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
-          payload,
-          function (err, result) {
-            if (err) {
-              console.log(err);
-              resolve(
-                `ERROR(gist) cannot fetch ${id}.<br/> ${escapeHTML(JSON.stringifyWithCircularRefs(err, null, 2))}`
-              );
-            } else {
-              writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), result);
-              resolve(result);
-            }
-          }
-        );*/
-        });
-    });
-  };
-
   async function _usingHexoSyntaxHighlighter(args: string[]) {
     const id = args[0];
     hexo.log.info(logname, id);
