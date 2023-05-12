@@ -29,19 +29,14 @@ concurrency:
 
 jobs:
   packer:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     # set timeout - see https://stackoverflow.com/a/59076067/6404439
     timeout-minutes: 120
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ['14.x', '16.x', '18.x']
-      fail-fast: false
-      #max-parallel: 3
     env:
       NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+      node_version: 14.x
     steps:
       - run: git config --global core.autocrlf false
       - uses: szenius/set-timezone@v1.2
@@ -71,10 +66,10 @@ jobs:
           bash ./bin/submodule-install
         shell: bash
         #if: ${{ false }}
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ env.node_version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.node_version }}
       - name: Enable corepack
         shell: bash
         run: corepack enable
@@ -118,9 +113,9 @@ jobs:
             **/node_modules
             **/tmp
             **/dist
-          key: ${{ runner.os }}-${{ matrix.node-version }}
+          key: ${{ runner.os }}-${{ env.node_version }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-${{ env.node_version }}
             ${{ runner.os }}-
 
       - name: Install Dependencies
@@ -165,7 +160,7 @@ jobs:
           echo "steps.changes.outputs.staged=${{ steps.changes.outputs.staged }}"
 
       - name: Push
-        if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.staged > 0
+        if: runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.staged > 0
         run: |
           git config --global user.name 'dimaslanjaka'
           git config --global user.email 'dimaslanjaka@gmail.com'
