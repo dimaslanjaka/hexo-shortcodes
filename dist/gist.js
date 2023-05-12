@@ -114,7 +114,7 @@ var gist = function (hexo) {
                         return [4 /*yield*/, fetch_raw_code(hexo, id, filename)];
                     case 1:
                         content = _a.sent();
-                        line = args[2];
+                        line = args[2] || '';
                         lineSplit = line.split('-');
                         startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
                         endLine = parseInt((line !== '' && lineSplit.length > 1 && lineSplit[1].replace('L', '')) || String(startLine));
