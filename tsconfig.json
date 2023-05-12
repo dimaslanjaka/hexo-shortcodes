@@ -25,7 +25,8 @@
     "noEmit": true,
     "paths": {
       "git-embed": ["../packages/git-embed/src"]
-    }
+    },
+    "typeRoots": ["src/globals.d.ts"]
   },
   "include": ["./src/**/*", "./src/*"],
   "exclude": ["**/dist/**", "**/node_modules/**"],
