@@ -1,14 +1,17 @@
 # hexo-shortcodes
 Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.
 
-NPM
-```
-npm install --save hexo-shortcodes
+## Installation
+Firsly, remove old original tag renderer. Because this plugin already have all default tag (`vimeo`, `youtube`, `gist`, `codeblock`)
+
+```bash
+npm un hexo-tag-embed
 ```
 
-Yarn
-```
-yarn add hexo-shortcodes
+Install
+
+```bash
+npm install --save hexo-shortcodes
 ```
 
 ## Usage
