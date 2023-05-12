@@ -12,11 +12,6 @@ var youtube_1 = require("./hexo-tag-embed/lib/tags/youtube");
 var jsfiddle_1 = require("./jsfiddle");
 var rssreader_1 = require("./rssreader");
 var utils_1 = require("./utils");
-/*
-declare global {
-  const hexo: import('hexo');
-}
-*/
 if (typeof hexo !== 'undefined') {
     // register hexo for utils
     (0, utils_1.registerHexo)(hexo);
