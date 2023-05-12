@@ -76,7 +76,7 @@ export function rssreader(hexo: import('hexo')) {
         )
       );
 
-      hexo.log.info(logname, url, options);
+      hexo.log.debug(logname, url, options);
       const feed = await parser.parseURL(url);
 
       // render

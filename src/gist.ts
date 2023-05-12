@@ -38,7 +38,7 @@ const fetch_raw_code = async function (hexo: import('hexo'), id: string, filenam
 export const gist = (hexo: import('hexo')) => {
   async function _usingHexoSyntaxHighlighter(args: string[]) {
     const id = args[0];
-    hexo.log.info(logname, id);
+    hexo.log.debug(logname, id);
     const filename = args[1] || '';
     const content = await fetch_raw_code(hexo, id, filename);
     const line = args[2] || '';

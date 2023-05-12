@@ -97,7 +97,7 @@ function rssreader(hexo) {
                             var split = str.split(':');
                             return _a = {}, _a[split[0]] = split[1], _a;
                         })));
-                        hexo.log.info(logname, url, options);
+                        hexo.log.debug(logname, url, options);
                         return [4 /*yield*/, parser.parseURL(url)];
                     case 1:
                         feed = _a.sent();
