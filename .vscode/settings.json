@@ -44,7 +44,7 @@
   "code-runner.saveAllFilesBeforeRun": true,
   "code-runner.runInTerminal": true,
   "code-runner.executorMap": {
-    "typescript": "npx cross-env-shell DEBUG=chimera-*,chimera,chimera:* ts-node",
+    "typescript": "node -r ts-node/register",
     "typescriptreact": "npx cross-env-shell DEBUG=chimera-*,chimera,chimera:* ts-node"
   },
   "code-runner.respectShebang": true,
