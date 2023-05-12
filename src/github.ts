@@ -59,7 +59,7 @@ export function githubEmbedder(hexo: Hexo) {
         url = parseURL.toString();
       }
 
-      hexo.log.i(logname, parseURL.pathname + parseURL.hash);
+      hexo.log.debug(logname, parseURL.pathname + parseURL.hash);
       config.line = parseURL.hash;
       const embed = await gitEmbed(url, { tabSize: 2 });
       const content = embed.result;

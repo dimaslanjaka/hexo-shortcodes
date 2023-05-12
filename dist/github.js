@@ -131,7 +131,7 @@ function githubEmbedder(hexo) {
                             }
                             url = parseURL.toString();
                         }
-                        hexo.log.i(logname, parseURL.pathname + parseURL.hash);
+                        hexo.log.debug(logname, parseURL.pathname + parseURL.hash);
                         config_1.line = parseURL.hash;
                         return [4 /*yield*/, (0, git_embed_1.default)(url, { tabSize: 2 })];
                     case 1:
