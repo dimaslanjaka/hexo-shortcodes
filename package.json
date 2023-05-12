@@ -37,7 +37,7 @@
   "scripts": {
     "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
     "update:ncu": "npm-check-updates -u -x hexo,hexo-fs",
-    "update": "nrs update:*",
+    "update": "nrs \"update:*\"",
     "build": "tsc -p tsconfig.build.json",
     "pack": "node packer.js --yarn",
     "dev": "tsc -p tsconfig.build.json --watch",
@@ -54,21 +54,20 @@
     "axios": "^1.4.0",
     "bluebird": "^3.7.2",
     "fs-extra": "^11.1.1",
-    "git-embed": "^0.1.0",
-    "hexo-shortcodes": "^1.0.6",
+    "git-embed": "^0.1.1",
     "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo-util.tgz",
     "nunjucks": "^3.2.4",
     "rss-parser": "^3.13.0",
-    "sbg-utility": "^1.0.9"
+    "sbg-utility": "^1.1.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.38",
     "@types/fs-extra": "^11.0.1",
     "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo.tgz",
-    "@types/node": "^18.16.3",
+    "@types/node": "^20.1.3",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/5560156be9745d682c7a5e727cffeee0b0179ab1",
-    "git-command-helper": "^1.2.2",
+    "git-command-helper": "^1.2.3",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "typescript": "^5.0.4"
