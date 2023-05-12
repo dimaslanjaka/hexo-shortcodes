@@ -6,7 +6,7 @@ on:
     paths-ignore:
       - '**/*.tgz'
       - '**/*.gz'
-      - '**/release/**'
+      - '**/release*/**'
       - '**garbage-collector**'
       - '**codeql**'
   pull_request:
@@ -14,7 +14,7 @@ on:
     types:
       - closed
     paths-ignore:
-      - '**/release/**'
+      - '**/release*/**'
       - '**/*.tgz'
       - '**/*.gz'
       - '**/test*/**'
@@ -55,6 +55,7 @@ jobs:
         with:
           submodules: recursive
           token: '${{ secrets.ACCESS_TOKEN }}'
+          ref: master
       - name: update submodules
         run: |
           echo "init submodules"
