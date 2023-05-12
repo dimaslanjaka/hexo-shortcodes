@@ -110,7 +110,7 @@ var gist = function (hexo) {
                     case 0:
                         id = args[0];
                         hexo.log.info(logname, id);
-                        filename = args[1];
+                        filename = args[1] || '';
                         return [4 /*yield*/, fetch_raw_code(hexo, id, filename)];
                     case 1:
                         content = _a.sent();
