@@ -30,6 +30,7 @@
     "lib",
     "readme.md",
     "dist",
+    "typings",
     "!**/release/**",
     "!**/yarn.lock",
     "!**/package-lock.json"

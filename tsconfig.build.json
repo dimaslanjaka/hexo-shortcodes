@@ -10,7 +10,8 @@
     "noEmit": false,
     "rootDir": "src",
     "skipDefaultLibCheck": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots": ["typings"]
   },
   "include": ["./src/index.ts"],
   "exclude": ["**/dist/**"]
