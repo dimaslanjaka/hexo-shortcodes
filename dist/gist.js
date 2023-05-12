@@ -66,12 +66,7 @@ exports.gist = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var axios_1 = __importDefault(require("axios"));
 var bluebird_1 = __importDefault(require("bluebird"));
-var fs_extra_1 = __importDefault(require("fs-extra"));
-var nunjucks_1 = __importDefault(require("nunjucks"));
 var upath_1 = __importDefault(require("upath"));
-var sbg_utility_1 = __importDefault(require("sbg-utility"));
-var env_1 = require("./env");
-var utils_1 = require("./utils");
 var hexoUtils = __importStar(require("hexo-util"));
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
@@ -107,95 +102,6 @@ var fetch_raw_code = function (hexo, id, filename) {
     });
 };
 var gist = function (hexo) {
-    nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
-        noCache: true,
-        watch: false
-    });
-    var libFilename = 'gist.css';
-    var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(libFilename);
-    var libFilePath = upath_1.default.resolve(env_1.LIB_PATH, libFilename);
-    hexo.extend.generator.register((0, utils_1.url_for)(libRoute), function () {
-        return {
-            path: libRoute,
-            data: function () { return fs_extra_1.default.createReadStream(libFilePath); }
-        };
-    });
-    hexo.extend.filter.register('server_middleware', function (app) {
-        app.use(libRoute, function (_req, res) {
-            res.setHeader('content-type', 'text/javascript');
-            res.end(fs_extra_1.default.readFileSync(libFilePath).toString());
-        });
-    });
-    /**
-     * render using nunjucks
-     * @param args
-     * @returns
-     */
-    function _nunjucksMethod(args) {
-        var id = args[0];
-        hexo.log.info(logname, id);
-        var filename = args[1];
-        var payload = {
-            id: id,
-            filename: filename,
-            raw_code: ''
-        };
-        return nunjucks_1.default.renderString(fs_extra_1.default.readFileSync(env_1.GIST_TEMPLATE).toString(), payload);
-    }
-    var _oldMethod = function (args) {
-        return new Promise(function (resolve) {
-            var id = args[0];
-            hexo.log.info(logname, id);
-            var filename = args[1];
-            var payload = {
-                id: id,
-                filename: filename,
-                raw_code: ''
-            };
-            fetch_raw_code(hexo, id, filename)
-                .then(function (raw_code) {
-                payload.raw_code = raw_code;
-                sbg_utility_1.default.writefile(upath_1.default.join(env_1.TEMP_PATH, 'gist', id + '.txt'), raw_code);
-                sbg_utility_1.default.writefile(upath_1.default.join(env_1.TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
-            })
-                .catch(function (e) {
-                payload.raw_code = sbg_utility_1.default.jsonStringifyWithCircularRefs(e);
-            })
-                .finally(function () {
-                /*let result = '';
-              if (filename) {
-                result += `<script src="https://gist.github.com/${id}.js?file=${filename}"></script>`;
-              } else {
-                result += `<script src="https://gist.github.com/${id}.js"></script>`;
-              }
-              result += `
-              <noscript>
-                <pre><code>${payload.raw_code}</code></pre>
-              </noscript>
-              `;
-              resolve(result);*/
-                nunjucks_1.default.render('hexo-gist.njk', payload, function (_err, result) {
-                    sbg_utility_1.default.writefile(upath_1.default.join(env_1.TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
-                    resolve(result);
-                });
-                /*nunjucks.renderString(
-                fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
-                payload,
-                function (err, result) {
-                  if (err) {
-                    console.log(err);
-                    resolve(
-                      `ERROR(gist) cannot fetch ${id}.<br/> ${escapeHTML(JSON.stringifyWithCircularRefs(err, null, 2))}`
-                    );
-                  } else {
-                    writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), result);
-                    resolve(result);
-                  }
-                }
-              );*/
-            });
-        });
-    };
     function _usingHexoSyntaxHighlighter(args) {
         return __awaiter(this, void 0, void 0, function () {
             var id, filename, content, line, lineSplit, startLine, endLine, codeText, contentSplit, options, newContent;
