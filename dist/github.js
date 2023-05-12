@@ -146,6 +146,7 @@ function githubEmbedder(hexo) {
                             lang: embed.parseResult.language,
                             caption: embed.parseResult.language
                         };
+                        hexo.log.i(logname, options);
                         newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
                             context: hexo,
                             args: [content, options]

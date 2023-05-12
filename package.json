@@ -74,6 +74,8 @@
     "typescript": "^5.0.4"
   },
   "engines": {
+    "node": "^14.0.0",
+    "npm": "^8.0.0",
     "hexo": ">= 3.0.0"
   },
   "packageManager": "yarn@3.5.1"
