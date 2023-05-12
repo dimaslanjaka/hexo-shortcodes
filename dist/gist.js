@@ -228,13 +228,13 @@ var gist = function (hexo) {
                             return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(codeText), "</code></pre>")];
                         }
                         options = {
-                            lines_length: content.split('\n').length,
+                            lines_length: codeText.split('\n').length,
                             lang: upath_1.default.extname(filename),
                             caption: upath_1.default.extname(filename)
                         };
                         newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
                             context: hexo,
-                            args: [content, options]
+                            args: [codeText, options]
                         });
                         return [2 /*return*/, newContent.replace(/{/g, '&#123;').replace(/}/g, '&#125;')];
                 }
