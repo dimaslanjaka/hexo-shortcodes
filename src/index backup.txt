@@ -134,7 +134,7 @@ hexo.extend.tag.register(
   function (args) {
     return new Promise((resolve) => {
       const id = args[0];
-      hexo.log.info(_hg_logname, id);
+      hexo.log.debug(_hg_logname, id);
       const filename = args[1];
       const payload = {
         id,

@@ -1,16 +1,17 @@
 # hexo-shortcodes
 Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.
 
-[![Build Master](https://github.com/dimaslanjaka/hexo-shortcodes/actions/workflows/build-master.yml/badge.svg)](https://github.com/dimaslanjaka/hexo-shortcodes/actions/workflows/build-master.yml)
+## Installation
+Firsly, remove old original tag renderer. Because this plugin already have all default tag (`vimeo`, `youtube`, `gist`, `codeblock`)
 
-NPM
+```bash
+npm un hexo-tag-embed
 ```
+
+Install
+
+```bash
 npm install --save hexo-shortcodes
-```
-
-Yarn
-```
-yarn add hexo-shortcodes
 ```
 
 ## Usage

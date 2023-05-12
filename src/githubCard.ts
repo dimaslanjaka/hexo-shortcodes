@@ -52,7 +52,7 @@ export function githubCard(hexo: import('hexo')) {
         const current = arg.split(':');
         argsObj[current[0]] = current[1];
       });
-      hexo.log.info(logname, argsObj);
+      hexo.log.debug(logname, argsObj);
 
       const user = argsObj.user,
         repo = argsObj.repo,

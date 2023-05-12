@@ -1,9 +1,10 @@
 /* eslint-disable no-useless-escape */
-const { spawn } = require('cross-spawn')
-const fs = require('fs-extra')
-const { join, dirname, toUnix } = require('upath')
-const packagejson = require('./package.json')
-const crypto = require('crypto')
+const { spawn, async: spawnAsync } = require('cross-spawn');
+const fs = require('fs-extra');
+const { resolve, join, dirname, toUnix, basename } = require('upath');
+const packagejson = require('./package.json');
+const crypto = require('crypto');
+
 // const os = require('os');
 
 // auto create tarball (tgz) on release folder
@@ -16,98 +17,85 @@ const crypto = require('crypto')
 
 //// CHECK REQUIRED PACKAGES
 
-const scriptname = `[packer]`
-const isAllPackagesInstalled = [
-  'cross-spawn',
-  'ansi-colors',
-  'glob',
-  'upath',
-  'minimist'
-].map((name) => ({
+const scriptname = `[packer]`;
+const isAllPackagesInstalled = ['cross-spawn', 'ansi-colors', 'glob', 'upath', 'minimist'].map((name) => ({
   name,
   installed: isPackageInstalled(name)
-}))
+}));
 if (!isAllPackagesInstalled.every((o) => o.installed === true)) {
-  const names = isAllPackagesInstalled
-    .filter((o) => o.installed === false)
-    .map((o) => o.name)
-  log(
-    scriptname,
-    'package',
-    names.join(', '),
-    'is not installed',
-    'skipping postinstall script'
-  )
-  process.exit(0)
+  const names = isAllPackagesInstalled.filter((o) => o.installed === false).map((o) => o.name);
+  console.log(scriptname, 'package', names.join(', '), 'is not installed', 'skipping postinstall script');
+  process.exit(0);
 }
 
-const args = process.argv.slice(2)
-const argv = require('minimist')(args)
+const args = process.argv.slice(2);
+const argv = require('minimist')(args);
 
-const verbose = args.includes('-d') || args.includes('--verbose')
-let log = console.log
+const verbose = args.includes('-d') || args.includes('--verbose');
+let log = console.log;
 if (!verbose) {
   log = (..._args) => {
     //
-  }
+  };
 }
 
-const withYarn = args.includes('-yarn') || args.includes('--yarn')
-const withFilename = argv['fn'] || argv['filename'] ? true : false
-const releaseDir1 = join(__dirname, 'release')
-const releaseDir2 = join(__dirname, 'releases')
-const releaseDir = !fs.existsSync(releaseDir2) ? releaseDir1 : releaseDir2
+const withYarn = args.includes('-yarn') || args.includes('--yarn');
+const withFilename = argv['fn'] || argv['filename'] ? true : false;
+const releaseDir1 = join(__dirname, 'release');
+const releaseDir2 = join(__dirname, 'releases');
+const releaseDir = !fs.existsSync(releaseDir2) ? releaseDir1 : releaseDir2;
 
 // create released directory when not exist
 if (!fs.existsSync(releaseDir)) {
-  fs.mkdirpSync(releaseDir)
+  fs.mkdirpSync(releaseDir);
 }
 
-log('='.repeat(19))
-log('= packing started =')
-log('='.repeat(19))
+log('='.repeat(19));
+log('= packing started =');
+log('='.repeat(19));
+
+/**
+ * is current device is Github Actions
+ */
+const _isCI = process.env.GITHUB_ACTION && process.env.GITHUB_ACTIONS;
 
 const child = !withYarn
   ? spawn('npm', ['pack'], { cwd: __dirname, stdio: 'ignore' })
-  : spawn('yarn', ['pack'], { cwd: __dirname, stdio: 'ignore' })
+  : spawn('yarn', ['pack'], { cwd: __dirname, stdio: 'ignore' });
 
 const version = (function () {
-  const v = parseVersion(packagejson.version)
-  return `${v.major}.${v.minor}.${v.patch}`
-})()
+  const v = parseVersion(packagejson.version);
+  return `${v.major}.${v.minor}.${v.patch}`;
+})();
 
-child.on('exit', withYarn ? bundleWithYarn : bundleWithNpm)
+child.on('exit', withYarn ? bundleWithYarn : bundleWithNpm);
 
 const getPackageHashes = async function () {
-  let hashes = {}
-  const metafile = join(releaseDir, 'metadata.json')
+  let hashes = {};
+  const metafile = join(releaseDir, 'metadata.json');
   // read old meta
   if (fs.existsSync(metafile)) {
     try {
-      hashes = Object.assign(
-        hashes,
-        JSON.parse(fs.readFileSync(metafile, 'utf-8'))
-      )
+      hashes = Object.assign(hashes, JSON.parse(fs.readFileSync(metafile, 'utf-8')));
     } catch {
-      hashes = {}
+      hashes = {};
     }
   }
-  const pkglock = [
-    join(__dirname, 'package-lock.json'),
-    join(__dirname, 'yarn.lock')
-  ].filter((str) => fs.existsSync(str))[0]
+  const pkglock = [join(__dirname, 'package-lock.json'), join(__dirname, 'yarn.lock')].filter((str) =>
+    fs.existsSync(str)
+  )[0];
   const readDir = fs
     .readdirSync(releaseDir)
     .filter((path) => path.endsWith('tgz'))
-    .map((path) => join(releaseDir, path))
+    .map((path) => join(releaseDir, path));
 
   if (typeof pkglock === 'string' && fs.existsSync(pkglock)) {
-    readDir.push(pkglock)
+    readDir.push(pkglock);
   }
   for (let i = 0; i < readDir.length; i++) {
-    const file = readDir[i]
-    const stat = fs.statSync(file)
-    const size = `${parseFloat(stat.size / Math.pow(1024, 1)).toFixed(2)} KB`
+    const file = readDir[i];
+    const stat = fs.statSync(file);
+    const size = `${parseFloat(stat.size / Math.pow(1024, 1)).toFixed(2)} KB`;
     // assign to existing object
     hashes = Object.assign({}, hashes, {
       [toUnix(file).replace(toUnix(__dirname), '')]: {
@@ -119,100 +107,93 @@ const getPackageHashes = async function () {
         },
         size
       }
-    })
+    });
     //log("Last callback call at index " + index + " with value " + file);
 
     //hashes = { [os.type()]: { [os.arch()]: hashes } };
-    fs.writeFileSync(metafile, JSON.stringify(hashes, null, 2))
-    log(hashes)
+    fs.writeFileSync(metafile, JSON.stringify(hashes, null, 2));
+    log(hashes);
   }
-}
+};
 
 function bundleWithYarn() {
   // create readme
-  addReadMe()
+  addReadMe();
 
   // start bundle
-  let filename = 'package.tgz'
-  let tgz = join(__dirname, filename)
+  let filename = 'package.tgz';
+  let tgz = join(__dirname, filename);
   const targetFname =
-    argv['fn'] ||
-    argv['filename'] ||
-    slugifyPkgName(`${packagejson.name}-${packagejson.version}.tgz`)
+    argv['fn'] || argv['filename'] || slugifyPkgName(`${packagejson.name}-${packagejson.version}.tgz`);
   if (!fs.existsSync(tgz)) {
-    filename = slugifyPkgName(`${packagejson.name}-v${packagejson.version}.tgz`)
-    tgz = join(__dirname, filename)
+    filename = slugifyPkgName(`${packagejson.name}-v${packagejson.version}.tgz`);
+    tgz = join(__dirname, filename);
   }
 
   if (withFilename) {
-    const tgzlatest = join(releaseDir, targetFname + '.tgz')
+    const tgzlatest = join(releaseDir, targetFname + '.tgz');
     if (fs.existsSync(tgz)) {
-      fs.copySync(tgz, tgzlatest, { overwrite: true })
+      fs.copySync(tgz, tgzlatest, { overwrite: true });
     }
   } else {
-    const tgzlatest = join(
-      releaseDir,
-      slugifyPkgName(`${packagejson.name}.tgz`)
-    )
-    const tgzversion = join(releaseDir, targetFname)
+    const tgzlatest = join(releaseDir, slugifyPkgName(`${packagejson.name}.tgz`));
+    const tgzversion = join(releaseDir, targetFname);
 
     if (fs.existsSync(tgz)) {
-      fs.copySync(tgz, tgzlatest, { overwrite: true })
-      fs.copySync(tgz, tgzversion, { overwrite: true })
+      fs.copySync(tgz, tgzlatest, { overwrite: true });
+      fs.copySync(tgz, tgzversion, { overwrite: true });
     }
   }
 
   if (fs.existsSync(tgz)) {
     // remove package.tgz
-    fs.rmSync(tgz, { recursive: true, force: true })
+    fs.rmSync(tgz, { recursive: true, force: true });
   }
 
   // write hashes info
   getPackageHashes().then(() => {
-    log('='.repeat(20))
-    log('= packing finished =')
-    log('='.repeat(20))
-  })
+    log('='.repeat(20));
+    log('= packing finished =');
+    log('='.repeat(20));
+  });
 }
 
 function bundleWithNpm() {
-  const filename = slugifyPkgName(`${packagejson.name}-${version}.tgz`)
-  const tgz = join(__dirname, filename)
-  const tgzversion = join(releaseDir, filename)
+  const filename = slugifyPkgName(`${packagejson.name}-${version}.tgz`);
+  const tgz = join(__dirname, filename);
+  const tgzversion = join(releaseDir, filename);
 
   if (!fs.existsSync(tgz)) {
-    const filename2 = slugifyPkgName(
-      `${packagejson.name}-${packagejson.version}.tgz`
-    )
-    const origintgz = join(__dirname, filename2)
-    fs.renameSync(origintgz, tgz)
+    const filename2 = slugifyPkgName(`${packagejson.name}-${packagejson.version}.tgz`);
+    const origintgz = join(__dirname, filename2);
+    fs.renameSync(origintgz, tgz);
   }
-  const tgzlatest = join(releaseDir, slugifyPkgName(`${packagejson.name}.tgz`))
+  const tgzlatest = join(releaseDir, slugifyPkgName(`${packagejson.name}.tgz`));
 
   // create dir when not exist
   if (!fs.existsSync(dirname(tgzlatest))) {
-    fs.mkdirpSync(dirname(tgzlatest))
+    fs.mkdirpSync(dirname(tgzlatest));
   }
 
   // create readme
-  addReadMe()
+  addReadMe();
 
   if (fs.existsSync(tgz)) {
-    fs.copySync(tgz, tgzlatest)
-    fs.copySync(tgz, tgzversion)
-    if (fs.existsSync(tgz)) fs.rmSync(tgz)
+    fs.copySync(tgz, tgzlatest);
+    fs.copySync(tgz, tgzversion);
+    if (fs.existsSync(tgz)) fs.rmSync(tgz);
 
     // write hashes info
     getPackageHashes().then(() => {
-      log('='.repeat(20))
-      log('= packing finished =')
-      log('='.repeat(20))
-    })
+      log('='.repeat(20));
+      log('= packing finished =');
+      log('='.repeat(20));
+    });
   }
 }
 
 function slugifyPkgName(str) {
-  return str.replace(/\//g, '-').replace(/@/g, '')
+  return str.replace(/\//g, '-').replace(/@/g, '');
 }
 
 /**
@@ -221,7 +202,7 @@ function slugifyPkgName(str) {
  * @returns
  */
 function parseVersion(versionString) {
-  const vparts = versionString.split('.')
+  const vparts = versionString.split('.');
   const version = {
     major: parseInt(vparts[0]),
     minor: parseInt(vparts[1]),
@@ -229,19 +210,128 @@ function parseVersion(versionString) {
     build: parseInt(vparts[3] || null),
     range: parseInt(vparts[2].split('-')[1]),
     commit: vparts[2].split('-')[2]
-  }
+  };
 
-  return version
+  return version;
 }
 
 /**
  * create release/readme.md
  */
-function addReadMe() {
+async function addReadMe() {
+  // set username and email on CI
+  if (_isCI) {
+    await spawnAsync('git', ['config', '--global', 'user.name', 'dimaslanjaka'], {
+      cwd: __dirname,
+      stdio: 'inherit'
+    });
+    await spawnAsync('git', ['config', '--global', 'user.email', 'dimaslanjaka@gmail.com'], {
+      cwd: __dirname,
+      stdio: 'inherit'
+    });
+  }
+
+  /**
+   * @type {typeof import('git-command-helper')}
+   */
+  const gch = packagejson.name !== 'git-command-helper' ? require('git-command-helper') : require('./dist');
+
+  const git = new gch.default(__dirname);
+  const branch = (await git.getbranch()).filter((o) => o.active)[0].branch;
+  const gitlatest = await git.latestCommit();
+
+  const tarballs = fs
+    .readdirSync(releaseDir)
+    .filter((str) => str.endsWith('tgz'))
+    .map((str) => {
+      return {
+        absolute: resolve(releaseDir, str),
+        relative: resolve(releaseDir, str).replace(toUnix(__dirname), '')
+      };
+    })
+    .filter((o) => fs.statSync(o.absolute).isFile());
+
+  let md = `# Release \`${packagejson.name}\` tarball\n`;
+
+  md += '## Releases\n';
+  md += '| version | tarball url |\n';
+  md += '| :--- | :--- |\n';
+  for (let i = 0; i < tarballs.length; i++) {
+    const tarball = tarballs[i];
+    const relativeTarball = tarball.relative.replace(/^\/+/, '');
+    // skip file not exist
+    if (!fs.existsSync(tarball.absolute)) {
+      console.log(tarball.relative, 'not found');
+      continue;
+    }
+    // skip index tarball which ignored by .gitignore
+    const checkIgnoreSpawn = await spawnAsync('git', ['status', '--porcelain', '--ignored'], { cwd: __dirname }).catch(
+      (err) => {
+        console.log(err);
+        return { output: '', stdou: '', err };
+      }
+    );
+
+    const checkIgnore = (checkIgnoreSpawn.output || checkIgnoreSpawn.stdout)
+      .split(/\r?\n/)
+      .map((str) => str.trim())
+      .filter((str) => str.startsWith('!!'))
+      .map((str) => str.replace('!!', '').trim())
+      .join('\n');
+    if (checkIgnore.includes(relativeTarball)) {
+      console.log(relativeTarball, 'ignored by .gitignore');
+      continue;
+    } else {
+      await git.add(relativeTarball);
+      const args = ['status', '--porcelain', '--', relativeTarball, '|', 'wc', '-l'];
+      const isChanged =
+        parseInt(
+          (
+            await spawnAsync('git', args, {
+              cwd: __dirname,
+              shell: true
+            })
+          ).output.trim()
+        ) > 0;
+      if (isChanged) {
+        await git.commit('chore(tarball): update ' + gitlatest, '-m', { stdio: 'pipe' });
+      }
+    }
+
+    const hash = await git.latestCommit(tarball.relative.replace(/^\/+/, ''));
+    const raw = await git.getGithubRepoUrl(tarball.relative.replace(/^\/+/, ''));
+    let tarballUrl;
+    const dev = raw.rawURL;
+    const prod = raw.rawURL.replace('/raw/' + branch, '/raw/' + hash);
+    let ver = basename(tarball.relative, '.tgz').replace(`${packagejson.name}-`, '');
+    if (isNaN(parseFloat(ver))) {
+      ver = 'latest';
+      tarballUrl = dev;
+      md += `| ${ver} | ${prod} |\n`;
+    } else {
+      tarballUrl = prod;
+    }
+    md += `| ${ver} | ${tarballUrl} |\n`;
+  }
+
+  md += `
+use this tarball with \`resolutions\`:
+\`\`\`json
+{
+  "resolutions": {
+    "${packagejson.name}": "<url of tarball>"
+  }
+}
+\`\`\`
+
+## Releases
+
+    `;
+
   fs.writeFileSync(
     join(releaseDir, 'readme.md'),
-    `
-# Release \`${packagejson.name}\` Tarball
+    md +
+      `
 
 ## Get URL of \`${packagejson.name}\` Release Tarball
 - select tarball file
@@ -262,7 +352,7 @@ npm i https://github.com/dimaslanjaka/nodejs-package-types/raw/main/release/node
 ## URL Parts Explanations
 > https://github.com/github-username/github-repo-name/raw/github-branch-name/path-to-file-with-extension
   `.trim()
-  )
+  );
 }
 
 /**
@@ -274,12 +364,12 @@ npm i https://github.com/dimaslanjaka/nodejs-package-types/raw/main/release/node
  */
 function file_to_hash(alogarithm = 'sha1', path, encoding = 'hex') {
   return new Promise((resolve, reject) => {
-    const hash = crypto.createHash(alogarithm)
-    const rs = fs.createReadStream(path)
-    rs.on('error', reject)
-    rs.on('data', (chunk) => hash.update(chunk))
-    rs.on('end', () => resolve(hash.digest(encoding)))
-  })
+    const hash = crypto.createHash(alogarithm);
+    const rs = fs.createReadStream(path);
+    rs.on('error', reject);
+    rs.on('data', (chunk) => hash.update(chunk));
+    rs.on('end', () => resolve(hash.digest(encoding)));
+  });
 }
 
 /**
@@ -289,14 +379,9 @@ function file_to_hash(alogarithm = 'sha1', path, encoding = 'hex') {
  */
 function isPackageInstalled(packageName) {
   try {
-    const modules = Array.from(process.moduleLoadList).filter(
-      (str) => !str.startsWith('NativeModule internal/')
-    )
-    return (
-      modules.indexOf(`NativeModule ${packageName}`) >= 0 ||
-      fs.existsSync(require.resolve(packageName))
-    )
+    const modules = Array.from(process.moduleLoadList).filter((str) => !str.startsWith('NativeModule internal/'));
+    return modules.indexOf(`NativeModule ${packageName}`) >= 0 || fs.existsSync(require.resolve(packageName));
   } catch (e) {
-    return false
+    return false;
   }
 }
