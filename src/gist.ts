@@ -41,7 +41,7 @@ export const gist = (hexo: import('hexo')) => {
     hexo.log.info(logname, id);
     const filename = args[1];
     const content = await fetch_raw_code(hexo, id, filename);
-    const line = args[2];
+    const line = args[2] || '';
     const lineSplit = line.split('-');
     const startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
     const endLine = parseInt(
