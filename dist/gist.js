@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,10 +68,11 @@ var axios_1 = __importDefault(require("axios"));
 var bluebird_1 = __importDefault(require("bluebird"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
-var path_1 = __importDefault(require("path"));
+var upath_1 = __importDefault(require("upath"));
 var sbg_utility_1 = __importDefault(require("sbg-utility"));
 var env_1 = require("./env");
 var utils_1 = require("./utils");
+var hexoUtils = __importStar(require("hexo-util"));
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
@@ -89,7 +113,7 @@ var gist = function (hexo) {
     });
     var libFilename = 'gist.css';
     var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(libFilename);
-    var libFilePath = path_1.default.resolve(env_1.LIB_PATH, libFilename);
+    var libFilePath = upath_1.default.resolve(env_1.LIB_PATH, libFilename);
     hexo.extend.generator.register((0, utils_1.url_for)(libRoute), function () {
         return {
             path: libRoute,
@@ -131,8 +155,8 @@ var gist = function (hexo) {
             fetch_raw_code(hexo, id, filename)
                 .then(function (raw_code) {
                 payload.raw_code = raw_code;
-                sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.txt'), raw_code);
-                sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
+                sbg_utility_1.default.writefile(upath_1.default.join(env_1.TEMP_PATH, 'gist', id + '.txt'), raw_code);
+                sbg_utility_1.default.writefile(upath_1.default.join(env_1.TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
             })
                 .catch(function (e) {
                 payload.raw_code = sbg_utility_1.default.jsonStringifyWithCircularRefs(e);
@@ -151,7 +175,7 @@ var gist = function (hexo) {
               `;
               resolve(result);*/
                 nunjucks_1.default.render('hexo-gist.njk', payload, function (_err, result) {
-                    sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
+                    sbg_utility_1.default.writefile(upath_1.default.join(env_1.TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
                     resolve(result);
                 });
                 /*nunjucks.renderString(
@@ -172,9 +196,9 @@ var gist = function (hexo) {
             });
         });
     };
-    function _newMethod(args) {
+    function _usingHexoSyntaxHighlighter(args) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, filename, raw_code, payload;
+            var id, filename, content, line, lineSplit, startLine, endLine, codeText, contentSplit, options, newContent;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -183,19 +207,40 @@ var gist = function (hexo) {
                         filename = args[1];
                         return [4 /*yield*/, fetch_raw_code(hexo, id, filename)];
                     case 1:
-                        raw_code = _a.sent();
-                        payload = {
-                            id: id,
-                            filename: filename,
-                            raw_code: raw_code
+                        content = _a.sent();
+                        line = args[2];
+                        lineSplit = line.split('-');
+                        startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
+                        endLine = parseInt((line !== '' && lineSplit.length > 1 && lineSplit[1].replace('L', '')) || String(startLine));
+                        codeText = '';
+                        contentSplit = content.split('\n');
+                        if (startLine > 0) {
+                            contentSplit = contentSplit.slice(startLine - 1, endLine);
+                            codeText = contentSplit.join('\n');
+                            // Then add the newline back
+                            codeText = codeText + '\n';
+                        }
+                        // fallback to content
+                        if (codeText.length === 0)
+                            codeText = content;
+                        // If neither highlight.js nor prism.js is enabled, return escaped code directly
+                        if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+                            return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(codeText), "</code></pre>")];
+                        }
+                        options = {
+                            lines_length: content.split('\n').length,
+                            lang: upath_1.default.extname(filename),
+                            caption: upath_1.default.extname(filename)
                         };
-                        hexo.log.info(payload);
-                        return [2 /*return*/, ''];
+                        newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
+                            context: hexo,
+                            args: [content, options]
+                        });
+                        return [2 /*return*/, newContent.replace(/{/g, '&#123;').replace(/}/g, '&#125;')];
                 }
             });
         });
     }
-    // hexo.extend.tag.unregister('gist');
-    hexo.extend.tag.register('gist', _newMethod, { async: true });
+    hexo.extend.tag.register('gist', _usingHexoSyntaxHighlighter, { async: true });
 };
 exports.gist = gist;
