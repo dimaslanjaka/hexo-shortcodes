@@ -39,7 +39,7 @@ export const gist = (hexo: import('hexo')) => {
   async function _usingHexoSyntaxHighlighter(args: string[]) {
     const id = args[0];
     hexo.log.info(logname, id);
-    const filename = args[1];
+    const filename = args[1] || '';
     const content = await fetch_raw_code(hexo, id, filename);
     const line = args[2] || '';
     const lineSplit = line.split('-');
