@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "yarn build && cd test && hexo clean && hexo server -p 4000",
-    "build:git-embed": "cd git-embed && yarn run build",
+    "build:git-embed": "cd packages/git-embed && yarn run build",
     "build:hexo-shortcodes": "yarn workspace hexo-shortcodes run build",
     "build": "nrs \"build:**\"",
     "pack": "yarn workspace hexo-shortcodes run pack",
@@ -22,7 +22,7 @@
     "clean:ge": "yarn workspace hexo-shortcodes run clean",
     "clean:hs": "yarn workspace hexo-shortcodes run clean",
     "clean": "nrs \"clean:**\"",
-    "prepare": "husky install && cd git-embed && yarn install"
+    "prepare": "husky install && cd packages/git-embed && yarn install"
   },
   "repository": {
     "type": "git",
