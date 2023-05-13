@@ -68,6 +68,9 @@ var axios_1 = __importDefault(require("axios"));
 var bluebird_1 = __importDefault(require("bluebird"));
 var upath_1 = __importDefault(require("upath"));
 var hexoUtils = __importStar(require("hexo-util"));
+var nunjucks_1 = __importDefault(require("nunjucks"));
+var fs_extra_1 = __importDefault(require("fs-extra"));
+var env_1 = require("./env");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
@@ -102,14 +105,76 @@ var fetch_raw_code = function (hexo, id, filename) {
     });
 };
 var gist = function (hexo) {
+    var url_for = hexoUtils.url_for.bind(hexo);
+    var libFilename = 'gist.css';
+    var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(libFilename);
+    var libFilePath = upath_1.default.resolve(env_1.LIB_PATH, libFilename);
+    /**
+     * REGISTER MIDDLEWARE FOR HEXO GENERATE
+     */
+    hexo.extend.generator.register(url_for(libRoute, {}), function () {
+        return {
+            path: libRoute,
+            data: function () { return fs_extra_1.default.createReadStream(libFilePath); }
+        };
+    });
+    /**
+     * REGISTER MIDDLEWARE FOR HEXO SERVER
+     */
+    hexo.extend.filter.register('server_middleware', function (app) {
+        app.use(libRoute, function (_req, res) {
+            res.setHeader('content-type', 'text/javascript');
+            res.end(fs_extra_1.default.readFileSync(libFilePath).toString());
+        });
+    });
+    /**
+     * render using nunjucks
+     * * useful when username undefined
+     * @returns
+     * @example
+     * {% gist 996818 %}
+     */
+    function _nunjucksMethod() {
+        var env = nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
+            noCache: true,
+            watch: false
+        });
+        return function (args) {
+            var id = args[0];
+            hexo.log.info(logname, id);
+            var filename = args[1];
+            var payload = {
+                id: id,
+                filename: filename,
+                raw_code: ''
+            };
+            return env.renderString(fs_extra_1.default.readFileSync(env_1.GIST_TEMPLATE).toString(), payload);
+        };
+    }
+    /**
+     * smart render using internal hexojs syntax highlighter
+     * @param args
+     * @returns
+     */
     function _usingHexoSyntaxHighlighter(args) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, filename, content, line, lineSplit, startLine, endLine, codeText, contentSplit, options, newContent;
+            var id, username, gist_id, filename, content, line, lineSplit, startLine, endLine, codeText, contentSplit, options, newContent;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = args[0];
-                        hexo.log.debug(logname, id);
+                        id = args[0] || '';
+                        username = id.split('/')[0];
+                        gist_id = id.split('/')[1];
+                        if (!gist_id) {
+                            try {
+                                return [2 /*return*/, _nunjucksMethod()(args)];
+                            }
+                            catch (error) {
+                                hexo.log.error(logname, error);
+                                return [2 /*return*/, ''];
+                            }
+                        }
+                        hexo.log.i(logname, username, gist_id);
                         filename = args[1] || '';
                         return [4 /*yield*/, fetch_raw_code(hexo, id, filename)];
                     case 1:
