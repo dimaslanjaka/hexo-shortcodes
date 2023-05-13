@@ -174,7 +174,7 @@ var gist = function (hexo) {
                                 return [2 /*return*/, ''];
                             }
                         }
-                        hexo.log.i(logname, username, gist_id);
+                        hexo.log.d(logname, username, gist_id);
                         filename = args[1] || '';
                         return [4 /*yield*/, fetch_raw_code(hexo, id, filename)];
                     case 1:
