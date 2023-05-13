@@ -14,9 +14,17 @@ const Hexo = require('./test/node_modules/hexo');
   await cp.async('npm', ['run', 'build'], { stdio: 'inherit', cwd: __dirname });
 
   // clone
-  await cp.async('git', ['clone', 'https://github.com/dimaslanjaka/docs.git', '.deploy_git'], {
-    cwd: base
-  });
+  if (!fs.existsSync(path.join(base, '.deploy_git/.git'))) {
+    if (fs.existsSync(path.join(base, '.deploy_git'))) {
+      fs.rmSync(path.join(base, '.deploy_git'), { recursive: true, force: true });
+    } else if (fs.existsSync(path.join(base, '.deploy_git/.git/index.lock'))) {
+      fs.rmSync(path.join(base, '.deploy_git/.git/index.lock'), { recursive: true, force: true });
+    }
+    await cp.async('git', ['clone', 'https://github.com/dimaslanjaka/docs.git', '.deploy_git'], {
+      stdio: 'inherit',
+      cwd: base
+    });
+  }
 
   // generate site
   //await cp.async('hexo', ['generate'], { cwd: base, stdio:'inherit' });
