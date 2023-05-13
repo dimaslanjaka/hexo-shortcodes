@@ -1,6 +1,6 @@
 {
   "name": "hexo-shortcodes",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -55,7 +55,7 @@
     "axios": "^1.4.0",
     "bluebird": "^3.7.2",
     "fs-extra": "^11.1.1",
-    "git-embed": "^0.1.1",
+    "git-embed": "^0.1.2",
     "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo-util.tgz",
     "nunjucks": "^3.2.4",
     "rss-parser": "^3.13.0",
@@ -74,6 +74,8 @@
     "typescript": "^5.0.4"
   },
   "engines": {
+    "node": "^14.0.0",
+    "npm": "^8.0.0",
     "hexo": ">= 3.0.0"
   },
   "packageManager": "yarn@3.5.1",
