@@ -141,7 +141,7 @@ var gist = function (hexo) {
         });
         return function (args) {
             var id = args[0];
-            hexo.log.info(logname, id);
+            hexo.log.d(logname, id);
             var filename = args[1];
             var payload = {
                 id: id,
