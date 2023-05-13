@@ -84,5 +84,8 @@
   "eslint.debug": true,
   "editor.formatOnPaste": false,
   "editor.formatOnType": false,
-  "html.format.enable": true
+  "html.format.enable": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/jekyll.json": "file:///d%3A/Repositories/hexo-shortcodes/test/_config.yml"
+  }
 }
