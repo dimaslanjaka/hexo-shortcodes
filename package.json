@@ -12,7 +12,7 @@
     "test": "yarn build && cd test && hexo clean && hexo server -p 4000",
     "build:git-embed": "cd git-embed && yarn run build",
     "build:hexo-shortcodes": "yarn workspace hexo-shortcodes run build",
-    "build": "nrs 'build:**'",
+    "build": "nrs \"build:**\"",
     "pack": "yarn workspace hexo-shortcodes run pack",
     "patch": "yarn workspace hexo-shortcodes version patch",
     "update:ncu": "npx npm-check-updates -u",
@@ -21,7 +21,7 @@
     "start": "yarn workspace hexo-shortcodes-test run serve",
     "clean:ge": "yarn workspace hexo-shortcodes run clean",
     "clean:hs": "yarn workspace hexo-shortcodes run clean",
-    "clean": "nrs clean:**",
+    "clean": "nrs \"clean:**\"",
     "prepare": "husky install && cd git-embed && yarn install"
   },
   "repository": {
