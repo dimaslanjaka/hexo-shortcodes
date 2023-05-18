@@ -136,7 +136,8 @@ function rssreader(hexo) {
                                     item['date'] = item.pubDate;
                                 }
                                 if ('image' in item === false) {
-                                    item.image = item['media:group'][0]['$'].url;
+                                    if (Array.isArray(item['media:group']))
+                                        item.image = item['media:group'][0]['$'].url;
                                 }
                                 // writefile(path.join(__dirname, '../tmp/item/', item.title + '.json'), jsonStringifyWithCircularRefs(item));
                                 // render result
