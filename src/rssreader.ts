@@ -85,7 +85,7 @@ export function rssreader(hexo: import('hexo')) {
       let rendered: string;
 
       if (options.debug === 'true') {
-        // debugging
+        // render debug
         rendered = `<pre><code class="highlight json">${JSON.stringify(Object.keys(item), null, 2)}</code></pre>`;
       } else {
         // clone and modify template
@@ -101,7 +101,7 @@ export function rssreader(hexo: import('hexo')) {
           hexo.log.debug(logname, regex, '->', replacement);
           cloneTemplate = cloneTemplate.replace(regex, replacement);
         });
-        // render
+        // render result
         rendered = env.renderString(cloneTemplate, item);
       }
       result.push(rendered);
