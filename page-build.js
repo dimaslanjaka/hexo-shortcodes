@@ -12,6 +12,7 @@ const deployDir = path.resolve(testDir, '.deploy_git/hexo-shortcodes');
   // check deploy directory
   if (!fs.existsSync(deployDir)) {
     await spawn('git', ['clone', '-b', 'master', 'https://github.com/dimaslanjaka/docs.git', 'test/.deploy_git'], {
+      shell: true,
       cwd: __dirname
     });
   } else {
@@ -35,7 +36,7 @@ const deployDir = path.resolve(testDir, '.deploy_git/hexo-shortcodes');
   await fs.copy(src, deployDir, { overwrite: true });
 
   try {
-    const destSpawnOpt = { cwd: deployDir, shell: true, stdio: 'inherit' };
+    const destSpawnOpt = { cwd: deployDir, stdio: 'inherit' };
     //await spawn('git', ['remote', 'set-url', 'origin', 'https://github.com/dimaslanjaka/docs.git'], destSpawnOpt);
     await spawn('git', ['add', '.'], destSpawnOpt);
     await spawn('git', ['commit', '-m', `"${message}"`], destSpawnOpt);
