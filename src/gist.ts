@@ -66,8 +66,7 @@ export const gist = (hexo: import('hexo')) => {
    * render using nunjucks
    * * useful when username undefined
    * @returns
-   * @example
-   * {% gist 996818 %}
+   * @see {@link https://www.webmanajemen.com/docs/hexo-shortcodes/gist}
    */
   function _nunjucksMethod() {
     const env = nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {

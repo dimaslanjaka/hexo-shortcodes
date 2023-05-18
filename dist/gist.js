@@ -131,8 +131,7 @@ var gist = function (hexo) {
      * render using nunjucks
      * * useful when username undefined
      * @returns
-     * @example
-     * {% gist 996818 %}
+     * @see {@link https://www.webmanajemen.com/docs/hexo-shortcodes/gist}
      */
     function _nunjucksMethod() {
         var env = nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
