@@ -185,7 +185,8 @@ jobs:
           fi
 
       - name: Push
-        if: matrix.node-version == '14.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
+        #if: matrix.node-version == '14.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
+        if: ${{ false }}
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config --global user.name 'dimaslanjaka'
