@@ -126,8 +126,9 @@ jobs:
         run: |
           touch yarn.lock
           yarn install
-          yarn prepare
         shell: bash
+        id: install
+      - run: yarn prepare
       - name: Build
         run: npm run build
         shell: bash
