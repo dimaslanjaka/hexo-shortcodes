@@ -58,58 +58,58 @@ export function rssreader(hexo: import('hexo')) {
     autoescape: false
   });
 
-  hexo.extend.tag.register(
-    'rssreader',
-    async function (args: any[], template = '') {
-      const url = args[0];
-      const defaults: rssreaderOptions = {
-        limit: '3',
-        debug: 'false'
-      };
-      const options = Object.assign(
-        defaults,
-        array2obj(
-          args.splice(1).map((str) => {
-            const split = str.split(':');
-            return { [split[0]]: split[1] };
-          })
-        )
-      );
+  const callback = async function (args: any[], template = '') {
+    const url = args[0];
+    const defaults: rssreaderOptions = {
+      limit: '3',
+      debug: 'false'
+    };
+    const options = Object.assign(
+      defaults,
+      array2obj(
+        args.splice(1).map((str) => {
+          const split = str.split(':');
+          return { [split[0]]: split[1] };
+        })
+      )
+    );
 
-      hexo.log.debug(logname, url, options);
-      const feed = await parser.parseURL(url);
+    hexo.log.debug(logname, url, options);
+    const feed = await parser.parseURL(url);
 
-      // render
-      const result = [] as string[];
-      for (let i = 0; i < (parseInt(String(options.limit)) || 3); i++) {
-        const item = feed.items[i];
+    // render
+    const result = [] as string[];
+    for (let i = 0; i < (parseInt(String(options.limit)) || 3); i++) {
+      const item = feed.items[i];
 
-        let rendered: string;
+      let rendered: string;
 
-        if (options.debug === 'true') {
-          // debugging
-          rendered = `<pre><code class="highlight json">${JSON.stringify(Object.keys(item), null, 2)}</code></pre>`;
-        } else {
-          // clone and modify template
-          let cloneTemplate = template
-            .replace(/\$title/gim, '{{ title }}')
-            .replace(/\$content/gim, '{{ content }}')
-            .replace(/\$link/gim, '{{ link }}')
-            .replace(/\$summary/gim, '{{ summary }}')
-            .replace(/\$image/gim, '{{ image }}');
-          Object.keys(item).forEach((key) => {
-            const regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
-            const replacement = '{{ ' + key + ' }}';
-            hexo.log.debug(logname, regex, '->', replacement);
-            cloneTemplate = cloneTemplate.replace(regex, replacement);
-          });
-          // render
-          rendered = env.renderString(cloneTemplate, item);
-        }
-        result.push(rendered);
+      if (options.debug === 'true') {
+        // debugging
+        rendered = `<pre><code class="highlight json">${JSON.stringify(Object.keys(item), null, 2)}</code></pre>`;
+      } else {
+        // clone and modify template
+        let cloneTemplate = template
+          .replace(/\$title/gim, '{{ title }}')
+          .replace(/\$content/gim, '{{ content }}')
+          .replace(/\$link/gim, '{{ link }}')
+          .replace(/\$summary/gim, '{{ summary }}')
+          .replace(/\$image/gim, '{{ image }}');
+        Object.keys(item).forEach((key) => {
+          const regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
+          const replacement = '{{ ' + key + ' }}';
+          hexo.log.debug(logname, regex, '->', replacement);
+          cloneTemplate = cloneTemplate.replace(regex, replacement);
+        });
+        // render
+        rendered = env.renderString(cloneTemplate, item);
       }
-      return result.join('\n');
-    },
-    { ends: true, async: true }
-  );
+      result.push(rendered);
+    }
+    return result.join('\n');
+  };
+
+  hexo.extend.tag.register('rssreader', callback, { ends: true, async: true });
+
+  return { callback };
 }
