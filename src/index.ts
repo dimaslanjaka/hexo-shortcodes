@@ -29,8 +29,8 @@ if (typeof hexo !== 'undefined') {
   githubEmbed(hexo as any);
 
   // register hexo-tag-embed
-  hexo.extend.tag.register('vimeo', <any>vimeoTag);
-  hexo.extend.tag.register('youtube', <any>youtubeTag);
+  hexo.extend.tag.register('vimeo', vimeoTag);
+  hexo.extend.tag.register('youtube', youtubeTag);
 
   // register assets before closing body
   hexo.extend.filter.register('after_render:html', function (data) {
