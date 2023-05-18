@@ -56,7 +56,7 @@
     "bluebird": "^3.7.2",
     "fs-extra": "^11.1.1",
     "git-embed": "^0.1.2",
-    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo-util.tgz",
+    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/f3d89dcf/releases/hexo-util.tgz",
     "nunjucks": "^3.2.4",
     "rss-parser": "^3.13.0",
     "sbg-utility": "^1.1.0"
@@ -64,7 +64,7 @@
   "devDependencies": {
     "@types/bluebird": "^3.5.38",
     "@types/fs-extra": "^11.0.1",
-    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo.tgz",
+    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/f3d89dcf/releases/hexo.tgz",
     "@types/node": "^20.2.0",
     "@types/nunjucks": "^3.2.2",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/5560156/release/cross-spawn.tgz",
