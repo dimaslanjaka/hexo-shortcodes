@@ -96,7 +96,9 @@ export function rssreader(hexo: import('hexo')) {
           .replace(/\$content/gim, '{{ content }}')
           .replace(/\$link/gim, '{{ link }}')
           .replace(/\$summary/gim, '{{ summary }}')
-          .replace(/\$image/gim, '{{ image }}');
+          .replace(/\$image/gim, '{{ image }}')
+          // print date
+          .replace(/\$date/gim, '{{ date }}');
         Object.keys(item).forEach((key) => {
           const regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
           const replacement = '{{ ' + key + ' }}';
