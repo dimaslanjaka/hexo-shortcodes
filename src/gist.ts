@@ -7,6 +7,7 @@ import nunjucks from 'nunjucks';
 import fs from 'fs-extra';
 import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH } from './env';
 import { array2obj } from './utils';
+import { isValidHttpUrl } from 'sbg-utility';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
 
@@ -95,10 +96,14 @@ export const gist = (hexo: import('hexo')) => {
    * @returns
    */
   async function _usingHexoSyntaxHighlighter(args: string[]) {
-    const id = args[0] || '';
+    let id = args[0] || '';
 
     // return when id is empty
-    // if (id.length === 0) return `<pre><code>gist id insufficient</code></pre>`;
+    if (id.length === 0) return `<pre><code>gist id insufficient\n\n${args}</code></pre>`;
+
+    if (isValidHttpUrl(id)) {
+      id = new URL(id).pathname;
+    }
 
     const username = id.split('/')[0];
     const gist_id = id.split('/')[1];
