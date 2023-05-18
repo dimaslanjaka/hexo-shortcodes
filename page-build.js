@@ -42,7 +42,7 @@ const deployDir = path.resolve(testDir, '.deploy_git/hexo-shortcodes');
     const destSpawnOpt = { cwd: deployDir, stdio: 'inherit' };
     //await spawn('git', ['remote', 'set-url', 'origin', 'https://github.com/dimaslanjaka/docs.git'], destSpawnOpt);
     await spawn('git', ['add', '.'], destSpawnOpt);
-    await spawn('git', ['commit', '-m', `"${message}"`], destSpawnOpt);
+    await spawn('git', ['commit', '-m', `${message}`], destSpawnOpt);
     await spawn('git', ['checkout', 'master'], destSpawnOpt);
     await spawn('git', ['push', '-u', 'origin', 'master'], destSpawnOpt);
   } catch (e) {
