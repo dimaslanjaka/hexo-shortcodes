@@ -122,12 +122,20 @@ jobs:
           fi
           echo "architecture=$(getconf LONG_BIT)" >> $GITHUB_ENV
 
-      - name: Install Dependencies
+      - name: install
         run: |
           touch yarn.lock
           yarn install
         shell: bash
         id: install
+      - name: clean install
+        if: steps.install.outcome == 'failure'
+        shell: bash
+        run: |
+          yarn cache clean --all
+          find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
+          truncate -s 0 yarn.lock
+          YARN_CHECKSUM_BEHAVIOR=update yarn install
       - run: yarn prepare
       - name: Build
         run: npm run build
