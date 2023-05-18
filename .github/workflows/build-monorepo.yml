@@ -146,6 +146,7 @@ jobs:
       - name: what changes
         id: changes
         shell: bash
+        if: matrix.node-version == '14.x' && runner.os == 'Linux'
         run: |
           git status
           echo ""
@@ -167,7 +168,7 @@ jobs:
           echo "releases=$countReleases" >> $GITHUB_OUTPUT
 
       - name: push lib
-        if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
+        if: matrix.node-version == '14.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
         working-directory: lib
         run: |
           git config --global user.name 'dimaslanjaka'
@@ -181,7 +182,7 @@ jobs:
           fi
 
       - name: Push
-        if: matrix.node-version == '18.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
+        if: matrix.node-version == '14.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config --global user.name 'dimaslanjaka'
