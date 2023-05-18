@@ -149,6 +149,7 @@ jobs:
         id: changes
         shell: bash
         if: matrix.node-version == '14.x' && runner.os == 'Linux'
+        working-directory: lib
         run: |
           git status
           echo ""
