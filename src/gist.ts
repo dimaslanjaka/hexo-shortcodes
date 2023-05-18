@@ -20,7 +20,7 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
-const fetch_raw_code = async function (hexo: import('hexo'), id: string, filename: string) {
+async function fetch_raw_code(hexo: import('hexo'), id: string, filename: string) {
   let url = `https://gist.githubusercontent.com/${id}/raw`;
   if (typeof filename === 'string') {
     url = `${url}/${filename}`;
@@ -36,7 +36,7 @@ const fetch_raw_code = async function (hexo: import('hexo'), id: string, filenam
         reject(e);
       });
   });
-};
+}
 
 export const gist = (hexo: import('hexo')) => {
   const url_for = hexoUtils.url_for.bind(hexo);
@@ -143,7 +143,7 @@ export const gist = (hexo: import('hexo')) => {
       caption: path.extname(filename).replace(/^./, '')
     };
 
-    hexo.log.d(logname, { username, gist_id, filename, lang: options.lang });
+    hexo.log.i(logname, { username, gist_id, filename, lang: options.lang });
 
     // forked from https://github.com/hexojs/hexo/blob/8b95bbc722e5c77a7e8125441ed64d2ea3524ac0/lib/plugins/tag/code.js#L141-L148
     const newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {

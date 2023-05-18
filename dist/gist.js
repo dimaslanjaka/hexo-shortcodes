@@ -201,7 +201,7 @@ var gist = function (hexo) {
                             lang: upath_1.default.extname(filename).replace(/^./, ''),
                             caption: upath_1.default.extname(filename).replace(/^./, '')
                         };
-                        hexo.log.d(logname, { username: username, gist_id: gist_id, filename: filename, lang: options.lang });
+                        hexo.log.i(logname, { username: username, gist_id: gist_id, filename: filename, lang: options.lang });
                         newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
                             context: hexo,
                             args: [codeText, options]
