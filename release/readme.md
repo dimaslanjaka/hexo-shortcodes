@@ -2,8 +2,8 @@
 ## Releases
 | version | tarball url |
 | :--- | :--- |
-| latest | https://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@github.com/dimaslanjaka/hexo-shortcodes/raw/996ff47/release/hexo-shortcodes.tgz |
-| latest | https://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@github.com/dimaslanjaka/hexo-shortcodes/raw/pre-release/release/hexo-shortcodes.tgz |
+| latest | https://github.com/dimaslanjaka/hexo-shortcodes/raw/c1c6b15/release/hexo-shortcodes.tgz |
+| latest | https://github.com/dimaslanjaka/hexo-shortcodes/raw/pre-release/release/hexo-shortcodes.tgz |
 
 use this tarball with `resolutions`:
 ```json
