@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
-const { default: gch, spawn } = require('git-command-helper');
-const spawnAsync = require('cross-spawn').async;
+const { default: gch } = require('git-command-helper');
+const spawn = require('cross-spawn').async;
 
 // publish pages
 
