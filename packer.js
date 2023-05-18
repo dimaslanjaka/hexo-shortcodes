@@ -265,12 +265,12 @@ async function addReadMe() {
       continue;
     }
     // skip index tarball which ignored by .gitignore
-    const checkIgnoreSpawn = await spawnAsync('git', ['status', '--porcelain', '--ignored'], { cwd: __dirname }).catch(
-      (err) => {
-        console.log(err);
-        return { output: '', stdou: '', err };
-      }
-    );
+    const checkIgnoreSpawn = await spawnAsync('git', ['status', '-uno', '--porcelain', '--ignored'], {
+      cwd: __dirname
+    }).catch((err) => {
+      console.log(err);
+      return { output: '', stdou: '', err };
+    });
 
     const checkIgnore = (checkIgnoreSpawn.output || checkIgnoreSpawn.stdout)
       .split(/\r?\n/)
@@ -283,7 +283,7 @@ async function addReadMe() {
       continue;
     } else {
       await git.add(relativeTarball);
-      const args = ['status', '--porcelain', '--', relativeTarball, '|', 'wc', '-l'];
+      const args = ['status', '-uno', '--porcelain', '--', relativeTarball, '|', 'wc', '-l'];
       const isChanged =
         parseInt(
           (
