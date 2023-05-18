@@ -8,6 +8,7 @@ import { githubCard } from './githubCard';
 import { vimeoTag } from './hexo-tag-embed/lib/tags/vimeo';
 import { youtubeTag } from './hexo-tag-embed/lib/tags/youtube';
 import { jsfiddle } from './jsfiddle';
+import { embedNPMRunKit } from './npmrunkit';
 import { rssreader } from './rssreader';
 import { registerHexo, url_for } from './utils';
 
@@ -17,16 +18,17 @@ declare global {
 
 if (typeof hexo !== 'undefined') {
   // register hexo for utils
-  registerHexo(hexo as any);
+  registerHexo(hexo);
 
   // register tags
-  githubCard(hexo as any);
-  gist(hexo as any);
-  jsfiddle(hexo as any);
-  codepen(hexo as any);
-  dailymotion(hexo as any);
-  rssreader(hexo as any);
-  githubEmbed(hexo as any);
+  githubCard(hexo);
+  gist(hexo);
+  jsfiddle(hexo);
+  codepen(hexo);
+  dailymotion(hexo);
+  rssreader(hexo);
+  githubEmbed(hexo);
+  embedNPMRunKit(hexo);
 
   // register hexo-tag-embed
   hexo.extend.tag.register('vimeo', vimeoTag);
