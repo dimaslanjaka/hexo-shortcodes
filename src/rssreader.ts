@@ -5,7 +5,9 @@ import rssParser from 'rss-parser';
 import { array2obj } from './utils';
 
 export type RSSType = {
+  [key: string]: any;
   items: Array<{
+    [key: string]: any;
     title: string;
     link: string;
     pubDate: string;
@@ -105,6 +107,9 @@ export function rssreader(hexo: import('hexo')) {
           hexo.log.debug(logname, regex, '->', replacement);
           cloneTemplate = cloneTemplate.replace(regex, replacement);
         });
+        if (!item.date) {
+          item.date =
+        }
         // render result
         rendered = env.renderString(cloneTemplate, item);
       }
