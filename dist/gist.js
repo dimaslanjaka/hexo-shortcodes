@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -43,12 +66,13 @@ exports.gist = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var axios_1 = __importDefault(require("axios"));
 var bluebird_1 = __importDefault(require("bluebird"));
-var fs_extra_1 = __importDefault(require("fs-extra"));
+var upath_1 = __importDefault(require("upath"));
+var hexoUtils = __importStar(require("hexo-util"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
-var path_1 = __importDefault(require("path"));
-var sbg_utility_1 = __importDefault(require("sbg-utility"));
+var fs_extra_1 = __importDefault(require("fs-extra"));
 var env_1 = require("./env");
 var utils_1 = require("./utils");
+var sbg_utility_1 = require("sbg-utility");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
@@ -60,12 +84,12 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
 //
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
-var fetch_raw_code = function (hexo, id, filename) {
+function fetch_raw_code(hexo, id, filename) {
     return __awaiter(this, void 0, void 0, function () {
         var url;
         return __generator(this, function (_a) {
             url = "https://gist.githubusercontent.com/".concat(id, "/raw");
-            if (typeof filename === 'string') {
+            if (typeof filename === 'string' && filename.length > 0) {
                 url = "".concat(url, "/").concat(filename);
             }
             return [2 /*return*/, new bluebird_1.default(function (resolve, reject) {
@@ -81,92 +105,133 @@ var fetch_raw_code = function (hexo, id, filename) {
                 })];
         });
     });
-};
+}
 var gist = function (hexo) {
-    nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
-        noCache: true,
-        watch: false
-    });
+    var url_for = hexoUtils.url_for.bind(hexo);
     var libFilename = 'gist.css';
     var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(libFilename);
-    var libFilePath = path_1.default.resolve(env_1.LIB_PATH, libFilename);
-    hexo.extend.generator.register((0, utils_1.url_for)(libRoute), function () {
+    var libFilePath = upath_1.default.resolve(env_1.LIB_PATH, libFilename);
+    /**
+     * REGISTER MIDDLEWARE FOR HEXO GENERATE
+     */
+    hexo.extend.generator.register(url_for(libRoute, {}), function () {
         return {
             path: libRoute,
             data: function () { return fs_extra_1.default.createReadStream(libFilePath); }
         };
     });
+    /**
+     * REGISTER MIDDLEWARE FOR HEXO SERVER
+     */
     hexo.extend.filter.register('server_middleware', function (app) {
         app.use(libRoute, function (_req, res) {
             res.setHeader('content-type', 'text/javascript');
             res.end(fs_extra_1.default.readFileSync(libFilePath).toString());
         });
     });
-    // hexo.extend.tag.unregister('gist');
-    hexo.extend.tag.register('gist', function (args) {
-        var id = args[0];
-        hexo.log.info(logname, id);
-        var filename = args[1];
-        var payload = {
-            id: id,
-            filename: filename,
-            raw_code: ''
-        };
-        return nunjucks_1.default.renderString(fs_extra_1.default.readFileSync(env_1.GIST_TEMPLATE).toString(), payload);
-    });
-    var _oldMethod = function (args) {
-        return new Promise(function (resolve) {
+    /**
+     * render using nunjucks
+     * * useful when username undefined
+     * @returns
+     * @see {@link https://www.webmanajemen.com/docs/hexo-shortcodes/gist}
+     */
+    function _nunjucksMethod() {
+        var env = nunjucks_1.default.configure([env_1.LIB_PATH, env_1.TEMPLATE_PATH], {
+            noCache: true,
+            watch: false
+        });
+        return function (args) {
             var id = args[0];
-            hexo.log.info(logname, id);
+            hexo.log.d(logname, id);
             var filename = args[1];
             var payload = {
                 id: id,
                 filename: filename,
                 raw_code: ''
             };
-            fetch_raw_code(hexo, id, filename)
-                .then(function (raw_code) {
-                payload.raw_code = raw_code;
-                sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.txt'), raw_code);
-                sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.json'), JSON.stringify(payload, null, 2));
-            })
-                .catch(function (e) {
-                payload.raw_code = sbg_utility_1.default.jsonStringifyWithCircularRefs(e);
-            })
-                .finally(function () {
-                /*let result = '';
-              if (filename) {
-                result += `<script src="https://gist.github.com/${id}.js?file=${filename}"></script>`;
-              } else {
-                result += `<script src="https://gist.github.com/${id}.js"></script>`;
-              }
-              result += `
-              <noscript>
-                <pre><code>${payload.raw_code}</code></pre>
-              </noscript>
-              `;
-              resolve(result);*/
-                nunjucks_1.default.render('hexo-gist.njk', payload, function (_err, result) {
-                    sbg_utility_1.default.writefile(path_1.default.join(env_1.TEMP_PATH, 'gist', id + '.njk.txt'), String(result));
-                    resolve(result);
-                });
-                /*nunjucks.renderString(
-                fs.readFileSync(path.join(TEMPLATE_PATH, 'hexo-gist.njk')).toString(),
-                payload,
-                function (err, result) {
-                  if (err) {
-                    console.log(err);
-                    resolve(
-                      `ERROR(gist) cannot fetch ${id}.<br/> ${escapeHTML(JSON.stringifyWithCircularRefs(err, null, 2))}`
-                    );
-                  } else {
-                    writefile(path.join(TEMP_PATH, 'gist', id + '.njk.txt'), result);
-                    resolve(result);
-                  }
+            return env.renderString(fs_extra_1.default.readFileSync(env_1.GIST_TEMPLATE).toString(), payload);
+        };
+    }
+    /**
+     * smart render using internal hexojs syntax highlighter
+     * @param args
+     * @returns
+     */
+    function _usingHexoSyntaxHighlighter(args) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, username, gist_id, defaults, options, content, line, lineSplit, startLine, endLine, codeText, contentSplit, newContent;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = args[0] || '';
+                        // return when id is empty
+                        if (id.length === 0)
+                            return [2 /*return*/, "<pre><code>gist id insufficient\n\n".concat(args, "</code></pre>")];
+                        if ((0, sbg_utility_1.isValidHttpUrl)(id)) {
+                            id = new URL(id).pathname;
+                        }
+                        username = id.split('/')[0];
+                        gist_id = id.split('/')[1];
+                        if (typeof gist_id === 'undefined' || gist_id.length === 0) {
+                            try {
+                                return [2 /*return*/, _nunjucksMethod()(args)];
+                            }
+                            catch (error) {
+                                hexo.log.error(logname, error);
+                                return [2 /*return*/, 'cannot embed `gist` ' + args.join(' ')];
+                            }
+                        }
+                        defaults = {
+                            filename: '',
+                            lines_length: 0,
+                            lang: '',
+                            caption: ''
+                        };
+                        options = Object.assign(defaults, (0, utils_1.array2obj)(args.splice(1).map(function (str) {
+                            var _a;
+                            var split = str.split(':');
+                            return _a = {}, _a[split[0].toLowerCase()] = split[1], _a;
+                        })));
+                        return [4 /*yield*/, fetch_raw_code(hexo, id, options.filename)];
+                    case 1:
+                        content = _a.sent();
+                        line = args[2] || '';
+                        lineSplit = line.split('-');
+                        startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
+                        endLine = parseInt((line !== '' && lineSplit.length > 1 && lineSplit[1].replace('L', '')) || String(startLine));
+                        codeText = '';
+                        contentSplit = content.split('\n');
+                        if (startLine > 0) {
+                            contentSplit = contentSplit.slice(startLine - 1, endLine);
+                            codeText = contentSplit.join('\n');
+                            // Then add the newline back
+                            codeText = codeText + '\n';
+                        }
+                        // fallback to content
+                        if (codeText.length === 0)
+                            codeText = content;
+                        // If neither highlight.js nor prism.js is enabled, return escaped code directly
+                        if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+                            return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(codeText), "</code></pre>")];
+                        }
+                        // assign lines length
+                        options.lines_length = codeText.split('\n').length;
+                        // assign language when empty
+                        if (options.lang.length === 0)
+                            options.lang = upath_1.default.extname(options.filename).replace(/^./, '');
+                        // asign caption when empty
+                        if (options.caption.length === 0)
+                            options.caption = upath_1.default.extname(options.filename).replace(/^./, '');
+                        hexo.log.debug(logname, { username: username, gist_id: gist_id, options: options });
+                        newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
+                            context: hexo,
+                            args: [codeText, options]
+                        });
+                        return [2 /*return*/, newContent.replace(/{/g, '&#123;').replace(/}/g, '&#125;')];
                 }
-              );*/
             });
         });
-    };
+    }
+    hexo.extend.tag.register('gist', _usingHexoSyntaxHighlighter, { async: true });
 };
 exports.gist = gist;

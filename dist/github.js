@@ -71,18 +71,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.githubEmbed = void 0;
+exports.githubEmbed = exports.githubEmbedder = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var git_embed_1 = __importDefault(require("git-embed"));
 var hexoUtils = __importStar(require("hexo-util"));
-var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') +
-    ansi_colors_1.default.blueBright('(github)');
+var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(github)');
 /**
- * hexo shortcode to embed file
+ * github embedder engine
  * @param hexo
+ * @returns
+ * @example
+ * hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
  */
-function githubEmbed(hexo) {
-    hexo.extend.tag.register('github', function (params) {
+function githubEmbedder(hexo) {
+    return function (params) {
         return __awaiter(this, void 0, void 0, function () {
             var url, parseURL, config_1, splitcolon, splithypen, embed, content, options, newContent;
             return __generator(this, function (_a) {
@@ -112,17 +114,11 @@ function githubEmbed(hexo) {
                         else {
                             splitcolon = params.map(function (str) { return String(str).split(':'); });
                             splitcolon.forEach(function (split) {
-                                ;
                                 config_1[split[0].trim()] = split[1].trim();
                             });
                             parseURL = new URL('https://github.com');
                             // merge pathname
-                            parseURL.pathname = [
-                                config_1.repo,
-                                'blob',
-                                config_1.ref,
-                                config_1.file
-                            ].join('/');
+                            parseURL.pathname = [config_1.repo, 'blob', config_1.ref, config_1.file].join('/');
                             // fix line
                             if (!config_1.line.includes('L')) {
                                 splithypen = config_1.line.split('-');
@@ -135,7 +131,7 @@ function githubEmbed(hexo) {
                             }
                             url = parseURL.toString();
                         }
-                        hexo.log.i(logname, 'embed', parseURL.pathname + parseURL.hash);
+                        hexo.log.debug(logname, parseURL.pathname + parseURL.hash);
                         config_1.line = parseURL.hash;
                         return [4 /*yield*/, (0, git_embed_1.default)(url, { tabSize: 2 })];
                     case 1:
@@ -159,6 +155,14 @@ function githubEmbed(hexo) {
                 }
             });
         });
-    }, { async: true });
+    };
+}
+exports.githubEmbedder = githubEmbedder;
+/**
+ * hexo shortcode to embed file
+ * @param hexo
+ */
+function githubEmbed(hexo) {
+    hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
 }
 exports.githubEmbed = githubEmbed;

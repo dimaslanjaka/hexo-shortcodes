@@ -3,6 +3,11 @@ import { default as axios } from 'axios';
 import Bluebird from 'bluebird';
 import path from 'upath';
 import * as hexoUtils from 'hexo-util';
+import nunjucks from 'nunjucks';
+import fs from 'fs-extra';
+import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH } from './env';
+import { array2obj } from './utils';
+import { isValidHttpUrl } from 'sbg-utility';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
 
@@ -17,9 +22,9 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
-const fetch_raw_code = async function (hexo: import('hexo'), id: string, filename: string) {
+async function fetch_raw_code(hexo: import('hexo'), id: string, filename?: string) {
   let url = `https://gist.githubusercontent.com/${id}/raw`;
-  if (typeof filename === 'string') {
+  if (typeof filename === 'string' && filename.length > 0) {
     url = `${url}/${filename}`;
   }
   return new Bluebird(function (resolve: (res: string) => any, reject) {
@@ -33,14 +38,104 @@ const fetch_raw_code = async function (hexo: import('hexo'), id: string, filenam
         reject(e);
       });
   });
-};
+}
 
 export const gist = (hexo: import('hexo')) => {
+  const url_for = hexoUtils.url_for.bind(hexo);
+  const libFilename = 'gist.css';
+  const libRoute = `${ROUTE_NAME}/${libFilename}`;
+  const libFilePath = path.resolve(LIB_PATH, libFilename);
+  /**
+   * REGISTER MIDDLEWARE FOR HEXO GENERATE
+   */
+  hexo.extend.generator.register(url_for(libRoute, {}), () => {
+    return {
+      path: libRoute,
+      data: () => fs.createReadStream(libFilePath)
+    };
+  });
+  /**
+   * REGISTER MIDDLEWARE FOR HEXO SERVER
+   */
+  hexo.extend.filter.register('server_middleware', function (app) {
+    app.use(libRoute, function (_req, res) {
+      res.setHeader('content-type', 'text/javascript');
+      res.end(fs.readFileSync(libFilePath).toString());
+    });
+  });
+
+  /**
+   * render using nunjucks
+   * * useful when username undefined
+   * @returns
+   * @see {@link https://www.webmanajemen.com/docs/hexo-shortcodes/gist}
+   */
+  function _nunjucksMethod() {
+    const env = nunjucks.configure([LIB_PATH, TEMPLATE_PATH], {
+      noCache: true,
+      watch: false
+    });
+
+    return function (args: Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[0]) {
+      const id = args[0];
+      hexo.log.d(logname, id);
+      const filename = args[1];
+      const payload = {
+        id,
+        filename,
+        raw_code: ''
+      };
+
+      return env.renderString(fs.readFileSync(GIST_TEMPLATE).toString(), payload);
+    };
+  }
+
+  /**
+   * smart render using internal hexojs syntax highlighter
+   * @param args
+   * @returns
+   */
   async function _usingHexoSyntaxHighlighter(args: string[]) {
-    const id = args[0];
-    hexo.log.debug(logname, id);
-    const filename = args[1] || '';
-    const content = await fetch_raw_code(hexo, id, filename);
+    let id = args[0] || '';
+
+    // return when id is empty
+    if (id.length === 0) return `<pre><code>gist id insufficient\n\n${args}</code></pre>`;
+
+    if (isValidHttpUrl(id)) {
+      id = new URL(id).pathname;
+    }
+
+    const username = id.split('/')[0];
+    const gist_id = id.split('/')[1];
+
+    if (typeof gist_id === 'undefined' || gist_id.length === 0) {
+      try {
+        return _nunjucksMethod()(args);
+      } catch (error) {
+        hexo.log.error(logname, error);
+        return 'cannot embed `gist` ' + args.join(' ');
+      }
+    }
+
+    /** default options */
+    const defaults = {
+      filename: '',
+      lines_length: 0,
+      lang: '',
+      caption: ''
+    };
+
+    const options = Object.assign(
+      defaults,
+      array2obj(
+        args.splice(1).map((str) => {
+          const split = str.split(':');
+          return { [split[0].toLowerCase()]: split[1] };
+        })
+      )
+    );
+
+    const content = await fetch_raw_code(hexo, id, options.filename);
     const line = args[2] || '';
     const lineSplit = line.split('-');
     const startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
@@ -65,11 +160,14 @@ export const gist = (hexo: import('hexo')) => {
       return `<pre><code>${hexoUtils.escapeHTML(codeText)}</code></pre>`;
     }
 
-    const options = {
-      lines_length: codeText.split('\n').length,
-      lang: path.extname(filename),
-      caption: path.extname(filename)
-    };
+    // assign lines length
+    options.lines_length = codeText.split('\n').length;
+    // assign language when empty
+    if (options.lang.length === 0) options.lang = path.extname(options.filename).replace(/^./, '');
+    // asign caption when empty
+    if (options.caption.length === 0) options.caption = path.extname(options.filename).replace(/^./, '');
+
+    hexo.log.debug(logname, { username, gist_id, options });
 
     // forked from https://github.com/hexojs/hexo/blob/8b95bbc722e5c77a7e8125441ed64d2ea3524ac0/lib/plugins/tag/code.js#L141-L148
     const newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {

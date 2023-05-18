@@ -70,9 +70,14 @@ var rss_parser_1 = __importDefault(require("rss-parser"));
 var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(rssreader)');
 function rssreader(hexo) {
+    // <RSSType, RSSType['items']>
     var parser = new rss_parser_1.default({
         customFields: {
-            item: [['media:content', 'media:content', { keepArray: true }]]
+            item: [
+                ['media:content', 'media-content', { keepArray: true }],
+                // ['media:group', { keepArray: true }],
+                ['media:thumbnail', 'media:group', { keepArray: true }]
+            ]
         },
         defaultRSS: 2.0
     });
@@ -80,7 +85,7 @@ function rssreader(hexo) {
         noCache: true,
         autoescape: false
     });
-    hexo.extend.tag.register('rssreader', function (args, template) {
+    var callback = function (args, template) {
         if (template === void 0) { template = ''; }
         return __awaiter(this, void 0, void 0, function () {
             var url, defaults, options, feed, result, _loop_1, i;
@@ -97,16 +102,18 @@ function rssreader(hexo) {
                             var split = str.split(':');
                             return _a = {}, _a[split[0]] = split[1], _a;
                         })));
-                        hexo.log.info(logname, url, options);
+                        hexo.log.debug(logname, url, options);
                         return [4 /*yield*/, parser.parseURL(url)];
                     case 1:
                         feed = _a.sent();
+                        // remove duplicate items by title
+                        feed.items = feed.items.filter(function (value, index, self) { return index === self.findIndex(function (t) { return t.title === value.title; }); });
                         result = [];
                         _loop_1 = function (i) {
                             var item = feed.items[i];
                             var rendered = void 0;
                             if (options.debug === 'true') {
-                                // debugging
+                                // render debug
                                 rendered = "<pre><code class=\"highlight json\">".concat(JSON.stringify(Object.keys(item), null, 2), "</code></pre>");
                             }
                             else {
@@ -116,14 +123,24 @@ function rssreader(hexo) {
                                     .replace(/\$content/gim, '{{ content }}')
                                     .replace(/\$link/gim, '{{ link }}')
                                     .replace(/\$summary/gim, '{{ summary }}')
-                                    .replace(/\$image/gim, '{{ image }}');
+                                    .replace(/\$image/gim, '{{ image }}')
+                                    // print date
+                                    .replace(/\$date/gim, '{{ date }}');
                                 Object.keys(item).forEach(function (key) {
                                     var regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
                                     var replacement = '{{ ' + key + ' }}';
                                     hexo.log.debug(logname, regex, '->', replacement);
                                     cloneTemplate_1 = cloneTemplate_1.replace(regex, replacement);
                                 });
-                                // render
+                                if ('date' in item === false && item.pubDate) {
+                                    item['date'] = item.pubDate;
+                                }
+                                if ('image' in item === false) {
+                                    if (Array.isArray(item['media:group']))
+                                        item.image = item['media:group'][0]['$'].url;
+                                }
+                                // writefile(path.join(__dirname, '../tmp/item/', item.title + '.json'), jsonStringifyWithCircularRefs(item));
+                                // render result
                                 rendered = env.renderString(cloneTemplate_1, item);
                             }
                             result.push(rendered);
@@ -135,6 +152,8 @@ function rssreader(hexo) {
                 }
             });
         });
-    }, { ends: true, async: true });
+    };
+    hexo.extend.tag.register('rssreader', callback, { ends: true, async: true });
+    return { callback: callback };
 }
 exports.rssreader = rssreader;
