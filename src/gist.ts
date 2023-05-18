@@ -20,9 +20,9 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
-async function fetch_raw_code(hexo: import('hexo'), id: string, filename: string) {
+async function fetch_raw_code(hexo: import('hexo'), id: string, filename?: string) {
   let url = `https://gist.githubusercontent.com/${id}/raw`;
-  if (typeof filename === 'string') {
+  if (typeof filename === 'string' && filename.length > 0) {
     url = `${url}/${filename}`;
   }
   return new Bluebird(function (resolve: (res: string) => any, reject) {
