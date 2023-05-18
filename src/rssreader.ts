@@ -54,8 +54,9 @@ export function rssreader(hexo: import('hexo')) {
   const parser = new rssParser({
     customFields: {
       item: [
-        ['media:content', 'media:content', { keepArray: true }],
-        ['media:group', 'media:thumbnail', { keepArray: true }]
+        ['media:content', 'media-content', { keepArray: true }],
+        // ['media:group', { keepArray: true }],
+        ['media:thumbnail', 'media:group', { keepArray: true }]
       ]
     },
     defaultRSS: 2.0
@@ -117,10 +118,10 @@ export function rssreader(hexo: import('hexo')) {
         if ('date' in item === false && item.pubDate) {
           item['date'] = item.pubDate;
         }
-        if (!item.image) {
-          // item.image = item['media:group']['media:thumbnail'][0]['$'].url;
+        if ('image' in item === false) {
+          item.image = item['media:group'][0]['$'].url;
         }
-        console.log(Object.keys(item));
+        // writefile(path.join(__dirname, '../tmp/item/', item.title + '.json'), jsonStringifyWithCircularRefs(item));
         // render result
         rendered = env.renderString(cloneTemplate, item);
       }
