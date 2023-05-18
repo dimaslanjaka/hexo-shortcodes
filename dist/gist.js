@@ -71,6 +71,7 @@ var hexoUtils = __importStar(require("hexo-util"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var env_1 = require("./env");
+var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
@@ -157,24 +158,34 @@ var gist = function (hexo) {
      */
     function _usingHexoSyntaxHighlighter(args) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, username, gist_id, filename, content, line, lineSplit, startLine, endLine, codeText, contentSplit, options, newContent;
+            var id, username, gist_id, defaults, options, content, line, lineSplit, startLine, endLine, codeText, contentSplit, newContent;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = args[0] || '';
                         username = id.split('/')[0];
                         gist_id = id.split('/')[1];
-                        if (!gist_id) {
+                        if (typeof gist_id === 'undefined' || gist_id.length === 0) {
                             try {
                                 return [2 /*return*/, _nunjucksMethod()(args)];
                             }
                             catch (error) {
                                 hexo.log.error(logname, error);
-                                return [2 /*return*/, ''];
+                                return [2 /*return*/, 'cannot embed `gist` ' + args.join(' ')];
                             }
                         }
-                        filename = args[1] || '';
-                        return [4 /*yield*/, fetch_raw_code(hexo, id, filename)];
+                        defaults = {
+                            filename: '',
+                            lines_length: 0,
+                            lang: '',
+                            caption: ''
+                        };
+                        options = Object.assign(defaults, (0, utils_1.array2obj)(args.splice(1).map(function (str) {
+                            var _a;
+                            var split = str.split(':');
+                            return _a = {}, _a[split[0].toLowerCase()] = split[1], _a;
+                        })));
+                        return [4 /*yield*/, fetch_raw_code(hexo, id, options.filename)];
                     case 1:
                         content = _a.sent();
                         line = args[2] || '';
@@ -196,12 +207,15 @@ var gist = function (hexo) {
                         if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
                             return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(codeText), "</code></pre>")];
                         }
-                        options = {
-                            lines_length: codeText.split('\n').length,
-                            lang: upath_1.default.extname(filename).replace(/^./, ''),
-                            caption: upath_1.default.extname(filename).replace(/^./, '')
-                        };
-                        hexo.log.i(logname, { username: username, gist_id: gist_id, filename: filename, lang: options.lang });
+                        // assign lines length
+                        options.lines_length = codeText.split('\n').length;
+                        // assign language when empty
+                        if (options.lang.length === 0)
+                            options.lang = upath_1.default.extname(options.filename).replace(/^./, '');
+                        // asign caption when empty
+                        if (options.caption.length === 0)
+                            options.caption = upath_1.default.extname(options.filename).replace(/^./, '');
+                        hexo.log.debug(logname, { username: username, gist_id: gist_id, options: options });
                         newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
                             context: hexo,
                             args: [codeText, options]
