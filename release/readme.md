@@ -2,7 +2,7 @@
 ## Releases
 | version | tarball url |
 | :--- | :--- |
-| latest | https://github.com/dimaslanjaka/hexo-shortcodes/raw/c1c6b15/release/hexo-shortcodes.tgz |
+| latest | https://github.com/dimaslanjaka/hexo-shortcodes/raw/7fb1abf/release/hexo-shortcodes.tgz |
 | latest | https://github.com/dimaslanjaka/hexo-shortcodes/raw/pre-release/release/hexo-shortcodes.tgz |
 
 use this tarball with `resolutions`:
