@@ -3,6 +3,8 @@
 import { md5 } from 'sbg-utility';
 import { array2obj } from './utils';
 
+const ids = [] as string[];
+
 async function callback(args: string[], innerCodes: string) {
   const defaults = {
     id: md5(innerCodes)
@@ -16,6 +18,13 @@ async function callback(args: string[], innerCodes: string) {
       })
     )
   );
+
+  if (ids.includes(options.id)) {
+    // regenerate id on duplicated
+    options.id = md5(innerCodes);
+  }
+
+  ids.push(options.id);
 
   return (
     '<script src="https://embed.runkit.com" data-element-id="' +

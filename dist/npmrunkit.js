@@ -40,6 +40,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.embedNPMRunKit = void 0;
 var sbg_utility_1 = require("sbg-utility");
 var utils_1 = require("./utils");
+var ids = [];
 function callback(args, innerCodes) {
     return __awaiter(this, void 0, void 0, function () {
         var defaults, options;
@@ -52,6 +53,11 @@ function callback(args, innerCodes) {
                 var split = str.split(':');
                 return _a = {}, _a[split[0]] = split[1], _a;
             })));
+            if (ids.includes(options.id)) {
+                // regenerate id on duplicated
+                options.id = (0, sbg_utility_1.md5)(innerCodes);
+            }
+            ids.push(options.id);
             return [2 /*return*/, ('<script src="https://embed.runkit.com" data-element-id="' +
                     options.id +
                     '"></script><div id="' +
