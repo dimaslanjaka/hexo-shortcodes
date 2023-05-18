@@ -10,7 +10,6 @@ export type RSSType = {
     [key: string]: any;
     title: string;
     link: string;
-    pubDate: string;
     'content:encoded': string;
     'content:encodedSnippet': string;
     comments?: string;
@@ -24,6 +23,8 @@ export type RSSType = {
       };
     }>;
     isoDate: string;
+    pubDate: string;
+    generator: string;
   }>;
   feedUrl: string;
   image: {
@@ -49,7 +50,7 @@ export type rssreaderOptions = {
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(rssreader)');
 
 export function rssreader(hexo: import('hexo')) {
-  const parser = new rssParser({
+  const parser = new rssParser<Partial<RSSType>>({
     customFields: {
       item: [['media:content', 'media:content', { keepArray: true }]]
     },
@@ -79,7 +80,9 @@ export function rssreader(hexo: import('hexo')) {
     hexo.log.debug(logname, url, options);
     const feed = await parser.parseURL(url);
     // remove duplicate items by title
-    feed.items = feed.items.filter((value, index, self) => index === self.findIndex((t) => t.title === value.title));
+    feed.items = feed.items.filter(
+      (value, index, self) => index === self.findIndex((t) => t.title === value.title)
+    ) as typeof feed.items;
 
     // render
     const result = [] as string[];
@@ -108,7 +111,7 @@ export function rssreader(hexo: import('hexo')) {
           cloneTemplate = cloneTemplate.replace(regex, replacement);
         });
         if (!item.date) {
-          item.date =
+          //item.date =
         }
         // render result
         rendered = env.renderString(cloneTemplate, item);
