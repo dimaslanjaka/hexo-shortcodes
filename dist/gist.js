@@ -82,12 +82,12 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
 //
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
-var fetch_raw_code = function (hexo, id, filename) {
+function fetch_raw_code(hexo, id, filename) {
     return __awaiter(this, void 0, void 0, function () {
         var url;
         return __generator(this, function (_a) {
             url = "https://gist.githubusercontent.com/".concat(id, "/raw");
-            if (typeof filename === 'string') {
+            if (typeof filename === 'string' && filename.length > 0) {
                 url = "".concat(url, "/").concat(filename);
             }
             return [2 /*return*/, new bluebird_1.default(function (resolve, reject) {
@@ -103,7 +103,7 @@ var fetch_raw_code = function (hexo, id, filename) {
                 })];
         });
     });
-};
+}
 var gist = function (hexo) {
     var url_for = hexoUtils.url_for.bind(hexo);
     var libFilename = 'gist.css';
