@@ -38,7 +38,7 @@
   "scripts": {
     "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
     "update:ncu": "npm-check-updates -u -x hexo,hexo-fs",
-    "update": "nrs \"update:*\"",
+    "update": "nrs \"update:**\"",
     "build": "tsc -p tsconfig.build.json",
     "pack": "node packer.js --yarn",
     "dev": "tsc -p tsconfig.build.json --watch",
