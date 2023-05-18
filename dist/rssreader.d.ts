@@ -1,8 +1,9 @@
 export type RSSType = {
+    [key: string]: any;
     items: Array<{
+        [key: string]: any;
         title: string;
         link: string;
-        pubDate: string;
         'content:encoded': string;
         'content:encodedSnippet': string;
         comments?: string;
@@ -16,6 +17,8 @@ export type RSSType = {
             };
         }>;
         isoDate: string;
+        pubDate: string;
+        generator: string;
     }>;
     feedUrl: string;
     image: {
