@@ -50,9 +50,13 @@ export type rssreaderOptions = {
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(rssreader)');
 
 export function rssreader(hexo: import('hexo')) {
-  const parser = new rssParser<Partial<RSSType>>({
+  // <RSSType, RSSType['items']>
+  const parser = new rssParser({
     customFields: {
-      item: [['media:content', 'media:content', { keepArray: true }]]
+      item: [
+        ['media:content', 'media:content', { keepArray: true }],
+        ['media:group', 'media:thumbnail', { keepArray: true }]
+      ]
     },
     defaultRSS: 2.0
   });
@@ -87,7 +91,7 @@ export function rssreader(hexo: import('hexo')) {
     // render
     const result = [] as string[];
     for (let i = 0; i < (parseInt(String(options.limit)) || 3); i++) {
-      const item = feed.items[i];
+      const item = feed.items[i] as (typeof feed.items)[number] & Record<string, any>;
 
       let rendered: string;
 
@@ -110,9 +114,13 @@ export function rssreader(hexo: import('hexo')) {
           hexo.log.debug(logname, regex, '->', replacement);
           cloneTemplate = cloneTemplate.replace(regex, replacement);
         });
-        if (!item.date) {
-          //item.date =
+        if ('date' in item === false && item.pubDate) {
+          item['date'] = item.pubDate;
         }
+        if (!item.image) {
+          // item.image = item['media:group']['media:thumbnail'][0]['$'].url;
+        }
+        console.log(Object.keys(item));
         // render result
         rendered = env.renderString(cloneTemplate, item);
       }
