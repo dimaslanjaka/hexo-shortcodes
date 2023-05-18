@@ -6,6 +6,7 @@ import * as hexoUtils from 'hexo-util';
 import nunjucks from 'nunjucks';
 import fs from 'fs-extra';
 import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH } from './env';
+import { array2obj } from './utils';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
 
@@ -102,17 +103,34 @@ export const gist = (hexo: import('hexo')) => {
     const username = id.split('/')[0];
     const gist_id = id.split('/')[1];
 
-    if (!gist_id) {
+    if (typeof gist_id === 'undefined' || gist_id.length === 0) {
       try {
         return _nunjucksMethod()(args);
       } catch (error) {
         hexo.log.error(logname, error);
-        return '';
+        return 'cannot embed `gist` ' + args.join(' ');
       }
     }
 
-    const filename = args[1] || '';
-    const content = await fetch_raw_code(hexo, id, filename);
+    /** default options */
+    const defaults = {
+      filename: '',
+      lines_length: 0,
+      lang: '',
+      caption: ''
+    };
+
+    const options = Object.assign(
+      defaults,
+      array2obj(
+        args.splice(1).map((str) => {
+          const split = str.split(':');
+          return { [split[0].toLowerCase()]: split[1] };
+        })
+      )
+    );
+
+    const content = await fetch_raw_code(hexo, id, options.filename);
     const line = args[2] || '';
     const lineSplit = line.split('-');
     const startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
@@ -137,13 +155,14 @@ export const gist = (hexo: import('hexo')) => {
       return `<pre><code>${hexoUtils.escapeHTML(codeText)}</code></pre>`;
     }
 
-    const options = {
-      lines_length: codeText.split('\n').length,
-      lang: path.extname(filename).replace(/^./, ''),
-      caption: path.extname(filename).replace(/^./, '')
-    };
+    // assign lines length
+    options.lines_length = codeText.split('\n').length;
+    // assign language when empty
+    if (options.lang.length === 0) options.lang = path.extname(options.filename).replace(/^./, '');
+    // asign caption when empty
+    if (options.caption.length === 0) options.caption = path.extname(options.filename).replace(/^./, '');
 
-    hexo.log.i(logname, { username, gist_id, filename, lang: options.lang });
+    hexo.log.debug(logname, { username, gist_id, options });
 
     // forked from https://github.com/hexojs/hexo/blob/8b95bbc722e5c77a7e8125441ed64d2ea3524ac0/lib/plugins/tag/code.js#L141-L148
     const newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
