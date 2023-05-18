@@ -28,10 +28,9 @@
     "template",
     "template/*.njk",
     "lib",
-    "readme.md",
     "dist",
     "typings",
-    "!**/release/**",
+    "!**/release*/**",
     "!**/yarn.lock",
     "!**/package-lock.json"
   ],
