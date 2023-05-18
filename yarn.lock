@@ -155,9 +155,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hexo@https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo.tgz":
+"@types/hexo@https://github.com/dimaslanjaka/hexo/raw/1d4d41d/releases/hexo.tgz":
   version: 7.0.0-rc1
-  resolution: "@types/hexo@https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo.tgz"
+  resolution: "@types/hexo@https://github.com/dimaslanjaka/hexo/raw/1d4d41d/releases/hexo.tgz"
   dependencies:
     abbrev: ^2.0.0
     archy: ^1.0.0
@@ -185,7 +185,7 @@ __metadata:
     warehouse: ^5.0.0
   bin:
     hexo: ./bin/hexo
-  checksum: 9acd3b312de27b167a834d4cc42be4edf656c0d5f2b726a0ad747eab5278eeadcf73ceac3ce8f3fd9de4d2a576a419d43c3c72768cc451fe240a90de7f4248a5
+  checksum: 39008c10576a20c53e2f86eede508fb06917c171e4c2a10fdf5bf8780f6947dd786b28b38985ad78119daeac3bb664a27382095099b45d62f5e6771b98baf4f0
   languageName: node
   linkType: hard
 
@@ -219,10 +219,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.1.3":
-  version: 20.1.3
-  resolution: "@types/node@npm:20.1.3"
-  checksum: abdb593f662a079715b4e9df0c706822e49814dd641fa5a6226ab73fb931cbfc9cfd5df92e09c13dbc90dbc8fce680d29cb735b88899d661481d93e09a8df2be
+"@types/node@npm:^20.2.0":
+  version: 20.2.1
+  resolution: "@types/node@npm:20.2.1"
+  checksum: ed774afa6e9b4ad7868ed0182a8ca40ad0dd54815a70d3051b23fa850f3bca6bea4d0cb55e1fc769666786ac2cc4c1b37aeade313cb4c4634133f18ebcded496
   languageName: node
   linkType: hard
 
@@ -1542,7 +1542,7 @@ __metadata:
   dependencies:
     shebang-command: ^2.0.0
     which: ^3.0.0
-  checksum: 0baad950b8c37a09990a92e4a771e632e60b17e8d664841c049019a71055ccbe24a69091c14cb08ed0c3fd2df463e4d1bf1a531644128e0382d3226d2f05d3e7
+  checksum: cdd488304c7506dbe310e21ae5fe7a33edb484731a8d238dd49e1da4f657cc69160ea2075100836347172b4d690e650c28998f0ef327d9526f8f48603df657db
   languageName: node
   linkType: hard
 
@@ -2662,14 +2662,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"git-embed@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "git-embed@npm:0.1.1"
+"git-embed@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "git-embed@npm:0.1.2"
   dependencies:
     axios: ^1.4.0
     highlight.js: ^11.8.0
     sbg-utility: ^1.0.9
-  checksum: 69ecf1172efe9906d88f44726f9f2ef5e1db2a69bf930fa34c595e4860b6bc844a8a026856177e5b1dab2f4a1218cdbfa582ae9f522ca4d1bbba3414dc977aa8
+  checksum: f503194afd5a7e74b5ab4561d21ad21fdc399020117bd6d3aca0150ee9c32e3cf250d86ebf308925445f270b991483e19f6af802aab181b912b93541169fdfc1
   languageName: node
   linkType: hard
 
@@ -3096,17 +3096,17 @@ __metadata:
   dependencies:
     "@types/bluebird": ^3.5.38
     "@types/fs-extra": ^11.0.1
-    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo.tgz"
-    "@types/node": ^20.1.3
+    "@types/hexo": "https://github.com/dimaslanjaka/hexo/raw/1d4d41d/releases/hexo.tgz"
+    "@types/node": ^20.2.0
     "@types/nunjucks": ^3.2.2
     ansi-colors: ^4.1.3
     axios: ^1.4.0
     bluebird: ^3.7.2
-    cross-spawn: "https://github.com/dimaslanjaka/node-cross-spawn/tarball/5560156be9745d682c7a5e727cffeee0b0179ab1"
+    cross-spawn: "https://github.com/dimaslanjaka/node-cross-spawn/raw/5560156/release/cross-spawn.tgz"
     fs-extra: ^11.1.1
     git-command-helper: ^1.2.3
-    git-embed: ^0.1.1
-    hexo-util: "https://github.com/dimaslanjaka/hexo/raw/2f222d3/releases/hexo-util.tgz"
+    git-embed: ^0.1.2
+    hexo-util: "https://github.com/dimaslanjaka/hexo/raw/1d4d41d/releases/hexo-util.tgz"
     husky: ^8.0.3
     lint-staged: ^13.2.2
     nunjucks: ^3.2.4
@@ -4731,7 +4731,7 @@ __metadata:
     through2: ^4.0.2
     true-case-path: ^2.2.1
     upath: ^2.0.1
-  checksum: 90c9bb66c9d3ae68180509a7946e944b64e3c00c8e7579c218e5cbdb8d36c8e350b9812f05e7a088334d41a392625ab38e0be23cb6fd543c3c718aa43a7f8ac1
+  checksum: 058f616c07f320a7dfa0bf36367901a7a8cfca332c802ea486712bb309f1c84cc073c29a00f1372c76b3633533f21ce5665e36ae8e1c98073319359f0bbb1d84
   languageName: node
   linkType: hard
 
