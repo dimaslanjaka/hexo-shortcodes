@@ -36,4 +36,6 @@ export type rssreaderOptions = {
     limit?: string;
     debug?: string;
 };
-export declare function rssreader(hexo: import('hexo')): void;
+export declare function rssreader(hexo: import('hexo')): {
+    callback: (args: any[], template?: string) => Promise<string>;
+};

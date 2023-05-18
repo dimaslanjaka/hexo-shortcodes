@@ -76,6 +76,8 @@ export function rssreader(hexo: import('hexo')) {
 
     hexo.log.debug(logname, url, options);
     const feed = await parser.parseURL(url);
+    // remove duplicate items by title
+    feed.items = feed.items.filter((value, index, self) => index === self.findIndex((t) => t.title === value.title));
 
     // render
     const result = [] as string[];
