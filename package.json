@@ -22,7 +22,7 @@
     "clean:ge": "yarn workspace hexo-shortcodes run clean",
     "clean:hs": "yarn workspace hexo-shortcodes run clean",
     "clean": "nrs \"clean:**\"",
-    "prepare": "husky install && cd packages/git-embed && yarn install && yarn workspaces foreach run prepare"
+    "prepare": "husky install && cd packages/git-embed && yarn install && yarn workspaces --no-private foreach run prepare"
   },
   "repository": {
     "type": "git",
