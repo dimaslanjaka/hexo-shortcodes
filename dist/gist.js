@@ -72,6 +72,7 @@ var nunjucks_1 = __importDefault(require("nunjucks"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var env_1 = require("./env");
 var utils_1 = require("./utils");
+var sbg_utility_1 = require("sbg-utility");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
@@ -163,6 +164,12 @@ var gist = function (hexo) {
                 switch (_a.label) {
                     case 0:
                         id = args[0] || '';
+                        // return when id is empty
+                        if (id.length === 0)
+                            return [2 /*return*/, "<pre><code>gist id insufficient\n\n".concat(args, "</code></pre>")];
+                        if ((0, sbg_utility_1.isValidHttpUrl)(id)) {
+                            id = new URL(id).pathname;
+                        }
                         username = id.split('/')[0];
                         gist_id = id.split('/')[1];
                         if (typeof gist_id === 'undefined' || gist_id.length === 0) {
