@@ -148,7 +148,7 @@ jobs:
       - name: what changes
         id: changes
         shell: bash
-        if: matrix.node-version == '14.x' && runner.os == 'Linux'
+        if: matrix.node-version == '14.x' && runner.os == 'Linux' && steps.build.outcome == 'success'
         working-directory: lib
         run: |
           git status
