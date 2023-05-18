@@ -127,6 +127,7 @@ jobs:
           touch yarn.lock
           yarn install
         shell: bash
+        continue-on-error: true
         id: install
       - name: clean install
         if: steps.install.outcome == 'failure'
