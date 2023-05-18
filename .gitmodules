@@ -9,4 +9,4 @@
 [submodule "packages/git-embed"]
 	path = packages/git-embed
 	url = https://github.com/dimaslanjaka/embed-like-gist.git
-	branch = private
+	branch = monorepo
