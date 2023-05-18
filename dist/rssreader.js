@@ -70,9 +70,14 @@ var rss_parser_1 = __importDefault(require("rss-parser"));
 var utils_1 = require("./utils");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(rssreader)');
 function rssreader(hexo) {
+    // <RSSType, RSSType['items']>
     var parser = new rss_parser_1.default({
         customFields: {
-            item: [['media:content', 'media:content', { keepArray: true }]]
+            item: [
+                ['media:content', 'media-content', { keepArray: true }],
+                // ['media:group', { keepArray: true }],
+                ['media:thumbnail', 'media:group', { keepArray: true }]
+            ]
         },
         defaultRSS: 2.0
     });
@@ -118,13 +123,22 @@ function rssreader(hexo) {
                                     .replace(/\$content/gim, '{{ content }}')
                                     .replace(/\$link/gim, '{{ link }}')
                                     .replace(/\$summary/gim, '{{ summary }}')
-                                    .replace(/\$image/gim, '{{ image }}');
+                                    .replace(/\$image/gim, '{{ image }}')
+                                    // print date
+                                    .replace(/\$date/gim, '{{ date }}');
                                 Object.keys(item).forEach(function (key) {
                                     var regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
                                     var replacement = '{{ ' + key + ' }}';
                                     hexo.log.debug(logname, regex, '->', replacement);
                                     cloneTemplate_1 = cloneTemplate_1.replace(regex, replacement);
                                 });
+                                if ('date' in item === false && item.pubDate) {
+                                    item['date'] = item.pubDate;
+                                }
+                                if ('image' in item === false) {
+                                    item.image = item['media:group'][0]['$'].url;
+                                }
+                                // writefile(path.join(__dirname, '../tmp/item/', item.title + '.json'), jsonStringifyWithCircularRefs(item));
                                 // render result
                                 rendered = env.renderString(cloneTemplate_1, item);
                             }

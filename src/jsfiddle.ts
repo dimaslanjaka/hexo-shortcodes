@@ -10,7 +10,7 @@
 
 export const jsfiddle = function (hexo: import('hexo')) {
   // hexo.extend.tag.unregister('jsfiddle');
-  hexo.extend.tag.register('jsfiddle', function (args) {
+  hexo.extend.tag.register('jsfiddle', function (args: string[]) {
     const id = args[0] || null;
     const display = args[1] || 'js,resources,html,css,result';
     const outputAs = args[2] || 'script';
