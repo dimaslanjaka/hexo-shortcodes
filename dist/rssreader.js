@@ -80,7 +80,7 @@ function rssreader(hexo) {
         noCache: true,
         autoescape: false
     });
-    hexo.extend.tag.register('rssreader', function (args, template) {
+    var callback = function (args, template) {
         if (template === void 0) { template = ''; }
         return __awaiter(this, void 0, void 0, function () {
             var url, defaults, options, feed, result, _loop_1, i;
@@ -101,12 +101,14 @@ function rssreader(hexo) {
                         return [4 /*yield*/, parser.parseURL(url)];
                     case 1:
                         feed = _a.sent();
+                        // remove duplicate items by title
+                        feed.items = feed.items.filter(function (value, index, self) { return index === self.findIndex(function (t) { return t.title === value.title; }); });
                         result = [];
                         _loop_1 = function (i) {
                             var item = feed.items[i];
                             var rendered = void 0;
                             if (options.debug === 'true') {
-                                // debugging
+                                // render debug
                                 rendered = "<pre><code class=\"highlight json\">".concat(JSON.stringify(Object.keys(item), null, 2), "</code></pre>");
                             }
                             else {
@@ -123,7 +125,7 @@ function rssreader(hexo) {
                                     hexo.log.debug(logname, regex, '->', replacement);
                                     cloneTemplate_1 = cloneTemplate_1.replace(regex, replacement);
                                 });
-                                // render
+                                // render result
                                 rendered = env.renderString(cloneTemplate_1, item);
                             }
                             result.push(rendered);
@@ -135,6 +137,8 @@ function rssreader(hexo) {
                 }
             });
         });
-    }, { ends: true, async: true });
+    };
+    hexo.extend.tag.register('rssreader', callback, { ends: true, async: true });
+    return { callback: callback };
 }
 exports.rssreader = rssreader;
