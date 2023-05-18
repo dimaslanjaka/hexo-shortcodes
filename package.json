@@ -22,7 +22,7 @@
     "clean:ge": "yarn workspace hexo-shortcodes run clean",
     "clean:hs": "yarn workspace hexo-shortcodes run clean",
     "clean": "nrs \"clean:**\"",
-    "prepare": "husky install && cd packages/git-embed && yarn install && yarn workspaces --no-private foreach run prepare"
+    "prepare": "husky install && yarn workspaces --no-private foreach run prepare"
   },
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
   },
   "license": "MIT",
   "workspaces": [
+    "packages/git-embed",
     "lib/src/hexo-tag-embed",
     "lib",
     "test"
