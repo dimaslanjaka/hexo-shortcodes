@@ -111,7 +111,6 @@ export const gist = (hexo: import('hexo')) => {
       }
     }
 
-    hexo.log.d(logname, username, gist_id);
     const filename = args[1] || '';
     const content = await fetch_raw_code(hexo, id, filename);
     const line = args[2] || '';
@@ -140,9 +139,11 @@ export const gist = (hexo: import('hexo')) => {
 
     const options = {
       lines_length: codeText.split('\n').length,
-      lang: path.extname(filename),
-      caption: path.extname(filename)
+      lang: path.extname(filename).replace(/^./, ''),
+      caption: path.extname(filename).replace(/^./, '')
     };
+
+    hexo.log.d(logname, { username, gist_id, filename, lang: options.lang });
 
     // forked from https://github.com/hexojs/hexo/blob/8b95bbc722e5c77a7e8125441ed64d2ea3524ac0/lib/plugins/tag/code.js#L141-L148
     const newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {

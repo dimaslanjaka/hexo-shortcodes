@@ -173,7 +173,6 @@ var gist = function (hexo) {
                                 return [2 /*return*/, ''];
                             }
                         }
-                        hexo.log.d(logname, username, gist_id);
                         filename = args[1] || '';
                         return [4 /*yield*/, fetch_raw_code(hexo, id, filename)];
                     case 1:
@@ -199,9 +198,10 @@ var gist = function (hexo) {
                         }
                         options = {
                             lines_length: codeText.split('\n').length,
-                            lang: upath_1.default.extname(filename),
-                            caption: upath_1.default.extname(filename)
+                            lang: upath_1.default.extname(filename).replace(/^./, ''),
+                            caption: upath_1.default.extname(filename).replace(/^./, '')
                         };
+                        hexo.log.d(logname, { username: username, gist_id: gist_id, filename: filename, lang: options.lang });
                         newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
                             context: hexo,
                             args: [codeText, options]
