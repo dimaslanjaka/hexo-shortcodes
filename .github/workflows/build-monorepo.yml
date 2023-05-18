@@ -137,7 +137,7 @@ jobs:
           find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
           truncate -s 0 yarn.lock
           YARN_CHECKSUM_BEHAVIOR=update yarn install
-      - run: yarn prepare
+      - run: yarn run prepare
       - name: Build
         run: npm run build
         shell: bash
