@@ -6,7 +6,7 @@ const rCaptionTitleFile = /("[^"]*"|'[^']*'|[\S]+)+/g;
  * parse shortcode parameter
  * @param args
  */
-export function parseTagParameter(args: string[] | string, ...argv: string[]) {
+export function parseTagParameter<T>(args: string[] | string, ...argv: string[]) {
   const concat = (typeof args === 'string' ? [args] : args).concat(argv || []);
   const join = concat.join(' ');
   const match = Array.from(join.match(rCaptionTitleFile) || []);
@@ -24,5 +24,5 @@ export function parseTagParameter(args: string[] | string, ...argv: string[]) {
   if (typeof result.to !== 'number') result.from = parseInt(result.to);
   // fix empty line which embedding spesific lines
   result.from = result.from - 1;
-  return result;
+  return result as typeof result & T;
 }
