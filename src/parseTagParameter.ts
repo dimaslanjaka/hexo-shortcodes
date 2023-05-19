@@ -18,7 +18,7 @@ export function parseTagParameter(args: string[] | string, ...argv: string[]) {
     })
   );
 
-  const result = Object.assign({ lang: '', from: 0, to: Infinity, sourceFile }, options);
+  const result = Object.assign({ lang: '', from: 0, to: Number.MAX_VALUE, sourceFile }, options);
   if (typeof result.from !== 'number') result.from = parseInt(result.from);
   if (typeof result.to !== 'number') result.from = parseInt(result.to);
   return result;

@@ -21,7 +21,7 @@ function parseTagParameter(args) {
         var split = str.split(':');
         return _a = {}, _a[split[0]] = split[1], _a;
     }));
-    var result = Object.assign({ lang: '', from: 0, to: Infinity, sourceFile: sourceFile }, options);
+    var result = Object.assign({ lang: '', from: 0, to: Number.MAX_VALUE, sourceFile: sourceFile }, options);
     if (typeof result.from !== 'number')
         result.from = parseInt(result.from);
     if (typeof result.to !== 'number')
