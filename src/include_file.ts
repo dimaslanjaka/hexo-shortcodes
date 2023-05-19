@@ -2,6 +2,7 @@ import pathFn from 'path';
 import fs from 'fs-extra';
 import Hexo from 'hexo';
 import path from 'path';
+import { parseTagParameter } from './parseTagParameter';
 
 /**
  * Hexo include tag
@@ -16,32 +17,75 @@ import path from 'path';
  *   Path is relative to your source directory.
  */
 function includeTag(ctx: Hexo) {
-  return async function (this: Hexo, args: string[]) {
-    let filePath = pathFn.join(ctx.source_dir, args[0]);
-    const sourcePage = (this as any)['full_source'];
+  const callback = async function (this: { full_source: string }, args: string[]) {
+    let codeDir = ctx.config.code_dir;
+    // Add trailing slash to codeDir
+    if (!codeDir.endsWith('/')) codeDir += '/';
+
+    const parseArgs = parseTagParameter(args);
+    // override language when is not string or empty string
+    if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0)
+      parseArgs.lang = path.extname(parseArgs.sourceFile).substring(1);
+    // override title
+    if (!parseArgs.title) parseArgs.title = path.basename(parseArgs.sourceFile);
+    // create caption
+    const caption = `<span>${parseArgs.title}</span><a href="${path.join(
+      ctx.config.root,
+      codeDir,
+      parseArgs.sourceFile
+    )}">view raw</a>`;
+
+    // absolute path file to be included
+    let filePath = pathFn.join(ctx.source_dir, parseArgs.sourceFile);
+    // current source markdown page
+    const sourcePage = this['full_source'];
 
     // exit if path is not defined
-    if (!filePath) {
+    if (typeof filePath !== 'string' || filePath.length === 0) {
       return 'Include file path undefined.';
     }
 
+    let exists = fs.existsSync(filePath);
+
     // check existence
-    if (!(await fs.exists(filePath))) {
+    if (!exists) {
       // try find from relative to source path
-      const relativeToSource = path.join(path.dirname(sourcePage), args[0]);
-      if (await fs.exists(relativeToSource)) {
+      const relativeToSource = path.resolve(path.dirname(sourcePage), parseArgs.sourceFile);
+      exists = fs.existsSync(relativeToSource);
+      //console.log({ source_dir: ctx.source_dir, sourcePage, relativeToSource, sourceFile: parseArgs.sourceFile });
+      if (exists) {
         filePath = relativeToSource;
-      } else {
-        return 'Include file not found.';
       }
     }
 
-    const contents = await fs.readFile(filePath, { encoding: 'utf-8' });
-    if (!contents) {
-      return 'Include file empty.';
+    let contents = '';
+    if (exists) {
+      contents = await fs.readFile(filePath, { encoding: 'utf-8' });
+      if (!contents) {
+        contents = 'Include file empty.';
+      }
+    } else {
+      contents = 'Include file path not found';
     }
-    return String(contents);
+
+    const lines = contents.split('\n');
+    contents = lines.slice(parseArgs.from, parseArgs.to).join('\n').trim();
+
+    if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
+      const options = {
+        lang: parseArgs.lang,
+        caption,
+        lines_length: lines.length
+      };
+      return ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
+        context: ctx,
+        args: [contents, options]
+      });
+    }
+
+    return `<pre><code>${contents}</code></pre>`;
   };
+  return callback;
 }
 
 export function registerIncludeTag(ctx: Hexo) {

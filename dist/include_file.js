@@ -43,6 +43,7 @@ exports.registerIncludeTag = void 0;
 var path_1 = __importDefault(require("path"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var path_2 = __importDefault(require("path"));
+var parseTagParameter_1 = require("./parseTagParameter");
 /**
  * Hexo include tag
  *
@@ -56,42 +57,72 @@ var path_2 = __importDefault(require("path"));
  *   Path is relative to your source directory.
  */
 function includeTag(ctx) {
-    return function (args) {
+    var callback = function (args) {
         return __awaiter(this, void 0, void 0, function () {
-            var filePath, sourcePage, relativeToSource, contents;
+            var codeDir, parseArgs, caption, filePath, sourcePage, exists, relativeToSource, contents, lines, options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        filePath = path_1.default.join(ctx.source_dir, args[0]);
+                        codeDir = ctx.config.code_dir;
+                        // Add trailing slash to codeDir
+                        if (!codeDir.endsWith('/'))
+                            codeDir += '/';
+                        parseArgs = (0, parseTagParameter_1.parseTagParameter)(args);
+                        // override language when is not string or empty string
+                        if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0)
+                            parseArgs.lang = path_2.default.extname(parseArgs.sourceFile).substring(1);
+                        // override title
+                        if (!parseArgs.title)
+                            parseArgs.title = path_2.default.basename(parseArgs.sourceFile);
+                        caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(path_2.default.join(ctx.config.root, codeDir, parseArgs.sourceFile), "\">view raw</a>");
+                        filePath = path_1.default.join(ctx.source_dir, parseArgs.sourceFile);
                         sourcePage = this['full_source'];
                         // exit if path is not defined
-                        if (!filePath) {
+                        if (typeof filePath !== 'string' || filePath.length === 0) {
                             return [2 /*return*/, 'Include file path undefined.'];
                         }
-                        return [4 /*yield*/, fs_extra_1.default.exists(filePath)];
+                        exists = fs_extra_1.default.existsSync(filePath);
+                        // check existence
+                        if (!exists) {
+                            relativeToSource = path_2.default.resolve(path_2.default.dirname(sourcePage), parseArgs.sourceFile);
+                            exists = fs_extra_1.default.existsSync(relativeToSource);
+                            //console.log({ source_dir: ctx.source_dir, sourcePage, relativeToSource, sourceFile: parseArgs.sourceFile });
+                            if (exists) {
+                                filePath = relativeToSource;
+                            }
+                        }
+                        contents = '';
+                        if (!exists) return [3 /*break*/, 2];
+                        return [4 /*yield*/, fs_extra_1.default.readFile(filePath, { encoding: 'utf-8' })];
                     case 1:
-                        if (!!(_a.sent())) return [3 /*break*/, 3];
-                        relativeToSource = path_2.default.join(path_2.default.dirname(sourcePage), args[0]);
-                        return [4 /*yield*/, fs_extra_1.default.exists(relativeToSource)];
-                    case 2:
-                        if (_a.sent()) {
-                            filePath = relativeToSource;
-                        }
-                        else {
-                            return [2 /*return*/, 'Include file not found.'];
-                        }
-                        _a.label = 3;
-                    case 3: return [4 /*yield*/, fs_extra_1.default.readFile(filePath, { encoding: 'utf-8' })];
-                    case 4:
                         contents = _a.sent();
                         if (!contents) {
-                            return [2 /*return*/, 'Include file empty.'];
+                            contents = 'Include file empty.';
                         }
-                        return [2 /*return*/, String(contents)];
+                        return [3 /*break*/, 3];
+                    case 2:
+                        contents = 'Include file path not found';
+                        _a.label = 3;
+                    case 3:
+                        lines = contents.split('\n');
+                        contents = lines.slice(parseArgs.from, parseArgs.to).join('\n').trim();
+                        if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
+                            options = {
+                                lang: parseArgs.lang,
+                                caption: caption,
+                                lines_length: lines.length
+                            };
+                            return [2 /*return*/, ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
+                                    context: ctx,
+                                    args: [contents, options]
+                                })];
+                        }
+                        return [2 /*return*/, "<pre><code>".concat(contents, "</code></pre>")];
                 }
             });
         });
     };
+    return callback;
 }
 function registerIncludeTag(ctx) {
     hexo.extend.tag.register('include_file', includeTag(ctx), { async: true });
