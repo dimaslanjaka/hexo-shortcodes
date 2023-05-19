@@ -19,7 +19,10 @@ export function parseTagParameter(args: string[] | string, ...argv: string[]) {
   );
 
   const result = Object.assign({ lang: '', from: 0, to: Number.MAX_VALUE, sourceFile }, options);
+  // convert to number
   if (typeof result.from !== 'number') result.from = parseInt(result.from);
   if (typeof result.to !== 'number') result.from = parseInt(result.to);
+  // fix empty line which embedding spesific lines
+  result.from = result.from - 1;
   return result;
 }
