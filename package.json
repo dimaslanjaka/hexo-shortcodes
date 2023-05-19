@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "yarn build && cd test && hexo clean && hexo server -p 4000",
+    "test": "yarn workspace hexo-shortcodes run test",
     "build:git-embed": "cd packages/git-embed && yarn run build",
     "build:hexo-shortcodes": "yarn workspace hexo-shortcodes run build",
     "build": "nrs \"build:**\"",
