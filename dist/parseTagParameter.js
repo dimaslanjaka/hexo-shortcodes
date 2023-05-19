@@ -12,10 +12,11 @@ function parseTagParameter(args) {
     for (var _i = 1; _i < arguments.length; _i++) {
         argv[_i - 1] = arguments[_i];
     }
-    var join = (typeof args === 'string' ? [args] : args).concat(argv).join(' ');
-    var concat = Array.from(join.match(rCaptionTitleFile) || []);
+    var concat = (typeof args === 'string' ? [args] : args).concat(argv || []);
+    var join = concat.join(' ');
+    var match = Array.from(join.match(rCaptionTitleFile) || []);
     var sourceFile = concat.filter(function (str) { return !str.includes(':'); })[0];
-    var options = (0, utils_1.array2obj)(concat.map(function (str) {
+    var options = (0, utils_1.array2obj)(match.map(function (str) {
         var _a;
         var split = str.split(':');
         return _a = {}, _a[split[0]] = split[1], _a;
