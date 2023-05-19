@@ -15,7 +15,7 @@ npm install --save hexo-shortcodes
 ```
 
 ## Usage
-- [FULL DEMO, FEATURES, & USAGES](https://www.webmanajemen.com/docs/hexo-shortcodes)
+- [FULL DEMO, FEATURES, CHANGELOG, and USAGES](https://www.webmanajemen.com/docs/hexo-shortcodes)
 
 License
 =======
