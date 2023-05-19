@@ -18,9 +18,9 @@ import { parseTagParameter } from './parseTagParameter';
  */
 function includeTag(ctx: Hexo) {
   const callback = async function (this: { full_source: string }, args: string[]) {
-    const codeDir = path.toUnix(ctx.config.code_dir);
-    const sourceDir = path.toUnix(ctx.config.source_dir);
-    let sourceBaseDir = path.toUnix(ctx.base_dir);
+    const codeDir = ctx.config.code_dir;
+    const sourceDir = ctx.config.source_dir;
+    let rawLinkBaseDir = ctx.base_dir;
 
     const parseArgs = parseTagParameter<{
       from?: string;
@@ -45,12 +45,14 @@ function includeTag(ctx: Hexo) {
     // absolute path file to be included
     let filePath: string;
     if ((filePath = pathFn.join(sourceDir, parseArgs.sourceFile))) {
-      sourceBaseDir = sourceDir;
+      rawLinkBaseDir = sourceDir;
     } else if ((filePath = pathFn.join(codeDir, parseArgs.sourceFile))) {
-      sourceBaseDir = codeDir;
+      rawLinkBaseDir = codeDir;
     }
     // Add trailing slash to sourceBaseDir
-    if (!sourceBaseDir.endsWith('/')) sourceBaseDir += '/';
+    if (!rawLinkBaseDir.endsWith('/')) rawLinkBaseDir += '/';
+    // trim hexo.source_dir for raw link
+    rawLinkBaseDir = rawLinkBaseDir.replace(ctx.source_dir, '');
 
     // current source markdown page
     const sourcePage = this['full_source'];
@@ -91,7 +93,7 @@ function includeTag(ctx: Hexo) {
       // create caption
       const caption = `<span>${parseArgs.title}</span><a href="${path.join(
         ctx.config.root,
-        sourceBaseDir,
+        rawLinkBaseDir,
         parseArgs.sourceFile
       )}">view raw</a>`;
       const lines = contents.split(/\r?\n/gm);
