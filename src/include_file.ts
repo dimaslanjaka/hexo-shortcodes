@@ -1,7 +1,7 @@
 import pathFn from 'path';
 import fs from 'fs-extra';
 import Hexo from 'hexo';
-import path from 'path';
+import path from 'upath';
 import { parseTagParameter } from './parseTagParameter';
 
 /**
@@ -70,6 +70,9 @@ function includeTag(ctx: Hexo) {
 
     const lines = contents.split('\n');
     contents = lines.slice(parseArgs.from, parseArgs.to).join('\n').trim();
+
+    if (parseArgs.from > 0)
+      console.log(parseArgs.from, parseArgs.to, lines.length, lines.slice(parseArgs.from, parseArgs.to));
 
     if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
       const options = {

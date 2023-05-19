@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerIncludeTag = void 0;
 var path_1 = __importDefault(require("path"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
-var path_2 = __importDefault(require("path"));
+var upath_1 = __importDefault(require("upath"));
 var parseTagParameter_1 = require("./parseTagParameter");
 /**
  * Hexo include tag
@@ -70,11 +70,11 @@ function includeTag(ctx) {
                         parseArgs = (0, parseTagParameter_1.parseTagParameter)(args);
                         // override language when is not string or empty string
                         if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0)
-                            parseArgs.lang = path_2.default.extname(parseArgs.sourceFile).substring(1);
+                            parseArgs.lang = upath_1.default.extname(parseArgs.sourceFile).substring(1);
                         // override title
                         if (!parseArgs.title)
-                            parseArgs.title = path_2.default.basename(parseArgs.sourceFile);
-                        caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(path_2.default.join(ctx.config.root, codeDir, parseArgs.sourceFile), "\">view raw</a>");
+                            parseArgs.title = upath_1.default.basename(parseArgs.sourceFile);
+                        caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(upath_1.default.join(ctx.config.root, codeDir, parseArgs.sourceFile), "\">view raw</a>");
                         filePath = path_1.default.join(ctx.source_dir, parseArgs.sourceFile);
                         sourcePage = this['full_source'];
                         // exit if path is not defined
@@ -84,7 +84,7 @@ function includeTag(ctx) {
                         exists = fs_extra_1.default.existsSync(filePath);
                         // check existence
                         if (!exists) {
-                            relativeToSource = path_2.default.resolve(path_2.default.dirname(sourcePage), parseArgs.sourceFile);
+                            relativeToSource = upath_1.default.resolve(upath_1.default.dirname(sourcePage), parseArgs.sourceFile);
                             exists = fs_extra_1.default.existsSync(relativeToSource);
                             //console.log({ source_dir: ctx.source_dir, sourcePage, relativeToSource, sourceFile: parseArgs.sourceFile });
                             if (exists) {
@@ -106,6 +106,8 @@ function includeTag(ctx) {
                     case 3:
                         lines = contents.split('\n');
                         contents = lines.slice(parseArgs.from, parseArgs.to).join('\n').trim();
+                        if (parseArgs.from > 0)
+                            console.log(parseArgs.from, parseArgs.to, lines.length, lines.slice(parseArgs.from, parseArgs.to));
                         if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
                             options = {
                                 lang: parseArgs.lang,
