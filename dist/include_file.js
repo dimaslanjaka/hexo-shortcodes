@@ -59,7 +59,7 @@ var parseTagParameter_1 = require("./parseTagParameter");
 function includeTag(ctx) {
     var callback = function (args) {
         return __awaiter(this, void 0, void 0, function () {
-            var codeDir, sourceDir, rawLinkBaseDir, parseArgs, from, to, filePath, sourcePage, exists, relativeToSource, contents, empty, caption, lines, slice, options;
+            var codeDir, sourceDir, rawLinkBaseDir, parseArgs, from, to, filePath, exists, sourcePage, relativeToSource, contents, empty, caption, lines, slice, options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -81,25 +81,24 @@ function includeTag(ctx) {
                         if (!parseArgs.title) {
                             parseArgs.title = upath_1.default.basename(parseArgs.sourceFile);
                         }
-                        if ((filePath = path_1.default.join(sourceDir, parseArgs.sourceFile))) {
+                        if ((filePath = path_1.default.join(sourceDir, parseArgs.sourceFile)) && (exists = fs_extra_1.default.existsSync(filePath))) {
                             rawLinkBaseDir = sourceDir;
                         }
-                        else if ((filePath = path_1.default.join(codeDir, parseArgs.sourceFile))) {
+                        else if ((filePath = path_1.default.join(codeDir, parseArgs.sourceFile)) && (exists = fs_extra_1.default.existsSync(filePath))) {
                             rawLinkBaseDir = codeDir;
                         }
                         // Add trailing slash to sourceBaseDir
                         if (!rawLinkBaseDir.endsWith('/'))
                             rawLinkBaseDir += '/';
                         // trim hexo.source_dir for raw link
-                        rawLinkBaseDir = rawLinkBaseDir.replace(ctx.source_dir, '');
+                        rawLinkBaseDir = rawLinkBaseDir.replace(sourceDir, '');
                         sourcePage = this['full_source'];
                         // exit if path is not defined
                         if (typeof filePath !== 'string' || filePath.length === 0) {
                             return [2 /*return*/, 'Include file path undefined.'];
                         }
-                        exists = fs_extra_1.default.existsSync(filePath);
                         // check existence
-                        if (!exists) {
+                        if (!(exists = fs_extra_1.default.existsSync(filePath))) {
                             relativeToSource = upath_1.default.resolve(upath_1.default.dirname(sourcePage), parseArgs.sourceFile);
                             exists = fs_extra_1.default.existsSync(relativeToSource);
                             //console.log({ source_dir: ctx.source_dir, sourcePage, relativeToSource, sourceFile: parseArgs.sourceFile });
@@ -121,6 +120,7 @@ function includeTag(ctx) {
                         }
                         return [3 /*break*/, 3];
                     case 2:
+                        console.log({ filePath: filePath, sourceDir: sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir: rawLinkBaseDir });
                         contents = 'Include file path not found';
                         _a.label = 3;
                     case 3:

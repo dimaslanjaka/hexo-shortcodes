@@ -44,15 +44,17 @@ function includeTag(ctx: Hexo) {
 
     // absolute path file to be included
     let filePath: string;
-    if ((filePath = pathFn.join(sourceDir, parseArgs.sourceFile))) {
+    let exists: boolean;
+
+    if ((filePath = pathFn.join(sourceDir, parseArgs.sourceFile)) && (exists = fs.existsSync(filePath))) {
       rawLinkBaseDir = sourceDir;
-    } else if ((filePath = pathFn.join(codeDir, parseArgs.sourceFile))) {
+    } else if ((filePath = pathFn.join(codeDir, parseArgs.sourceFile)) && (exists = fs.existsSync(filePath))) {
       rawLinkBaseDir = codeDir;
     }
     // Add trailing slash to sourceBaseDir
     if (!rawLinkBaseDir.endsWith('/')) rawLinkBaseDir += '/';
     // trim hexo.source_dir for raw link
-    rawLinkBaseDir = rawLinkBaseDir.replace(ctx.source_dir, '');
+    rawLinkBaseDir = rawLinkBaseDir.replace(sourceDir, '');
 
     // current source markdown page
     const sourcePage = this['full_source'];
@@ -62,10 +64,8 @@ function includeTag(ctx: Hexo) {
       return 'Include file path undefined.';
     }
 
-    let exists = fs.existsSync(filePath);
-
     // check existence
-    if (!exists) {
+    if (!(exists = fs.existsSync(filePath))) {
       // try find from relative to source path
       const relativeToSource = path.resolve(path.dirname(sourcePage), parseArgs.sourceFile);
       exists = fs.existsSync(relativeToSource);
@@ -86,6 +86,7 @@ function includeTag(ctx: Hexo) {
         empty = false;
       }
     } else {
+      console.log({ filePath, sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir });
       contents = 'Include file path not found';
     }
 
