@@ -59,14 +59,13 @@ var parseTagParameter_1 = require("./parseTagParameter");
 function includeTag(ctx) {
     var callback = function (args) {
         return __awaiter(this, void 0, void 0, function () {
-            var codeDir, parseArgs, from, to, caption, filePath, sourcePage, exists, relativeToSource, contents, empty, lines, slice, options;
+            var codeDir, sourceDir, sourceBaseDir, parseArgs, from, to, filePath, sourcePage, exists, relativeToSource, contents, empty, caption, lines, slice, options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        codeDir = ctx.config.code_dir;
-                        // Add trailing slash to codeDir
-                        if (!codeDir.endsWith('/'))
-                            codeDir += '/';
+                        codeDir = upath_1.default.toUnix(ctx.config.code_dir);
+                        sourceDir = upath_1.default.toUnix(ctx.config.source_dir);
+                        sourceBaseDir = upath_1.default.toUnix(ctx.base_dir);
                         parseArgs = (0, parseTagParameter_1.parseTagParameter)(args);
                         from = 0;
                         if (parseArgs.from)
@@ -82,8 +81,15 @@ function includeTag(ctx) {
                         if (!parseArgs.title) {
                             parseArgs.title = upath_1.default.basename(parseArgs.sourceFile);
                         }
-                        caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(upath_1.default.join(ctx.config.root, codeDir, parseArgs.sourceFile), "\">view raw</a>");
-                        filePath = path_1.default.join(ctx.source_dir, parseArgs.sourceFile);
+                        if ((filePath = path_1.default.join(sourceDir, parseArgs.sourceFile))) {
+                            sourceBaseDir = sourceDir;
+                        }
+                        else if ((filePath = path_1.default.join(codeDir, parseArgs.sourceFile))) {
+                            sourceBaseDir = codeDir;
+                        }
+                        // Add trailing slash to sourceBaseDir
+                        if (!sourceBaseDir.endsWith('/'))
+                            sourceBaseDir += '/';
                         sourcePage = this['full_source'];
                         // exit if path is not defined
                         if (typeof filePath !== 'string' || filePath.length === 0) {
@@ -117,13 +123,10 @@ function includeTag(ctx) {
                         _a.label = 3;
                     case 3:
                         if (!empty) {
+                            caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(upath_1.default.join(ctx.config.root, sourceBaseDir, parseArgs.sourceFile), "\">view raw</a>");
                             lines = contents.split(/\r?\n/gm);
                             slice = lines.slice(from, to);
-                            contents = slice.join('\n').trim();
-                            if (from > 0 && to < Number.MAX_VALUE) {
-                                console.log(from, to, lines.length);
-                                console.log(contents);
-                            }
+                            contents = slice.join('\n');
                             if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
                                 options = {
                                     lang: parseArgs.lang,

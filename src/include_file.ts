@@ -18,9 +18,9 @@ import { parseTagParameter } from './parseTagParameter';
  */
 function includeTag(ctx: Hexo) {
   const callback = async function (this: { full_source: string }, args: string[]) {
-    let codeDir = ctx.config.code_dir;
-    // Add trailing slash to codeDir
-    if (!codeDir.endsWith('/')) codeDir += '/';
+    const codeDir = path.toUnix(ctx.config.code_dir);
+    const sourceDir = path.toUnix(ctx.config.source_dir);
+    let sourceBaseDir = path.toUnix(ctx.base_dir);
 
     const parseArgs = parseTagParameter<{
       from?: string;
@@ -41,15 +41,17 @@ function includeTag(ctx: Hexo) {
     if (!parseArgs.title) {
       parseArgs.title = path.basename(parseArgs.sourceFile);
     }
-    // create caption
-    const caption = `<span>${parseArgs.title}</span><a href="${path.join(
-      ctx.config.root,
-      codeDir,
-      parseArgs.sourceFile
-    )}">view raw</a>`;
 
     // absolute path file to be included
-    let filePath = pathFn.join(ctx.source_dir, parseArgs.sourceFile);
+    let filePath: string;
+    if ((filePath = pathFn.join(sourceDir, parseArgs.sourceFile))) {
+      sourceBaseDir = sourceDir;
+    } else if ((filePath = pathFn.join(codeDir, parseArgs.sourceFile))) {
+      sourceBaseDir = codeDir;
+    }
+    // Add trailing slash to sourceBaseDir
+    if (!sourceBaseDir.endsWith('/')) sourceBaseDir += '/';
+
     // current source markdown page
     const sourcePage = this['full_source'];
 
@@ -86,14 +88,15 @@ function includeTag(ctx: Hexo) {
     }
 
     if (!empty) {
+      // create caption
+      const caption = `<span>${parseArgs.title}</span><a href="${path.join(
+        ctx.config.root,
+        sourceBaseDir,
+        parseArgs.sourceFile
+      )}">view raw</a>`;
       const lines = contents.split(/\r?\n/gm);
       const slice = lines.slice(from, to);
-      contents = slice.join('\n').trim();
-
-      if (from > 0 && to < Number.MAX_VALUE) {
-        console.log(from, to, lines.length);
-        console.log(contents);
-      }
+      contents = slice.join('\n');
 
       if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
         const options = {
