@@ -59,7 +59,7 @@ var parseTagParameter_1 = require("./parseTagParameter");
 function includeTag(ctx) {
     var callback = function (args) {
         return __awaiter(this, void 0, void 0, function () {
-            var codeDir, parseArgs, caption, filePath, sourcePage, exists, relativeToSource, contents, lines, options;
+            var codeDir, parseArgs, from, to, caption, filePath, sourcePage, exists, relativeToSource, contents, empty, lines, slice, options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -68,12 +68,20 @@ function includeTag(ctx) {
                         if (!codeDir.endsWith('/'))
                             codeDir += '/';
                         parseArgs = (0, parseTagParameter_1.parseTagParameter)(args);
+                        from = 0;
+                        if (parseArgs.from)
+                            from = parseInt(parseArgs.from) - 1;
+                        to = Number.MAX_VALUE;
+                        if (parseArgs.to)
+                            to = parseInt(parseArgs.to);
                         // override language when is not string or empty string
-                        if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0)
+                        if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0) {
                             parseArgs.lang = upath_1.default.extname(parseArgs.sourceFile).substring(1);
+                        }
                         // override title
-                        if (!parseArgs.title)
+                        if (!parseArgs.title) {
                             parseArgs.title = upath_1.default.basename(parseArgs.sourceFile);
+                        }
                         caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(upath_1.default.join(ctx.config.root, codeDir, parseArgs.sourceFile), "\">view raw</a>");
                         filePath = path_1.default.join(ctx.source_dir, parseArgs.sourceFile);
                         sourcePage = this['full_source'];
@@ -92,32 +100,41 @@ function includeTag(ctx) {
                             }
                         }
                         contents = '';
+                        empty = true;
                         if (!exists) return [3 /*break*/, 2];
                         return [4 /*yield*/, fs_extra_1.default.readFile(filePath, { encoding: 'utf-8' })];
                     case 1:
                         contents = _a.sent();
-                        if (!contents) {
+                        if (contents.length === 0) {
                             contents = 'Include file empty.';
+                        }
+                        else {
+                            empty = false;
                         }
                         return [3 /*break*/, 3];
                     case 2:
                         contents = 'Include file path not found';
                         _a.label = 3;
                     case 3:
-                        lines = contents.split(/\r?\n/);
-                        contents = lines.slice(parseArgs.from, parseArgs.to).join('\n').trim();
-                        if (parseArgs.from > 0 && parseArgs.to < Number.MAX_VALUE)
-                            console.log(parseArgs.from, parseArgs.to, lines.length, lines.slice(parseArgs.from, parseArgs.to));
-                        if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
-                            options = {
-                                lang: parseArgs.lang,
-                                caption: caption,
-                                lines_length: lines.length
-                            };
-                            return [2 /*return*/, ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
-                                    context: ctx,
-                                    args: [contents, options]
-                                })];
+                        if (!empty) {
+                            lines = contents.split(/\r?\n/gm);
+                            slice = lines.slice(from, to);
+                            contents = slice.join('\n').trim();
+                            if (from > 0 && to < Number.MAX_VALUE) {
+                                console.log(from, to, lines.length);
+                                console.log(contents);
+                            }
+                            if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
+                                options = {
+                                    lang: parseArgs.lang,
+                                    caption: caption,
+                                    lines_length: lines.length
+                                };
+                                return [2 /*return*/, ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
+                                        context: ctx,
+                                        args: [contents, options]
+                                    })];
+                            }
                         }
                         return [2 /*return*/, "<pre><code>".concat(contents, "</code></pre>")];
                 }

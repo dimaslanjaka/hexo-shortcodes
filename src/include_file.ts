@@ -22,12 +22,25 @@ function includeTag(ctx: Hexo) {
     // Add trailing slash to codeDir
     if (!codeDir.endsWith('/')) codeDir += '/';
 
-    const parseArgs = parseTagParameter(args);
+    const parseArgs = parseTagParameter<{
+      from?: string;
+      to?: string;
+      lang?: string;
+    }>(args);
+
+    let from = 0;
+    if (parseArgs.from) from = parseInt(parseArgs.from) - 1;
+    let to = Number.MAX_VALUE;
+    if (parseArgs.to) to = parseInt(parseArgs.to);
+
     // override language when is not string or empty string
-    if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0)
+    if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0) {
       parseArgs.lang = path.extname(parseArgs.sourceFile).substring(1);
+    }
     // override title
-    if (!parseArgs.title) parseArgs.title = path.basename(parseArgs.sourceFile);
+    if (!parseArgs.title) {
+      parseArgs.title = path.basename(parseArgs.sourceFile);
+    }
     // create caption
     const caption = `<span>${parseArgs.title}</span><a href="${path.join(
       ctx.config.root,
@@ -58,32 +71,41 @@ function includeTag(ctx: Hexo) {
       }
     }
 
+    // define contents and empty indicator
     let contents = '';
+    let empty = true;
     if (exists) {
       contents = await fs.readFile(filePath, { encoding: 'utf-8' });
-      if (!contents) {
+      if (contents.length === 0) {
         contents = 'Include file empty.';
+      } else {
+        empty = false;
       }
     } else {
       contents = 'Include file path not found';
     }
 
-    const lines = contents.split(/\r?\n/);
-    contents = lines.slice(parseArgs.from, parseArgs.to).join('\n').trim();
+    if (!empty) {
+      const lines = contents.split(/\r?\n/gm);
+      const slice = lines.slice(from, to);
+      contents = slice.join('\n').trim();
 
-    if (parseArgs.from > 0 && parseArgs.to < Number.MAX_VALUE)
-      console.log(parseArgs.from, parseArgs.to, lines.length, lines.slice(parseArgs.from, parseArgs.to));
+      if (from > 0 && to < Number.MAX_VALUE) {
+        console.log(from, to, lines.length);
+        console.log(contents);
+      }
 
-    if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
-      const options = {
-        lang: parseArgs.lang,
-        caption,
-        lines_length: lines.length
-      };
-      return ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
-        context: ctx,
-        args: [contents, options]
-      });
+      if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
+        const options = {
+          lang: parseArgs.lang,
+          caption,
+          lines_length: lines.length
+        };
+        return ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
+          context: ctx,
+          args: [contents, options]
+        });
+      }
     }
 
     return `<pre><code>${contents}</code></pre>`;
