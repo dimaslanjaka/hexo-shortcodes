@@ -12,5 +12,4 @@ release/hexo-shortcodes-*.tgz
 !/lib/github*.js
 yarn.lock
 packager-lock.json
-/test
 /packages
