@@ -13,3 +13,4 @@ release/hexo-shortcodes-*.tgz
 yarn.lock
 packager-lock.json
 /packages
+/coverage
