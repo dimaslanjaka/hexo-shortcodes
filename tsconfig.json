@@ -25,6 +25,5 @@
       "git-embed": ["../packages/git-embed/src"]
     }
   },
-  "include": ["./src/**/*", "./src/*"],
   "exclude": ["**/dist/**", "**/node_modules/**"]
 }
