@@ -8,7 +8,11 @@ var rCaptionTitleFile = /("[^"]*"|'[^']*'|[\S]+)+/g;
  * @param args
  */
 function parseTagParameter(args) {
-    var join = args.join(' ');
+    var argv = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        argv[_i - 1] = arguments[_i];
+    }
+    var join = (typeof args === 'string' ? [args] : args).concat(argv).join(' ');
     var concat = Array.from(join.match(rCaptionTitleFile) || []);
     var sourceFile = concat.filter(function (str) { return !str.includes(':'); })[0];
     var options = (0, utils_1.array2obj)(concat.map(function (str) {

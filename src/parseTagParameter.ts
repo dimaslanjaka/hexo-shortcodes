@@ -6,8 +6,8 @@ const rCaptionTitleFile = /("[^"]*"|'[^']*'|[\S]+)+/g;
  * parse shortcode parameter
  * @param args
  */
-export function parseTagParameter(args: string[]) {
-  const join = args.join(' ');
+export function parseTagParameter(args: string[] | string, ...argv: string[]) {
+  const join = (typeof args === 'string' ? [args] : args).concat(argv).join(' ');
   const concat = Array.from(join.match(rCaptionTitleFile) || []);
   const sourceFile = concat.filter((str) => !str.includes(':'))[0];
   const options: Record<string, string | number> = array2obj(

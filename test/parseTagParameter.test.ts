@@ -18,4 +18,14 @@ describe('parse tag parameter', () => {
       }
     });
   });
+
+  it('should work with whitespaces', () => {
+    const tests = [
+      parseTagParameter([`'../fixtures/include two.txt'`, 'lang:javascript', 'from:3', 'to:3']),
+      parseTagParameter(`'../fixtures/include two.txt'`, 'lang:javascript', 'from:3', 'to:3')
+    ];
+    tests.forEach((test) => {
+      expect(test).toHaveProperty('sourceFile');
+    });
+  });
 });
