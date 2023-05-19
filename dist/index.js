@@ -9,6 +9,7 @@ var github_1 = require("./github");
 var githubCard_1 = require("./githubCard");
 var vimeo_1 = require("./hexo-tag-embed/lib/tags/vimeo");
 var youtube_1 = require("./hexo-tag-embed/lib/tags/youtube");
+var include_file_1 = require("./include_file");
 var jsfiddle_1 = require("./jsfiddle");
 var npmrunkit_1 = require("./npmrunkit");
 var rssreader_1 = require("./rssreader");
@@ -30,6 +31,7 @@ if (typeof hexo !== 'undefined') {
     (0, rssreader_1.rssreader)(hexo);
     (0, github_1.githubEmbed)(hexo);
     (0, npmrunkit_1.embedNPMRunKit)(hexo);
+    (0, include_file_1.registerIncludeTag)(hexo);
     // register hexo-tag-embed
     hexo.extend.tag.register('vimeo', vimeo_1.vimeoTag);
     hexo.extend.tag.register('youtube', youtube_1.youtubeTag);
