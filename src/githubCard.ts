@@ -45,10 +45,10 @@ export function githubCard(hexo: import('hexo')) {
   // Registers the new tag with Hexo.
   hexo.extend.tag.register(
     'githubCard',
-    function (args) {
+    function (args: string[]) {
       const argsObj: Record<string, any> = {};
 
-      args.forEach((arg) => {
+      args.forEach((arg: string) => {
         const current = arg.split(':');
         argsObj[current[0]] = current[1];
       });
