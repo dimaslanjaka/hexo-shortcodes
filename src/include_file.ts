@@ -68,10 +68,10 @@ function includeTag(ctx: Hexo) {
       contents = 'Include file path not found';
     }
 
-    const lines = contents.split('\n');
+    const lines = contents.split(/\r?\n/);
     contents = lines.slice(parseArgs.from, parseArgs.to).join('\n').trim();
 
-    if (parseArgs.from > 0)
+    if (parseArgs.from > 0 && parseArgs.to < Number.MAX_VALUE)
       console.log(parseArgs.from, parseArgs.to, lines.length, lines.slice(parseArgs.from, parseArgs.to));
 
     if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
