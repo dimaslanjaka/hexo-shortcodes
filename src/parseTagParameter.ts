@@ -11,18 +11,18 @@ export function parseTagParameter<T>(args: string[] | string, ...argv: string[])
   const join = concat.join(' ');
   const match = Array.from(join.match(rCaptionTitleFile) || []);
   const sourceFile = concat.filter((str) => !str.includes(':'))[0];
-  const options: Record<string, string | number> = array2obj(
+  const options: Record<string, string> = array2obj(
     match.map((str) => {
       const split = str.split(':');
       return { [split[0]]: split[1] };
     })
   );
 
-  const result = Object.assign({ lang: '', from: 0, to: Number.MAX_VALUE, sourceFile }, options);
+  const result = Object.assign({ sourceFile }, options);
   // convert to number
-  if (typeof result.from !== 'number') result.from = parseInt(result.from);
-  if (typeof result.to !== 'number') result.from = parseInt(result.to);
+  // if (typeof result.from !== 'number') result.from = parseInt(result.from);
+  // if (typeof result.to !== 'number') result.from = parseInt(result.to);
   // fix empty line which embedding spesific lines
-  result.from = result.from - 1;
+  // result.from = result.from - 1; <-- should decrease inside the function
   return result as typeof result & T;
 }

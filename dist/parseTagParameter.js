@@ -21,14 +21,12 @@ function parseTagParameter(args) {
         var split = str.split(':');
         return _a = {}, _a[split[0]] = split[1], _a;
     }));
-    var result = Object.assign({ lang: '', from: 0, to: Number.MAX_VALUE, sourceFile: sourceFile }, options);
+    var result = Object.assign({ sourceFile: sourceFile }, options);
     // convert to number
-    if (typeof result.from !== 'number')
-        result.from = parseInt(result.from);
-    if (typeof result.to !== 'number')
-        result.from = parseInt(result.to);
+    // if (typeof result.from !== 'number') result.from = parseInt(result.from);
+    // if (typeof result.to !== 'number') result.from = parseInt(result.to);
     // fix empty line which embedding spesific lines
-    result.from = result.from - 1;
+    // result.from = result.from - 1; <-- should decrease inside the function
     return result;
 }
 exports.parseTagParameter = parseTagParameter;
