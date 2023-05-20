@@ -136,8 +136,14 @@ function includeTag(ctx) {
                         return [4 /*yield*/, hexo.render.render({ text: renderTemplate, engine: 'njk' }, { lines: slice })];
                     case 4:
                         contents = _b.sent();
-                        return [3 /*break*/, 5];
+                        return [3 /*break*/, 7];
                     case 5:
+                        if (!(parseArgs.render === 'true')) return [3 /*break*/, 7];
+                        return [4 /*yield*/, hexo.render.render({ text: contents, engine: parseArgs.lang || 'njk' }, { lines: slice })];
+                    case 6:
+                        contents = _b.sent();
+                        _b.label = 7;
+                    case 7:
                         if (preText) {
                             // process syntax highlighter on `pretext:true`
                             if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {

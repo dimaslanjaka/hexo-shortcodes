@@ -35,6 +35,7 @@ function includeTag(ctx: Hexo) {
       to?: string;
       lang?: string;
       pretext?: string;
+      render?: string;
     }>(args);
 
     /** starts line */
@@ -111,8 +112,8 @@ function includeTag(ctx: Hexo) {
 {% endfor %}
       `.trim();
       contents = await hexo.render.render({ text: renderTemplate, engine: 'njk' }, { lines: slice });
-    } else {
-      //
+    } else if (parseArgs.render === 'true') {
+      contents = await hexo.render.render({ text: contents, engine: parseArgs.lang || 'njk' }, { lines: slice });
     }
 
     if (preText) {
