@@ -197,8 +197,8 @@ var gist = function (hexo) {
                         endLine = lineSplit[1];
                         codeText = content;
                         if (typeof line === 'string') {
+                            // split spesific lines
                             codeText = codeText.split('\n').slice(startLine, endLine).join('\n');
-                            console.log({ line: line, lineSplit: lineSplit, startLine: startLine, endLine: endLine });
                         }
                         // fallback to content
                         if (codeText.length === 0)

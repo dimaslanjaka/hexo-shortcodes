@@ -135,8 +135,8 @@ export const gist = (hexo: import('hexo')) => {
 
     let codeText = content;
     if (typeof line === 'string') {
+      // split spesific lines
       codeText = codeText.split('\n').slice(startLine, endLine).join('\n');
-      console.log({ line, lineSplit, startLine, endLine });
     }
 
     // fallback to content
