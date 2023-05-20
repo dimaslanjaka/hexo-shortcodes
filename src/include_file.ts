@@ -2,7 +2,6 @@ import fs from 'fs-extra';
 import Hexo from 'hexo';
 import path from 'upath';
 import { parseTagParameter } from './parseTagParameter';
-import nunjucks from 'nunjucks';
 
 /**
  * Hexo include tag
@@ -104,21 +103,16 @@ function includeTag(ctx: Hexo) {
     const slice = lines.slice(from, to);
     contents = slice.join('\n');
 
-    // nunjucks render when template not empty string
     if (template.length > 0) {
-      const env = nunjucks.configure({
-        noCache: true,
-        autoescape: false,
-        throwOnUndefined: false,
-        trimBlocks: false,
-        lstripBlocks: false
-      });
+      // nunjucks render when template not empty string
       const renderTemplate = `
 {% for line in lines %}
   ${template.replace(/\$line/gim, '{{ line }}').replace(/\$index/gim, '{{ loop.index }}')}
 {% endfor %}
       `.trim();
-      contents = env.renderString(renderTemplate, { lines: slice });
+      contents = await hexo.render.render({ text: renderTemplate, engine: 'njk' }, { lines: slice });
+    } else {
+      //
     }
 
     if (preText) {
