@@ -71,8 +71,8 @@ var hexoUtils = __importStar(require("hexo-util"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var env_1 = require("./env");
-var utils_1 = require("./utils");
 var sbg_utility_1 = require("sbg-utility");
+var parseTagParameter_1 = require("./parseTagParameter");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
@@ -159,7 +159,7 @@ var gist = function (hexo) {
      */
     function _usingHexoSyntaxHighlighter(args) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, username, gist_id, defaults, options, content, line, lineSplit, startLine, endLine, codeText, contentSplit, newContent;
+            var id, username, gist_id, defaults, options, content, line, lineSplit, startLine, endLine, codeText, newContent;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -187,25 +187,18 @@ var gist = function (hexo) {
                             lang: '',
                             caption: ''
                         };
-                        options = Object.assign(defaults, (0, utils_1.array2obj)(args.splice(1).map(function (str) {
-                            var _a;
-                            var split = str.split(':');
-                            return _a = {}, _a[split[0].toLowerCase()] = split[1], _a;
-                        })));
+                        options = Object.assign(defaults, (0, parseTagParameter_1.parseTagParameter)(args));
                         return [4 /*yield*/, fetch_raw_code(hexo, id, options.filename)];
                     case 1:
                         content = _a.sent();
-                        line = args[2] || '';
-                        lineSplit = line.split('-');
-                        startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
-                        endLine = parseInt((line !== '' && lineSplit.length > 1 && lineSplit[1].replace('L', '')) || String(startLine));
-                        codeText = '';
-                        contentSplit = content.split('\n');
-                        if (startLine > 0) {
-                            contentSplit = contentSplit.slice(startLine - 1, endLine);
-                            codeText = contentSplit.join('\n');
-                            // Then add the newline back
-                            codeText = codeText + '\n';
+                        line = options.line;
+                        lineSplit = ((line === null || line === void 0 ? void 0 : line.split('-')) || []).map(function (L) { return parseInt(L.replace(/#?L/g, '')); });
+                        startLine = lineSplit[0] - 1;
+                        endLine = lineSplit[1];
+                        codeText = content;
+                        if (typeof line === 'string') {
+                            codeText = codeText.split('\n').slice(startLine, endLine).join('\n');
+                            console.log({ line: line, lineSplit: lineSplit, startLine: startLine, endLine: endLine });
                         }
                         // fallback to content
                         if (codeText.length === 0)

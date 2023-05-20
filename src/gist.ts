@@ -6,8 +6,8 @@ import * as hexoUtils from 'hexo-util';
 import nunjucks from 'nunjucks';
 import fs from 'fs-extra';
 import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH } from './env';
-import { array2obj } from './utils';
 import { isValidHttpUrl } from 'sbg-utility';
+import { parseTagParameter } from './parseTagParameter';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
 
@@ -125,31 +125,18 @@ export const gist = (hexo: import('hexo')) => {
       caption: ''
     };
 
-    const options = Object.assign(
-      defaults,
-      array2obj(
-        args.splice(1).map((str) => {
-          const split = str.split(':');
-          return { [split[0].toLowerCase()]: split[1] };
-        })
-      )
-    );
+    const options = Object.assign(defaults, parseTagParameter<typeof defaults>(args));
 
     const content = await fetch_raw_code(hexo, id, options.filename);
-    const line = args[2] || '';
-    const lineSplit = line.split('-');
-    const startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
-    const endLine = parseInt(
-      (line !== '' && lineSplit.length > 1 && lineSplit[1].replace('L', '')) || String(startLine)
-    );
+    const line = options.line;
+    const lineSplit = (line?.split('-') || []).map((L) => parseInt(L.replace(/#?L/g, '')));
+    const startLine = lineSplit[0] - 1;
+    const endLine = lineSplit[1];
 
-    let codeText = '';
-    let contentSplit = content.split('\n');
-    if (startLine > 0) {
-      contentSplit = contentSplit.slice(startLine - 1, endLine);
-      codeText = contentSplit.join('\n');
-      // Then add the newline back
-      codeText = codeText + '\n';
+    let codeText = content;
+    if (typeof line === 'string') {
+      codeText = codeText.split('\n').slice(startLine, endLine).join('\n');
+      console.log({ line, lineSplit, startLine, endLine });
     }
 
     // fallback to content
