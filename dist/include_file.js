@@ -101,9 +101,6 @@ function includeTag(ctx) {
                             rawLinkBaseDir += '/';
                         // trim hexo.source_dir for raw link
                         rawLinkBaseDir = rawLinkBaseDir.replace(sourceDir, '');
-                        if (typeof exists !== 'boolean' || typeof filePath !== 'string') {
-                            throw new Error('variable `filePath` is undefined');
-                        }
                         contents = '';
                         empty = true;
                         if (!exists) return [3 /*break*/, 2];
@@ -111,7 +108,7 @@ function includeTag(ctx) {
                     case 1:
                         contents = _a.sent();
                         if (contents.length === 0) {
-                            contents = 'Include file empty.';
+                            contents = parseArgs.sourceFile + ' file empty.';
                         }
                         else {
                             empty = false;
@@ -119,7 +116,7 @@ function includeTag(ctx) {
                         return [3 /*break*/, 3];
                     case 2:
                         //console.log({ filePath, sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir });
-                        contents = 'Include file path not found';
+                        contents = parseArgs.sourceFile + ' file path not found';
                         _a.label = 3;
                     case 3:
                         if (!empty) {

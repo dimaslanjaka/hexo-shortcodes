@@ -73,13 +73,13 @@ function includeTag(ctx: Hexo) {
     if (exists) {
       contents = await fs.readFile(filePath, { encoding: 'utf-8' });
       if (contents.length === 0) {
-        contents = 'Include file empty.';
+        contents = parseArgs.sourceFile + ' file empty.';
       } else {
         empty = false;
       }
     } else {
       //console.log({ filePath, sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir });
-      contents = 'Include file path not found';
+      contents = parseArgs.sourceFile + ' file path not found';
     }
 
     if (!empty) {
