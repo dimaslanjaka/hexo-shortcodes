@@ -1,7 +1,6 @@
 const cp = require('cross-spawn');
 const path = require('upath');
 const fs = require('fs-extra');
-const git = require('git-command-helper');
 
 // build master dist
 
@@ -33,7 +32,7 @@ const lib = path.join(__dirname, 'lib');
   // commit dist
   await cp.async('git', ['add', 'dist'], { cwd: lib });
   await cp.async('git', ['checkout', 'pre-release', 'release/hexo-shortcodes.tgz'], { cwd: lib });
-  await cp.async('git', ['commit', '-m', "update from 'pre-release'"], { cwd: lib });
+  await cp.async('git', ['commit', '-m', "chore: update from 'pre-release'"], { cwd: lib });
 
   // push master
   const dry = await cp.async('git', ['push', 'origin', 'master', '--dry-run'], { cwd: lib });
