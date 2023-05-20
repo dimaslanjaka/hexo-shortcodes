@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import Hexo from 'hexo';
 import path from 'upath';
 import { parseTagParameter } from './parseTagParameter';
+import nunjucks from 'nunjucks';
 
 /**
  * Hexo include tag
@@ -16,12 +17,19 @@ import { parseTagParameter } from './parseTagParameter';
  *   Path is relative to your source directory.
  */
 function includeTag(ctx: Hexo) {
-  const callback = async function (this: { full_source: string }, args: string[]) {
+  const callback = async function (this: { full_source: string }, args: string[], template: string) {
     const sourceDir = path.join(ctx.base_dir, ctx.config.source_dir);
     const codeDir = path.join(sourceDir, ctx.config.code_dir);
     let rawLinkBaseDir = path.toUnix(ctx.base_dir);
     // current source markdown page
     const sourcePage = this['full_source'];
+    if (!template) {
+      // keep template empty string when undefined
+      template = '';
+    } else {
+      // trim trailing whitespaces
+      template = template.trim();
+    }
 
     const parseArgs = parseTagParameter<{
       from?: string;
@@ -96,6 +104,23 @@ function includeTag(ctx: Hexo) {
     const slice = lines.slice(from, to);
     contents = slice.join('\n');
 
+    // nunjucks render when template not empty string
+    if (template.length > 0) {
+      const env = nunjucks.configure({
+        noCache: true,
+        autoescape: false,
+        throwOnUndefined: false,
+        trimBlocks: false,
+        lstripBlocks: false
+      });
+      const renderTemplate = `
+{% for line in lines %}
+  ${template.replace(/\$line/gim, '{{ line }}').replace(/\$index/gim, '{{ loop.index }}')}
+{% endfor %}
+      `.trim();
+      contents = env.renderString(renderTemplate, { lines: slice });
+    }
+
     if (preText) {
       // process syntax highlighter on `pretext:true`
       if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
@@ -120,5 +145,5 @@ function includeTag(ctx: Hexo) {
 }
 
 export function registerIncludeTag(ctx: Hexo) {
-  hexo.extend.tag.register('include_file', includeTag(ctx), { async: true });
+  hexo.extend.tag.register('include_file', includeTag(ctx), { async: true, ends: true });
 }

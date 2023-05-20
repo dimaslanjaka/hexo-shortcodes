@@ -43,6 +43,7 @@ exports.registerIncludeTag = void 0;
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var upath_1 = __importDefault(require("upath"));
 var parseTagParameter_1 = require("./parseTagParameter");
+var nunjucks_1 = __importDefault(require("nunjucks"));
 /**
  * Hexo include tag
  *
@@ -56,10 +57,10 @@ var parseTagParameter_1 = require("./parseTagParameter");
  *   Path is relative to your source directory.
  */
 function includeTag(ctx) {
-    var callback = function (args) {
+    var callback = function (args, template) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var sourceDir, codeDir, rawLinkBaseDir, sourcePage, parseArgs, from, to, preText, filePath, exists, contents, caption, lines, slice, options;
+            var sourceDir, codeDir, rawLinkBaseDir, sourcePage, parseArgs, from, to, preText, filePath, exists, contents, caption, lines, slice, env, renderTemplate, options;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -67,6 +68,14 @@ function includeTag(ctx) {
                         codeDir = upath_1.default.join(sourceDir, ctx.config.code_dir);
                         rawLinkBaseDir = upath_1.default.toUnix(ctx.base_dir);
                         sourcePage = this['full_source'];
+                        if (!template) {
+                            // keep template empty string when undefined
+                            template = '';
+                        }
+                        else {
+                            // trim trailing whitespaces
+                            template = template.trim();
+                        }
                         parseArgs = (0, parseTagParameter_1.parseTagParameter)(args);
                         from = 0;
                         if (parseArgs.from)
@@ -123,6 +132,18 @@ function includeTag(ctx) {
                         lines = contents.split(/\r?\n/gm);
                         slice = lines.slice(from, to);
                         contents = slice.join('\n');
+                        // nunjucks render when template not empty string
+                        if (template.length > 0) {
+                            env = nunjucks_1.default.configure({
+                                noCache: true,
+                                autoescape: false,
+                                throwOnUndefined: false,
+                                trimBlocks: false,
+                                lstripBlocks: false
+                            });
+                            renderTemplate = "\n{% for line in lines %}\n  ".concat(template.replace(/\$line/gim, '{{ line }}').replace(/\$index/gim, '{{ loop.index }}'), "\n{% endfor %}\n      ").trim();
+                            contents = env.renderString(renderTemplate, { lines: slice });
+                        }
                         if (preText) {
                             // process syntax highlighter on `pretext:true`
                             if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
@@ -152,6 +173,6 @@ function includeTag(ctx) {
     return callback;
 }
 function registerIncludeTag(ctx) {
-    hexo.extend.tag.register('include_file', includeTag(ctx), { async: true });
+    hexo.extend.tag.register('include_file', includeTag(ctx), { async: true, ends: true });
 }
 exports.registerIncludeTag = registerIncludeTag;
