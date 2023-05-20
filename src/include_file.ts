@@ -27,12 +27,18 @@ function includeTag(ctx: Hexo) {
       from?: string;
       to?: string;
       lang?: string;
+      pretext?: string;
     }>(args);
 
+    /** starts line */
     let from = 0;
     if (parseArgs.from) from = parseInt(parseArgs.from) - 1;
+    /** ends line */
     let to = Number.MAX_VALUE;
     if (parseArgs.to) to = parseInt(parseArgs.to);
+    /** is using preText tag? */
+    let preText = false;
+    if (parseArgs.pretext) preText = parseArgs.pretext?.trim() === 'true';
 
     // override language when is not string or empty string
     if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0) {
@@ -69,30 +75,29 @@ function includeTag(ctx: Hexo) {
 
     // define contents and empty indicator
     let contents = '';
-    let empty = true;
     if (exists) {
       contents = await fs.readFile(filePath, { encoding: 'utf-8' });
       if (contents.length === 0) {
         contents = parseArgs.sourceFile + ' file empty.';
-      } else {
-        empty = false;
       }
     } else {
       //console.log({ filePath, sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir });
       contents = parseArgs.sourceFile + ' file path not found';
     }
 
-    if (!empty) {
-      // create caption
-      const caption = `<span>${parseArgs.title}</span><a href="${path.join(
-        ctx.config.root,
-        rawLinkBaseDir,
-        parseArgs.sourceFile
-      )}">view raw</a>`;
-      const lines = contents.split(/\r?\n/gm);
-      const slice = lines.slice(from, to);
-      contents = slice.join('\n');
+    // create caption
+    const caption = `<span>${parseArgs.title}</span><a href="${path.join(
+      ctx.config.root,
+      rawLinkBaseDir,
+      parseArgs.sourceFile
+    )}">view raw</a>`;
+    // lines splitter
+    const lines = contents.split(/\r?\n/gm);
+    const slice = lines.slice(from, to);
+    contents = slice.join('\n');
 
+    if (preText) {
+      // process syntax highlighter on `pretext:true`
       if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
         const options = {
           lang: parseArgs.lang,
@@ -103,10 +108,13 @@ function includeTag(ctx: Hexo) {
           context: ctx,
           args: [contents, options]
         });
+      } else {
+        return `<pre><code>${contents}</code></pre>`;
       }
+    } else {
+      // return raw contents
+      return contents;
     }
-
-    return `<pre><code>${contents}</code></pre>`;
   };
   return callback;
 }

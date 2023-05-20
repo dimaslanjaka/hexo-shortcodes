@@ -57,10 +57,11 @@ var parseTagParameter_1 = require("./parseTagParameter");
  */
 function includeTag(ctx) {
     var callback = function (args) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var sourceDir, codeDir, rawLinkBaseDir, sourcePage, parseArgs, from, to, filePath, exists, contents, empty, caption, lines, slice, options;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var sourceDir, codeDir, rawLinkBaseDir, sourcePage, parseArgs, from, to, preText, filePath, exists, contents, caption, lines, slice, options;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         sourceDir = upath_1.default.join(ctx.base_dir, ctx.config.source_dir);
                         codeDir = upath_1.default.join(sourceDir, ctx.config.code_dir);
@@ -73,6 +74,9 @@ function includeTag(ctx) {
                         to = Number.MAX_VALUE;
                         if (parseArgs.to)
                             to = parseInt(parseArgs.to);
+                        preText = false;
+                        if (parseArgs.pretext)
+                            preText = ((_a = parseArgs.pretext) === null || _a === void 0 ? void 0 : _a.trim()) === 'true';
                         // override language when is not string or empty string
                         if (typeof parseArgs.lang !== 'string' || parseArgs.lang.length == 0) {
                             parseArgs.lang = upath_1.default.extname(parseArgs.sourceFile).substring(1);
@@ -102,28 +106,25 @@ function includeTag(ctx) {
                         // trim hexo.source_dir for raw link
                         rawLinkBaseDir = rawLinkBaseDir.replace(sourceDir, '');
                         contents = '';
-                        empty = true;
                         if (!exists) return [3 /*break*/, 2];
                         return [4 /*yield*/, fs_extra_1.default.readFile(filePath, { encoding: 'utf-8' })];
                     case 1:
-                        contents = _a.sent();
+                        contents = _b.sent();
                         if (contents.length === 0) {
                             contents = parseArgs.sourceFile + ' file empty.';
-                        }
-                        else {
-                            empty = false;
                         }
                         return [3 /*break*/, 3];
                     case 2:
                         //console.log({ filePath, sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir });
                         contents = parseArgs.sourceFile + ' file path not found';
-                        _a.label = 3;
+                        _b.label = 3;
                     case 3:
-                        if (!empty) {
-                            caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(upath_1.default.join(ctx.config.root, rawLinkBaseDir, parseArgs.sourceFile), "\">view raw</a>");
-                            lines = contents.split(/\r?\n/gm);
-                            slice = lines.slice(from, to);
-                            contents = slice.join('\n');
+                        caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(upath_1.default.join(ctx.config.root, rawLinkBaseDir, parseArgs.sourceFile), "\">view raw</a>");
+                        lines = contents.split(/\r?\n/gm);
+                        slice = lines.slice(from, to);
+                        contents = slice.join('\n');
+                        if (preText) {
+                            // process syntax highlighter on `pretext:true`
                             if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
                                 options = {
                                     lang: parseArgs.lang,
@@ -135,8 +136,15 @@ function includeTag(ctx) {
                                         args: [contents, options]
                                     })];
                             }
+                            else {
+                                return [2 /*return*/, "<pre><code>".concat(contents, "</code></pre>")];
+                            }
                         }
-                        return [2 /*return*/, "<pre><code>".concat(contents, "</code></pre>")];
+                        else {
+                            // return raw contents
+                            return [2 /*return*/, contents];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
