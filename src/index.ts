@@ -7,6 +7,7 @@ import { githubEmbed } from './github';
 import { githubCard } from './githubCard';
 import { vimeoTag } from './hexo-tag-embed/lib/tags/vimeo';
 import { youtubeTag } from './hexo-tag-embed/lib/tags/youtube';
+import { registerIncludeTag } from './include_file';
 import { jsfiddle } from './jsfiddle';
 import { embedNPMRunKit } from './npmrunkit';
 import { rssreader } from './rssreader';
@@ -31,6 +32,7 @@ if (typeof hexo !== 'undefined') {
   rssreader(hexo);
   githubEmbed(hexo);
   embedNPMRunKit(hexo);
+  registerIncludeTag(hexo);
 
   // register hexo-tag-embed
   hexo.extend.tag.register('vimeo', vimeoTag);

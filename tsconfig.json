@@ -19,8 +19,11 @@
     "skipDefaultLibCheck": true,
     "outDir": "./dist",
     "allowJs": true,
-    "checkJs": false
+    "checkJs": false,
+    "noEmit": true,
+    "paths": {
+      "git-embed": ["../packages/git-embed/src"]
+    }
   },
-  "include": ["./src/**/*", "./src/**/*.json"],
   "exclude": ["**/dist/**", "**/node_modules/**"]
 }

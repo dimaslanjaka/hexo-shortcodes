@@ -18,7 +18,7 @@ interface codepenTagOptions {
  * @param hexo
  */
 export function codepen(hexo: Hexo) {
-  hexo.extend.tag.register('codepen', function (args) {
+  hexo.extend.tag.register('codepen', function (args: string[]) {
     const urlOrid = args[0];
 
     let slug: string | null = null;
@@ -39,12 +39,12 @@ export function codepen(hexo: Hexo) {
 
     // parse `=` from all arguments
     const parse = args
-      .map((str) => {
+      .map((str: string) => {
         const spl = str.split('=');
         if (!spl[1]) return;
         return {
           [spl[0]]: spl[1]
-        };
+        } as Record<string, string>;
       })
       .filter((o) => typeof o === 'object');
     const overriden = array2obj(parse) as codepenTagOptions;

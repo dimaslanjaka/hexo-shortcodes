@@ -12,3 +12,4 @@
 /test
 /packages
 bin/submodule-install
+/coverage
