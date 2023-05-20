@@ -164,5 +164,5 @@ jobs:
         run: |
           git config --global user.name 'dimaslanjaka'
           git config --global user.email 'dimaslanjaka@gmail.com'
-          git commit -m "Update build from ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+          git commit -m "chore: update build of ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
           git push
