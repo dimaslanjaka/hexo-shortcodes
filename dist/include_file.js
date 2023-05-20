@@ -40,7 +40,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerIncludeTag = void 0;
-var path_1 = __importDefault(require("path"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var upath_1 = __importDefault(require("upath"));
 var parseTagParameter_1 = require("./parseTagParameter");
@@ -59,13 +58,14 @@ var parseTagParameter_1 = require("./parseTagParameter");
 function includeTag(ctx) {
     var callback = function (args) {
         return __awaiter(this, void 0, void 0, function () {
-            var codeDir, sourceDir, rawLinkBaseDir, parseArgs, from, to, filePath, exists, sourcePage, relativeToSource, contents, empty, caption, lines, slice, options;
+            var sourceDir, codeDir, rawLinkBaseDir, sourcePage, parseArgs, from, to, filePath, exists, contents, empty, caption, lines, slice, options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        codeDir = ctx.config.code_dir;
-                        sourceDir = ctx.config.source_dir;
-                        rawLinkBaseDir = ctx.base_dir;
+                        sourceDir = upath_1.default.join(ctx.base_dir, ctx.config.source_dir);
+                        codeDir = upath_1.default.join(sourceDir, ctx.config.code_dir);
+                        rawLinkBaseDir = upath_1.default.toUnix(ctx.base_dir);
+                        sourcePage = this['full_source'];
                         parseArgs = (0, parseTagParameter_1.parseTagParameter)(args);
                         from = 0;
                         if (parseArgs.from)
@@ -81,30 +81,28 @@ function includeTag(ctx) {
                         if (!parseArgs.title) {
                             parseArgs.title = upath_1.default.basename(parseArgs.sourceFile);
                         }
-                        if ((filePath = path_1.default.join(sourceDir, parseArgs.sourceFile)) && (exists = fs_extra_1.default.existsSync(filePath))) {
+                        filePath = undefined;
+                        exists = undefined;
+                        // try find from relative to source_dir
+                        if ((filePath = upath_1.default.join(sourceDir, parseArgs.sourceFile)) && (exists = fs_extra_1.default.existsSync(filePath))) {
                             rawLinkBaseDir = sourceDir;
                         }
-                        else if ((filePath = path_1.default.join(codeDir, parseArgs.sourceFile)) && (exists = fs_extra_1.default.existsSync(filePath))) {
+                        // try find from relative to code_dir
+                        else if ((filePath = upath_1.default.join(codeDir, parseArgs.sourceFile)) && (exists = fs_extra_1.default.existsSync(filePath))) {
                             rawLinkBaseDir = codeDir;
+                        }
+                        // try find from relative to source path
+                        else if ((filePath = upath_1.default.resolve(upath_1.default.dirname(sourcePage), parseArgs.sourceFile)) &&
+                            (exists = fs_extra_1.default.existsSync(filePath))) {
+                            rawLinkBaseDir = upath_1.default.dirname(upath_1.default.resolve(upath_1.default.dirname(sourcePage), parseArgs.sourceFile));
                         }
                         // Add trailing slash to sourceBaseDir
                         if (!rawLinkBaseDir.endsWith('/'))
                             rawLinkBaseDir += '/';
                         // trim hexo.source_dir for raw link
                         rawLinkBaseDir = rawLinkBaseDir.replace(sourceDir, '');
-                        sourcePage = this['full_source'];
-                        // exit if path is not defined
-                        if (typeof filePath !== 'string' || filePath.length === 0) {
-                            return [2 /*return*/, 'Include file path undefined.'];
-                        }
-                        // check existence
-                        if (!(exists = fs_extra_1.default.existsSync(filePath))) {
-                            relativeToSource = upath_1.default.resolve(upath_1.default.dirname(sourcePage), parseArgs.sourceFile);
-                            exists = fs_extra_1.default.existsSync(relativeToSource);
-                            //console.log({ source_dir: ctx.source_dir, sourcePage, relativeToSource, sourceFile: parseArgs.sourceFile });
-                            if (exists) {
-                                filePath = relativeToSource;
-                            }
+                        if (typeof exists !== 'boolean' || typeof filePath !== 'string') {
+                            throw new Error('variable `filePath` is undefined');
                         }
                         contents = '';
                         empty = true;
@@ -120,7 +118,7 @@ function includeTag(ctx) {
                         }
                         return [3 /*break*/, 3];
                     case 2:
-                        console.log({ filePath: filePath, sourceDir: sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir: rawLinkBaseDir });
+                        //console.log({ filePath, sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir });
                         contents = 'Include file path not found';
                         _a.label = 3;
                     case 3:
