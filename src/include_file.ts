@@ -37,7 +37,7 @@ function includeTag(ctx: Hexo) {
     let to = Number.MAX_VALUE;
     if (parseArgs.to) to = parseInt(parseArgs.to);
     /** is using preText tag? */
-    let preText = false;
+    let preText = true;
     if (parseArgs.pretext) preText = parseArgs.pretext?.trim() === 'true';
 
     // override language when is not string or empty string

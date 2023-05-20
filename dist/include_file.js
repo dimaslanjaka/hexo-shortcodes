@@ -74,7 +74,7 @@ function includeTag(ctx) {
                         to = Number.MAX_VALUE;
                         if (parseArgs.to)
                             to = parseInt(parseArgs.to);
-                        preText = false;
+                        preText = true;
                         if (parseArgs.pretext)
                             preText = ((_a = parseArgs.pretext) === null || _a === void 0 ? void 0 : _a.trim()) === 'true';
                         // override language when is not string or empty string
