@@ -43,7 +43,7 @@
     "dev": "tsc -p tsconfig.build.json --watch",
     "test": "jest --runInBand",
     "test-cov": "jest --runInBand --coverage",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && npm run build",
     "prepare": "husky install"
   },
   "license": "MIT",
