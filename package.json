@@ -41,6 +41,7 @@
     "build": "tsc -p tsconfig.build.json",
     "pack": "node packer.js --yarn",
     "dev": "tsc -p tsconfig.build.json --watch",
+    "pretest": "npm run clean",
     "test": "jest --runInBand",
     "test-cov": "jest --runInBand --coverage",
     "clean": "rm -rf dist && npm run build",
