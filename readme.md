@@ -54,7 +54,7 @@ read more at https://github.com/dimaslanjaka/hexo-shortcodes/commits/pre-release
 ### 1.1.1
 - fix: invalid `git-embed` location
 
-## Documentations
+## Documentation
 - [FULL DEMO, FEATURES, CHANGELOG, and USAGES](https://www.webmanajemen.com/docs/hexo-shortcodes)
 
 License
