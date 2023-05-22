@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import Hexo from 'hexo';
 import path from 'upath';
-import { parseTagParameter } from './parseTagParameter';
+import { parseTagParameter } from './utils/parseTagParameter';
 
 /**
  * Hexo include tag

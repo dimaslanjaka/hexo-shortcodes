@@ -1,4 +1,4 @@
-import { parseTagParameter } from '../src/parseTagParameter';
+import { parseTagParameter } from '../src/utils/parseTagParameter';
 
 export function testParseArgs() {
   const varargs = [

@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { parseTagParameter } from '../src/parseTagParameter';
+import { parseTagParameter } from '../src/utils/parseTagParameter';
 import { testParseArgs } from './parseTagParameter';
 
 describe('parse tag parameter', () => {

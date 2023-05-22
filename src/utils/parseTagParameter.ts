@@ -1,4 +1,4 @@
-import { array2obj } from './utils';
+import { array2obj } from '../utils';
 
 const rCaptionTitleFile = /("[^"]*"|'[^']*'|[\S]+)+/g;
 

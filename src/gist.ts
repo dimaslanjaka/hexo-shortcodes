@@ -7,7 +7,7 @@ import nunjucks from 'nunjucks';
 import fs from 'fs-extra';
 import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH } from './env';
 import { isValidHttpUrl } from 'sbg-utility';
-import { parseTagParameter } from './parseTagParameter';
+import { parseTagParameter } from './utils/parseTagParameter';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
 
