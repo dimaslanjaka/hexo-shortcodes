@@ -6,11 +6,16 @@ const rCaptionTitleFile = /("[^"]*"|'[^']*'|[\S]+)+/g;
  * parse shortcode parameter
  * @param args
  */
-export function parseTagParameter<T>(args: string[] | string, ...argv: string[]) {
-  const concat = (typeof args === 'string' ? [args] : args).concat(argv || []);
+export function parseTagParameter<T>(args: string[] | string, ...varArgs: string[]) {
+  const concat = (typeof args === 'string' ? [args] : args).concat(varArgs || []);
   const join = concat.join(' ');
   const match = Array.from(join.match(rCaptionTitleFile) || []);
-  const sourceFile = concat.filter((str) => !str.includes(':'))[0];
+  let sourceFile = concat.filter((str) => !str.includes(':'))[0];
+  if (!sourceFile && typeof args === 'string') {
+    // fix: undefined `sourceFile` on arg string
+    sourceFile = match.filter((str) => !str.includes(':'))[0];
+  }
+
   const options: Record<string, string> = array2obj(
     match.map((str) => {
       const split = str.split(':');
