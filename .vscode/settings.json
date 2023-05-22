@@ -1,7 +1,9 @@
 {
   "files.autoSave": "off",
   "files.exclude": {
-    "**/node_modules": true
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/coverage": true
   },
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
