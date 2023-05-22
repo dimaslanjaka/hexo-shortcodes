@@ -12,6 +12,8 @@ const deployDir = path.resolve(testDir, '.deploy_git/hexo-shortcodes');
   // build package
   await spawn('yarn', ['build'], { cwd: __dirname, shell: true, stdio: 'inherit' });
 
+  await import('./build-readme.js');
+
   // check deploy directory
   if (!fs.existsSync(deployDir)) {
     await spawn('git', ['clone', '-b', 'master', 'https://github.com/dimaslanjaka/docs.git', 'test/.deploy_git'], {
