@@ -173,6 +173,6 @@ function includeTag(ctx) {
     return callback;
 }
 function registerIncludeTag(ctx) {
-    hexo.extend.tag.register('include_file', includeTag(ctx), { async: true, ends: true });
+    ctx.extend.tag.register('include_file', includeTag(ctx), { async: true, ends: true });
 }
 exports.registerIncludeTag = registerIncludeTag;
