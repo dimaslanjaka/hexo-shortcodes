@@ -140,5 +140,5 @@ function includeTag(ctx: Hexo) {
 }
 
 export function registerIncludeTag(ctx: Hexo) {
-  hexo.extend.tag.register('include_file', includeTag(ctx), { async: true, ends: true });
+  ctx.extend.tag.register('include_file', includeTag(ctx), { async: true, ends: true });
 }
