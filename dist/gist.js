@@ -72,7 +72,7 @@ var nunjucks_1 = __importDefault(require("nunjucks"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var env_1 = require("./env");
 var sbg_utility_1 = require("sbg-utility");
-var parseTagParameter_1 = require("./parseTagParameter");
+var parseTagParameter_1 = require("./utils/parseTagParameter");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode

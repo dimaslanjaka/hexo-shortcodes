@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerIncludeTag = void 0;
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var upath_1 = __importDefault(require("upath"));
-var parseTagParameter_1 = require("./parseTagParameter");
+var parseTagParameter_1 = require("./utils/parseTagParameter");
 /**
  * Hexo include tag
  *
