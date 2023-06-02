@@ -73,6 +73,7 @@ var fs_extra_1 = __importDefault(require("fs-extra"));
 var env_1 = require("./env");
 var utils_1 = require("./utils");
 var sbg_utility_1 = require("sbg-utility");
+var parseTagParameter_1 = require("./utils/parseTagParameter");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
 // gist shortcode
@@ -99,7 +100,7 @@ function fetch_raw_code(hexo, id, filename) {
                         resolve(res.data);
                     })
                         .catch(function (e) {
-                        hexo.log.error(logname, id, "cannot get ".concat(e.message), { url: url });
+                        hexo.log.error(logname, id, "cannot get ".concat(e.message), url);
                         reject(e);
                     });
                 })];
@@ -158,10 +159,11 @@ var gist = function (hexo) {
      * @returns
      */
     function _usingHexoSyntaxHighlighter(args) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var id, username, gist_id, defaults, options, content, line, lineSplit, startLine, endLine, codeText, contentSplit, newContent;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var id, username, gist_id, defaults, options, content, line, lineSplit, startLine, endLine, codeText, newContent;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         id = args[0] || '';
                         // return when id is empty
@@ -177,7 +179,7 @@ var gist = function (hexo) {
                                 return [2 /*return*/, _nunjucksMethod()(args)];
                             }
                             catch (error) {
-                                hexo.log.error(logname, error);
+                                hexo.log.error(logname, String(error));
                                 return [2 /*return*/, 'cannot embed `gist` ' + args.join(' ')];
                             }
                         }
@@ -194,24 +196,21 @@ var gist = function (hexo) {
                         })));
                         return [4 /*yield*/, fetch_raw_code(hexo, id, options.filename)];
                     case 1:
-                        content = _a.sent();
-                        line = args[2] || '';
-                        lineSplit = line.split('-');
-                        startLine = (line !== '' && parseInt(lineSplit[0].replace('#L', ''))) || -1;
-                        endLine = parseInt((line !== '' && lineSplit.length > 1 && lineSplit[1].replace('L', '')) || String(startLine));
-                        codeText = '';
-                        contentSplit = content.split('\n');
-                        if (startLine > 0) {
-                            contentSplit = contentSplit.slice(startLine - 1, endLine);
-                            codeText = contentSplit.join('\n');
-                            // Then add the newline back
-                            codeText = codeText + '\n';
+                        content = _b.sent();
+                        line = options.line;
+                        lineSplit = ((line === null || line === void 0 ? void 0 : line.split('-')) || []).map(function (L) { return parseInt(L.replace(/#?L/g, '')); });
+                        startLine = lineSplit[0] - 1;
+                        endLine = lineSplit[1];
+                        codeText = content;
+                        if (typeof line === 'string') {
+                            // split spesific lines
+                            codeText = codeText.split('\n').slice(startLine, endLine).join('\n');
                         }
                         // fallback to content
                         if (codeText.length === 0)
                             codeText = content;
                         // If neither highlight.js nor prism.js is enabled, return escaped code directly
-                        if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+                        if (!((_a = hexo.extend.highlight) === null || _a === void 0 ? void 0 : _a.query(hexo.config.syntax_highlighter))) {
                             return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(codeText), "</code></pre>")];
                         }
                         // assign lines length
@@ -222,7 +221,7 @@ var gist = function (hexo) {
                         // asign caption when empty
                         if (options.caption.length === 0)
                             options.caption = upath_1.default.extname(options.filename).replace(/^./, '');
-                        hexo.log.debug(logname, { username: username, gist_id: gist_id, options: options });
+                        hexo.log.debug(logname, String({ username: username, gist_id: gist_id, options: options }));
                         newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
                             context: hexo,
                             args: [codeText, options]

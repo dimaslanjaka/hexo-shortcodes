@@ -85,10 +85,11 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
  */
 function githubEmbedder(hexo) {
     return function (params) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var url, parseURL, config_1, splitcolon, splithypen, embed, content, options, newContent;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         // filter empty array
                         params = params.filter(function (str) { return String(str).trim().length > 0; });
@@ -135,10 +136,10 @@ function githubEmbedder(hexo) {
                         config_1.line = parseURL.hash;
                         return [4 /*yield*/, (0, git_embed_1.default)(url, { tabSize: 2 })];
                     case 1:
-                        embed = _a.sent();
+                        embed = _b.sent();
                         content = embed.result;
                         // If neither highlight.js nor prism.js is enabled, return escaped code directly
-                        if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+                        if (!((_a = hexo.extend.highlight) === null || _a === void 0 ? void 0 : _a.query(hexo.config.syntax_highlighter))) {
                             return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(content), "</code></pre>")];
                         }
                         options = {

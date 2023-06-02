@@ -102,7 +102,7 @@ function rssreader(hexo) {
                             var split = str.split(':');
                             return _a = {}, _a[split[0]] = split[1], _a;
                         })));
-                        hexo.log.debug(logname, url, options);
+                        hexo.log.debug(logname, url, String(options));
                         return [4 /*yield*/, parser.parseURL(url)];
                     case 1:
                         feed = _a.sent();
@@ -129,7 +129,7 @@ function rssreader(hexo) {
                                 Object.keys(item).forEach(function (key) {
                                     var regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
                                     var replacement = '{{ ' + key + ' }}';
-                                    hexo.log.debug(logname, regex, '->', replacement);
+                                    hexo.log.debug(logname, String(regex), '->', replacement);
                                     cloneTemplate_1 = cloneTemplate_1.replace(regex, replacement);
                                 });
                                 if ('date' in item === false && item.pubDate) {

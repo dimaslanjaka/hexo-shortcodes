@@ -38,6 +38,9 @@ for yarn just replace `npm i` with `yarn add`
 
 ## Changelog
 read more at https://github.com/dimaslanjaka/hexo-shortcodes/commits/pre-release (`chore`,`feat`,`fix` sections)
+### 1.2.3
+- fix: `hexo@6` `context.extend.highlight` undefined
+  TypeError: Cannot read properties of undefined (reading 'query')
 ### 1.2.2
 - `include_file`: fix typeof `hexo` undefined
 ### 1.2.1
@@ -54,7 +57,7 @@ read more at https://github.com/dimaslanjaka/hexo-shortcodes/commits/pre-release
 ### 1.1.1
 - fix: invalid `git-embed` location
 
-## Documentation
+## Documentations
 - [FULL DEMO, FEATURES, CHANGELOG, and USAGES](https://www.webmanajemen.com/docs/hexo-shortcodes)
 
 License

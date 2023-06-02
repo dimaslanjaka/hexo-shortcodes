@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerIncludeTag = void 0;
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var upath_1 = __importDefault(require("upath"));
-var parseTagParameter_1 = require("./parseTagParameter");
+var parseTagParameter_1 = require("./utils/parseTagParameter");
 /**
  * Hexo include tag
  *
@@ -57,11 +57,11 @@ var parseTagParameter_1 = require("./parseTagParameter");
  */
 function includeTag(ctx) {
     var callback = function (args, template) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var sourceDir, codeDir, rawLinkBaseDir, sourcePage, parseArgs, from, to, preText, filePath, exists, contents, caption, lines, slice, renderTemplate, options;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         sourceDir = upath_1.default.join(ctx.base_dir, ctx.config.source_dir);
                         codeDir = upath_1.default.join(sourceDir, ctx.config.code_dir);
@@ -117,7 +117,7 @@ function includeTag(ctx) {
                         if (!exists) return [3 /*break*/, 2];
                         return [4 /*yield*/, fs_extra_1.default.readFile(filePath, { encoding: 'utf-8' })];
                     case 1:
-                        contents = _b.sent();
+                        contents = _c.sent();
                         if (contents.length === 0) {
                             contents = parseArgs.sourceFile + ' file empty.';
                         }
@@ -125,7 +125,7 @@ function includeTag(ctx) {
                     case 2:
                         //console.log({ filePath, sourceDir, sourceFile: parseArgs.sourceFile, rawLinkBaseDir });
                         contents = parseArgs.sourceFile + ' file path not found';
-                        _b.label = 3;
+                        _c.label = 3;
                     case 3:
                         caption = "<span>".concat(parseArgs.title, "</span><a href=\"").concat(upath_1.default.join(ctx.config.root, rawLinkBaseDir, parseArgs.sourceFile), "\">view raw</a>");
                         lines = contents.split(/\r?\n/gm);
@@ -135,18 +135,18 @@ function includeTag(ctx) {
                         renderTemplate = "\n{% for line in lines %}\n  ".concat(template.replace(/\$line/gim, '{{ line }}').replace(/\$index/gim, '{{ loop.index }}'), "\n{% endfor %}\n      ").trim();
                         return [4 /*yield*/, hexo.render.render({ text: renderTemplate, engine: 'njk' }, { lines: slice })];
                     case 4:
-                        contents = _b.sent();
+                        contents = _c.sent();
                         return [3 /*break*/, 7];
                     case 5:
                         if (!(parseArgs.render === 'true')) return [3 /*break*/, 7];
                         return [4 /*yield*/, hexo.render.render({ text: contents, engine: parseArgs.lang || 'njk' }, { lines: slice })];
                     case 6:
-                        contents = _b.sent();
-                        _b.label = 7;
+                        contents = _c.sent();
+                        _c.label = 7;
                     case 7:
                         if (preText) {
                             // process syntax highlighter on `pretext:true`
-                            if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
+                            if ((_b = ctx.extend.highlight) === null || _b === void 0 ? void 0 : _b.query(ctx.config.syntax_highlighter)) {
                                 options = {
                                     lang: parseArgs.lang,
                                     caption: caption,
