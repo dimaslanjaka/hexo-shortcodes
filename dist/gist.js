@@ -158,10 +158,11 @@ var gist = function (hexo) {
      * @returns
      */
     function _usingHexoSyntaxHighlighter(args) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var id, username, gist_id, defaults, options, content, line, lineSplit, startLine, endLine, codeText, newContent;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         id = args[0] || '';
                         // return when id is empty
@@ -190,7 +191,7 @@ var gist = function (hexo) {
                         options = Object.assign(defaults, (0, parseTagParameter_1.parseTagParameter)(args));
                         return [4 /*yield*/, fetch_raw_code(hexo, id, options.filename)];
                     case 1:
-                        content = _a.sent();
+                        content = _b.sent();
                         line = options.line;
                         lineSplit = ((line === null || line === void 0 ? void 0 : line.split('-')) || []).map(function (L) { return parseInt(L.replace(/#?L/g, '')); });
                         startLine = lineSplit[0] - 1;
@@ -204,7 +205,7 @@ var gist = function (hexo) {
                         if (codeText.length === 0)
                             codeText = content;
                         // If neither highlight.js nor prism.js is enabled, return escaped code directly
-                        if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+                        if (!((_a = hexo.extend.highlight) === null || _a === void 0 ? void 0 : _a.query(hexo.config.syntax_highlighter))) {
                             return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(codeText), "</code></pre>")];
                         }
                         // assign lines length

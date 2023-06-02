@@ -118,7 +118,7 @@ function includeTag(ctx: Hexo) {
 
     if (preText) {
       // process syntax highlighter on `pretext:true`
-      if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
+      if (ctx.extend.highlight?.query(ctx.config.syntax_highlighter)) {
         const options = {
           lang: parseArgs.lang,
           caption,

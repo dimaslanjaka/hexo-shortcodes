@@ -143,7 +143,7 @@ export const gist = (hexo: import('hexo')) => {
     if (codeText.length === 0) codeText = content;
 
     // If neither highlight.js nor prism.js is enabled, return escaped code directly
-    if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+    if (!hexo.extend.highlight?.query(hexo.config.syntax_highlighter)) {
       return `<pre><code>${hexoUtils.escapeHTML(codeText)}</code></pre>`;
     }
 

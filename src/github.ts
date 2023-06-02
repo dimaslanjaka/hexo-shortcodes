@@ -65,7 +65,7 @@ export function githubEmbedder(hexo: Hexo) {
       const content = embed.result;
 
       // If neither highlight.js nor prism.js is enabled, return escaped code directly
-      if (!hexo.extend.highlight.query(hexo.config.syntax_highlighter)) {
+      if (!hexo.extend.highlight?.query(hexo.config.syntax_highlighter)) {
         return `<pre><code>${hexoUtils.escapeHTML(content)}</code></pre>`;
       }
 
