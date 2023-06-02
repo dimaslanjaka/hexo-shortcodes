@@ -25,7 +25,7 @@ function codepen(hexo) {
             slug = match[2];
         }
         else {
-            hexo.log.error(logname, urlOrid, match);
+            hexo.log.error(logname, urlOrid, String(match));
         }
         hexo.log.debug(logname, { user: user, pen: slug });
         // parse `=` from all arguments

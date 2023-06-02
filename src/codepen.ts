@@ -32,7 +32,7 @@ export function codepen(hexo: Hexo) {
       user = match[1];
       slug = match[2];
     } else {
-      hexo.log.error(logname, urlOrid, match);
+      hexo.log.error(logname, urlOrid, String(match));
     }
 
     hexo.log.debug(logname, { user, pen: slug });
