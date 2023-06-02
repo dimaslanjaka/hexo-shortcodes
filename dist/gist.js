@@ -99,7 +99,7 @@ function fetch_raw_code(hexo, id, filename) {
                         resolve(res.data);
                     })
                         .catch(function (e) {
-                        hexo.log.error(logname, id, "cannot get ".concat(e.message), { url: url });
+                        hexo.log.error(logname, id, "cannot get ".concat(e.message), url);
                         reject(e);
                     });
                 })];
@@ -177,7 +177,7 @@ var gist = function (hexo) {
                                 return [2 /*return*/, _nunjucksMethod()(args)];
                             }
                             catch (error) {
-                                hexo.log.error(logname, error);
+                                hexo.log.error(logname, String(error));
                                 return [2 /*return*/, 'cannot embed `gist` ' + args.join(' ')];
                             }
                         }
@@ -215,7 +215,7 @@ var gist = function (hexo) {
                         // asign caption when empty
                         if (options.caption.length === 0)
                             options.caption = upath_1.default.extname(options.filename).replace(/^./, '');
-                        hexo.log.debug(logname, { username: username, gist_id: gist_id, options: options });
+                        hexo.log.debug(logname, String({ username: username, gist_id: gist_id, options: options }));
                         newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {
                             context: hexo,
                             args: [codeText, options]

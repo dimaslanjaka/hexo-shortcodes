@@ -82,7 +82,7 @@ export function rssreader(hexo: import('hexo')) {
       )
     );
 
-    hexo.log.debug(logname, url, options);
+    hexo.log.debug(logname, url, String(options));
     const feed = await parser.parseURL(url);
     // remove duplicate items by title
     feed.items = feed.items.filter(
@@ -112,7 +112,7 @@ export function rssreader(hexo: import('hexo')) {
         Object.keys(item).forEach((key) => {
           const regex = new RegExp(hexoUtil.escapeRegExp('$' + key), 'gmi');
           const replacement = '{{ ' + key + ' }}';
-          hexo.log.debug(logname, regex, '->', replacement);
+          hexo.log.debug(logname, String(regex), '->', replacement);
           cloneTemplate = cloneTemplate.replace(regex, replacement);
         });
         if ('date' in item === false && item.pubDate) {

@@ -40,7 +40,7 @@ function githubCard(hexo) {
             var current = arg.split(':');
             argsObj[current[0]] = current[1];
         });
-        hexo.log.debug(logname, argsObj);
+        hexo.log.debug(logname, String(argsObj));
         var user = argsObj.user, repo = argsObj.repo, width = argsObj.width || '400', height = argsObj.height || '200', theme = argsObj.theme || 'default', client_id = argsObj.client_id || '', client_secret = argsObj.client_secret || '', align = argsObj.align || 'center';
         var payload = {
             user: user,

@@ -34,7 +34,7 @@ async function fetch_raw_code(hexo: import('hexo'), id: string, filename?: strin
         resolve(res.data);
       })
       .catch(function (e) {
-        hexo.log.error(logname, id, `cannot get ${e.message}`, { url });
+        hexo.log.error(logname, id, `cannot get ${e.message}`, url);
         reject(e);
       });
   });
@@ -112,7 +112,7 @@ export const gist = (hexo: import('hexo')) => {
       try {
         return _nunjucksMethod()(args);
       } catch (error) {
-        hexo.log.error(logname, error);
+        hexo.log.error(logname, String(error));
         return 'cannot embed `gist` ' + args.join(' ');
       }
     }
@@ -154,7 +154,7 @@ export const gist = (hexo: import('hexo')) => {
     // asign caption when empty
     if (options.caption.length === 0) options.caption = path.extname(options.filename).replace(/^./, '');
 
-    hexo.log.debug(logname, { username, gist_id, options });
+    hexo.log.debug(logname, String({ username, gist_id, options }));
 
     // forked from https://github.com/hexojs/hexo/blob/8b95bbc722e5c77a7e8125441ed64d2ea3524ac0/lib/plugins/tag/code.js#L141-L148
     const newContent = hexo.extend.highlight.exec(hexo.config.syntax_highlighter, {

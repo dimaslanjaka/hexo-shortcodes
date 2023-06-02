@@ -35,7 +35,7 @@ export function codepen(hexo: Hexo) {
       hexo.log.error(logname, urlOrid, String(match));
     }
 
-    hexo.log.debug(logname, { user, pen: slug });
+    hexo.log.debug(logname, { user, pen: slug } as any);
 
     // parse `=` from all arguments
     const parse = args
