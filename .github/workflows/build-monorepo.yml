@@ -1,0 +1,199 @@
+name: Workspace Build Release
+
+on:
+  push:
+    branches: ['monorepo']
+    paths-ignore:
+      - '**/*.tgz'
+      - '**/*.gz'
+      - '**/release*/**'
+      - '**garbage-collector**'
+      - '**codeql**'
+  pull_request:
+    branches: ['monorepo']
+    types:
+      - closed
+    paths-ignore:
+      - '**/release*/**'
+      - '**/*.tgz'
+      - '**/*.gz'
+      - '**/test*/**'
+  workflow_dispatch:
+
+#permissions: write-all
+
+# run single job
+concurrency:
+  group: build-workspace
+  cancel-in-progress: true
+
+jobs:
+  packer:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['14.x', '16.x', '18.x']
+      fail-fast: true
+    env:
+      NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
+      YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+    steps:
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: '${{ secrets.ACCESS_TOKEN }}'
+          ref: 'monorepo'
+      - name: Checkout lib
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: '${{ secrets.ACCESS_TOKEN }}'
+          ref: 'pre-release'
+          path: 'lib'
+      - name: update submodules
+        run: |
+          echo "init submodules"
+          git submodule init
+          git submodule foreach "git submodule init"
+          echo "sync submodules"
+          git submodule sync
+          git submodule foreach "git submodule sync"
+          echo "update submodules"
+          mkdir -p bin >/dev/null 2>&1
+          curl -L https://github.com/dimaslanjaka/bin/raw/master/bin/submodule-install > bin/submodule-install
+          rm -rf .git/modules
+          bash ./bin/submodule-install
+          echo "disable githooks warning"
+          git config advice.ignoredHook false
+          git config core.eol lf
+          git config core.autocrlf input
+          git checkout-index --force --all
+        shell: bash
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            **/.yarn
+            **/tmp
+            ./yarn.lock
+          key: ${{ runner.os }}-${{ matrix.node-version }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-
+
+      - name: Enable corepack
+        shell: bash
+        run: corepack enable
+
+      - name: Set env
+        id: set-env
+        shell: bash
+        run: |
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
+          echo "${GITHUB_WORKSPACE}/bin" >> $GITHUB_PATH
+          echo "${GITHUB_WORKSPACE}/node_modules/.bin" >> $GITHUB_PATH
+          echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+          echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_OUTPUT
+          echo "GITHUB_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "GITHUB_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+          echo "GITHUB_COMMIT_URL=https://github.com/${{github.repository}}/commit/$(echo $GITHUB_SHA)" >> $GITHUB_ENV
+          echo "GITHUB_COMMIT_URL=https://github.com/${{github.repository}}/commit/$(echo $GITHUB_SHA)" >> $GITHUB_OUTPUT
+          echo "GITHUB_RUNNER_URL=https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}" >> $GITHUB_ENV
+          echo "GITHUB_RUNNER_URL=https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}" >> $GITHUB_OUTPUT
+          echo "CACHE_NPM=$(npm config get cache)" >> $GITHUB_ENV
+          echo "cache-npm=$(npm config get cache)" >> $GITHUB_OUTPUT
+          YARN_CURRENT=$(yarn -v)
+          YARN_BERRY=3.2.1
+          if [[ "ok" == "$(echo | awk "(${YARN_CURRENT} > ${YARN_BERRY}) { print \"ok\"; }")" ]]; then
+            echo "CACHE_YARN=$(yarn config get cacheFolder)" >> $GITHUB_ENV
+            echo "cache-yarn=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+          else
+            echo "CACHE_YARN=$(yarn cache dir)" >> $GITHUB_ENV
+            echo "cache-yarn=$(yarn cache dir)" >> $GITHUB_OUTPUT
+          fi
+          echo "architecture=$(getconf LONG_BIT)" >> $GITHUB_ENV
+
+      - name: install
+        run: |
+          touch yarn.lock
+          yarn install
+        shell: bash
+        continue-on-error: true
+        id: install
+      - name: clean install
+        if: steps.install.outcome == 'failure'
+        shell: bash
+        run: |
+          yarn cache clean --all
+          find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
+          truncate -s 0 yarn.lock
+          YARN_CHECKSUM_BEHAVIOR=update yarn install
+      - run: yarn run prepare
+      - name: Build
+        run: |
+          npm run build
+          yarn workspace hexo-shortcodes run pack
+        shell: bash
+        id: build
+
+      - name: what changes
+        id: changes
+        shell: bash
+        if: matrix.node-version == '14.x' && runner.os == 'Linux' && steps.build.outcome == 'success'
+        working-directory: lib
+        run: |
+          git status
+          echo ""
+          countChanges=$(git whatchanged -1 --format=oneline | wc -l)
+          echo "total changed files is $countChanges"
+          countStaged=$(git diff --cached --numstat | wc -l)
+          echo "total staged files is $countStaged"
+          countCommits=$(git diff origin/${{ steps.set-env.outputs.GITHUB_BRANCH }}..HEAD --numstat | wc -l)
+          echo "total unpushed commits is $countCommits"
+          if [ -d "releases" ]; then
+            countReleases=$(git diff --numstat -- releases | wc -l)
+          else
+            countReleases=$(git diff --numstat -- release | wc -l)
+          fi
+          echo "total releases changed is $countReleases"
+          echo "changes=$countChanges" >> $GITHUB_OUTPUT
+          echo "staged=$countStaged" >> $GITHUB_OUTPUT
+          echo "commits=$countCommits" >> $GITHUB_OUTPUT
+          echo "releases=$countReleases" >> $GITHUB_OUTPUT
+
+      - name: push lib
+        if: matrix.node-version == '14.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
+        working-directory: lib
+        run: |
+          git config --global user.name 'dimaslanjaka'
+          git config --global user.email 'dimaslanjaka@gmail.com'
+          git add release
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "chore: update build of ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+            git push
+          else
+            echo "no changes";
+          fi
+
+      - name: Push
+        #if: matrix.node-version == '14.x' && runner.os == 'Linux' && steps.build.outcome == 'success' && steps.changes.outputs.changes > 0
+        if: ${{ false }}
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config --global user.name 'dimaslanjaka'
+            git config --global user.email 'dimaslanjaka@gmail.com'
+            git add .
+            git commit -m "chore: update build of ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" -m "commit url: ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" -m "runner: ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+            git push
+          else
+            echo "no changes"
+          fi
