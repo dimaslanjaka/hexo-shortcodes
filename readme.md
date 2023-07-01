@@ -1,5 +1,8 @@
 # hexo-shortcodes
-Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll. Various hexo shortcode tags. [GitHub](https://github.com/dimaslanjaka/hexo-shortcodes).
+Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll. Various hexo shortcode tags.
+
+[GitHub](https://github.com/dimaslanjaka/hexo-shortcodes) |
+[Demo and docs](https://www.webmanajemen.com/docs/hexo-shortcodes/)
 
 ## Installation
 Firsly, remove old original tag renderer. Because this plugin already have all default tag (`vimeo`, `youtube`, `gist`, `codeblock`)
