@@ -13,12 +13,6 @@ import { embedNPMRunKit } from './npmrunkit';
 import { rssreader } from './rssreader';
 import { registerHexo, url_for } from './utils';
 
-/*
-declare global {
-  const hexo: import('hexo');
-}
-*/
-
 if (typeof hexo !== 'undefined') {
   // register hexo for utils
   registerHexo(hexo);
