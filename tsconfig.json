@@ -16,5 +16,8 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
+  },
+  "typeAcquisition": {
+    "enable": true
   }
 }
