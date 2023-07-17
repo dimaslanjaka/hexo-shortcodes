@@ -10,3 +10,7 @@
 	path = packages/git-embed
 	url = https://github.com/dimaslanjaka/embed-like-gist.git
 	branch = monorepo
+[submodule "packages/sbg-utility"]
+	path = packages/sbg-utility
+	url = https://github.com/dimaslanjaka/static-blog-generator
+	branch = sbg-utility
