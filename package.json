@@ -40,6 +40,7 @@
   },
   "license": "MIT",
   "workspaces": [
+    "packages/sbg-utility/packages/sbg-utility",
     "packages/git-embed",
     "lib/src/hexo-tag-embed",
     "lib",
@@ -77,6 +78,13 @@
     "upath": "^2.0.1"
   },
   "resolutions": {
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/5560156/release/cross-spawn.tgz"
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/5560156/release/cross-spawn.tgz",
+    "hexo": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo.tgz",
+    "hexo-asset-link": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo-asset-link.tgz",
+    "hexo-cli": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo-cli.tgz",
+    "hexo-front-matter": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo-front-matter.tgz",
+    "hexo-log": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo-log.tgz",
+    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo-util.tgz",
+    "warehouse": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/warehouse.tgz"
   }
 }
