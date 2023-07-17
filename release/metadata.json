@@ -10,12 +10,12 @@
   },
   "/release/hexo-shortcodes.tgz": {
     "integrity": {
-      "sha1": "18e24c256edfec44a773af255659a92ab642802e",
-      "sha256": "jSQguixAsEDwNX0lidEnZDuN5B5RuqxyJV4LAuWsHb0=",
-      "md5": "4597964e309e08d49845d583b2da9f58",
-      "sha512": "l3znL42nCtjmG5wxm9HaIQ1lDVvS1te4J1w+iN8QBOn6Y2BSHe6z637Du6wxAPp+a+rZ8vphNmJMUumEqjaWxQ=="
+      "sha1": "a069c00076ccaa6ecd4e97d687f8e5ea233e5f43",
+      "sha256": "AYc7CYSajF5atJ58hYWHMXY2s51nF/uoYlm0R+PRkBE=",
+      "md5": "1effe955a82405b69551c3d8bb1fc65a",
+      "sha512": "MbBAoFTtDQE4/5NmSHTztok1FobSB4nJqJSQhx2tVhJ1zza5jG1WHZ4q8+GtPsV+XJe2nxKUXUo14ZMkIeqwMA=="
     },
-    "size": "19.04 KB"
+    "size": "19.06 KB"
   },
   "/release/hexo-shortcodes-1.2.1.tgz": {
     "integrity": {
@@ -37,11 +37,11 @@
   },
   "/release/hexo-shortcodes-1.2.3.tgz": {
     "integrity": {
-      "sha1": "18e24c256edfec44a773af255659a92ab642802e",
-      "sha256": "jSQguixAsEDwNX0lidEnZDuN5B5RuqxyJV4LAuWsHb0=",
-      "md5": "4597964e309e08d49845d583b2da9f58",
-      "sha512": "l3znL42nCtjmG5wxm9HaIQ1lDVvS1te4J1w+iN8QBOn6Y2BSHe6z637Du6wxAPp+a+rZ8vphNmJMUumEqjaWxQ=="
+      "sha1": "a069c00076ccaa6ecd4e97d687f8e5ea233e5f43",
+      "sha256": "AYc7CYSajF5atJ58hYWHMXY2s51nF/uoYlm0R+PRkBE=",
+      "md5": "1effe955a82405b69551c3d8bb1fc65a",
+      "sha512": "MbBAoFTtDQE4/5NmSHTztok1FobSB4nJqJSQhx2tVhJ1zza5jG1WHZ4q8+GtPsV+XJe2nxKUXUo14ZMkIeqwMA=="
     },
-    "size": "19.04 KB"
+    "size": "19.06 KB"
   }
 }
