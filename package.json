@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/dimaslanjaka/hexo-shortcodes/issues"
   },
-  "homepage": "https://github.com/dimaslanjaka/hexo-shortcodes#readme",
+  "homepage": "https://www.webmanajemen.com/docs/hexo-shortcodes/",
   "files": [
     "template",
     "template/*.njk",
