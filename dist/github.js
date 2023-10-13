@@ -71,10 +71,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.githubEmbedderRaw = exports.githubEmbed = exports.githubEmbedder = void 0;
+exports.githubEmbedderRaw = exports.githubEmbedTagRegister = exports.githubEmbedder = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var git_embed_1 = __importDefault(require("git-embed"));
 var hexoUtils = __importStar(require("hexo-util"));
+var utils_1 = require("./utils");
+var getHexoConfig_1 = require("./utils/getHexoConfig");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(github)');
 /**
  * github embedder engine
@@ -84,12 +86,13 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
  * hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
  */
 function githubEmbedder(hexo) {
+    var hexoConfig = (0, getHexoConfig_1.getHexoConfig)(hexo);
     return function (params) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var url, parseURL, config_1, splitcolon, splithypen, embed, content, options, newContent;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var url, parseURL, config_1, splitcolon, splithypen, embed, ext, content, options, newContent;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         // filter empty array
                         params = params.filter(function (str) { return String(str).trim().length > 0; });
@@ -136,10 +139,15 @@ function githubEmbedder(hexo) {
                         config_1.line = parseURL.hash;
                         return [4 /*yield*/, (0, git_embed_1.default)(url, { tabSize: 2 })];
                     case 1:
-                        embed = _b.sent();
+                        embed = _c.sent();
+                        ext = (0, utils_1.getExtUrl)(url);
+                        // return raw when hexo.config['hexo-shortcodes'].raw = true
+                        if ((_a = hexoConfig['hexo-shortcodes']) === null || _a === void 0 ? void 0 : _a.raw) {
+                            return [2 /*return*/, '```' + ext + '\n' + embed.result + '\n```'];
+                        }
                         content = embed.result;
                         // If neither highlight.js nor prism.js is enabled, return escaped code directly
-                        if (!((_a = hexo.extend.highlight) === null || _a === void 0 ? void 0 : _a.query(hexo.config.syntax_highlighter))) {
+                        if (!((_b = hexo.extend.highlight) === null || _b === void 0 ? void 0 : _b.query(hexo.config.syntax_highlighter))) {
                             return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(content), "</code></pre>")];
                         }
                         options = {
@@ -163,10 +171,12 @@ exports.githubEmbedder = githubEmbedder;
  * hexo shortcode to embed file
  * @param hexo
  */
-function githubEmbed(hexo) {
-    hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
+function githubEmbedTagRegister(hexo) {
+    var engine = githubEmbedder(hexo);
+    hexo.extend.tag.register('github', engine, { async: true });
+    return engine;
 }
-exports.githubEmbed = githubEmbed;
+exports.githubEmbedTagRegister = githubEmbedTagRegister;
 /**
  * github raw embedder engine
  * @param hexo

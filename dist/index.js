@@ -19,12 +19,12 @@ if (typeof hexo !== 'undefined') {
     (0, utils_1.registerHexo)(hexo);
     // register tags
     (0, githubCard_1.githubCard)(hexo);
-    (0, gist_1.gist)(hexo);
+    (0, gist_1.gistEmbedTagRegister)(hexo);
     (0, jsfiddle_1.jsfiddle)(hexo);
     (0, codepen_1.codepen)(hexo);
     (0, dailymotion_1.dailymotion)(hexo);
     (0, rssreader_1.rssreader)(hexo);
-    (0, github_1.githubEmbed)(hexo);
+    (0, github_1.githubEmbedTagRegister)(hexo);
     (0, npmrunkit_1.embedNPMRunKit)(hexo);
     (0, include_file_1.registerIncludeTag)(hexo);
     // register hexo-tag-embed

@@ -11,7 +11,7 @@ export declare function githubEmbedder(hexo: Hexo): (params: string[]) => Promis
  * hexo shortcode to embed file
  * @param hexo
  */
-export declare function githubEmbed(hexo: Hexo): void;
+export declare function githubEmbedTagRegister(hexo: Hexo): (params: string[]) => Promise<string>;
 /**
  * github raw embedder engine
  * @param hexo
