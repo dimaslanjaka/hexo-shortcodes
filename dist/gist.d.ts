@@ -1,1 +1,1 @@
-export declare const gist: (hexo: import('hexo')) => void;
+export declare const gistEmbedTagRegister: (hexo: import('hexo')) => (args: string[]) => Promise<string>;

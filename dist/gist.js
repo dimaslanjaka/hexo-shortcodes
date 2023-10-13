@@ -62,16 +62,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gist = void 0;
+exports.gistEmbedTagRegister = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var axios_1 = __importDefault(require("axios"));
 var bluebird_1 = __importDefault(require("bluebird"));
-var upath_1 = __importDefault(require("upath"));
+var fs_extra_1 = __importDefault(require("fs-extra"));
 var hexoUtils = __importStar(require("hexo-util"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
-var fs_extra_1 = __importDefault(require("fs-extra"));
-var env_1 = require("./env");
 var sbg_utility_1 = require("sbg-utility");
+var upath_1 = __importDefault(require("upath"));
+var env_1 = require("./env");
+var utils_1 = require("./utils");
+var getHexoConfig_1 = require("./utils/getHexoConfig");
 var parseTagParameter_1 = require("./utils/parseTagParameter");
 var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colors_1.default.blueBright('(gist)');
 // hexo-gist
@@ -96,7 +98,7 @@ function fetch_raw_code(hexo, id, filename) {
                     axios_1.default
                         .get(url)
                         .then(function (res) {
-                        resolve(res.data);
+                        resolve({ result: res.data, url: url });
                     })
                         .catch(function (e) {
                         hexo.log.error(logname, id, "cannot get ".concat(e.message), url);
@@ -106,11 +108,12 @@ function fetch_raw_code(hexo, id, filename) {
         });
     });
 }
-var gist = function (hexo) {
+var gistEmbedTagRegister = function (hexo) {
     var url_for = hexoUtils.url_for.bind(hexo);
     var libFilename = 'gist.css';
     var libRoute = "".concat(env_1.ROUTE_NAME, "/").concat(libFilename);
     var libFilePath = upath_1.default.resolve(env_1.LIB_PATH, libFilename);
+    var hexoConfig = (0, getHexoConfig_1.getHexoConfig)(hexo);
     /**
      * REGISTER MIDDLEWARE FOR HEXO GENERATE
      */
@@ -158,16 +161,16 @@ var gist = function (hexo) {
      * @returns
      */
     function _usingHexoSyntaxHighlighter(args) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var id, username, gist_id, defaults, options, content, line, lineSplit, startLine, endLine, codeText, newContent;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var id, username, gist_id, defaults, params, options, _c, content, url, line, lineSplit, startLine, endLine, codeText, ext, newContent;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         id = args[0] || '';
                         // return when id is empty
                         if (id.length === 0)
-                            return [2 /*return*/, "<pre><code>gist id insufficient\n\n".concat(args, "</code></pre>")];
+                            return [2 /*return*/, "<pre><code>gist id insufficient\n\n".concat(args, "\n\n</code></pre>")];
                         if ((0, sbg_utility_1.isValidHttpUrl)(id)) {
                             id = new URL(id).pathname;
                         }
@@ -188,10 +191,11 @@ var gist = function (hexo) {
                             lang: '',
                             caption: ''
                         };
-                        options = Object.assign(defaults, (0, parseTagParameter_1.parseTagParameter)(args));
+                        params = (0, parseTagParameter_1.parseTagParameter)(args);
+                        options = Object.assign(defaults, params);
                         return [4 /*yield*/, fetch_raw_code(hexo, id, options.filename)];
                     case 1:
-                        content = _b.sent();
+                        _c = _d.sent(), content = _c.result, url = _c.url;
                         line = options.line;
                         lineSplit = ((line === null || line === void 0 ? void 0 : line.split('-')) || []).map(function (L) { return parseInt(L.replace(/#?L/g, '')); });
                         startLine = lineSplit[0] - 1;
@@ -204,8 +208,16 @@ var gist = function (hexo) {
                         // fallback to content
                         if (codeText.length === 0)
                             codeText = content;
+                        ext = (0, utils_1.getExtUrl)(url);
+                        // validate extension contains non-words chars
+                        if (/\W/.test(ext))
+                            ext = '';
+                        // return raw when hexo.config['hexo-shortcodes'].raw = true
+                        if ((_a = hexoConfig['hexo-shortcodes']) === null || _a === void 0 ? void 0 : _a.raw) {
+                            return [2 /*return*/, '```' + ext + '\n' + content + '\n```'];
+                        }
                         // If neither highlight.js nor prism.js is enabled, return escaped code directly
-                        if (!((_a = hexo.extend.highlight) === null || _a === void 0 ? void 0 : _a.query(hexo.config.syntax_highlighter))) {
+                        if (!((_b = hexo.extend.highlight) === null || _b === void 0 ? void 0 : _b.query(hexo.config.syntax_highlighter))) {
                             return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(codeText), "</code></pre>")];
                         }
                         // assign lines length
@@ -227,5 +239,6 @@ var gist = function (hexo) {
         });
     }
     hexo.extend.tag.register('gist', _usingHexoSyntaxHighlighter, { async: true });
+    return _usingHexoSyntaxHighlighter;
 };
-exports.gist = gist;
+exports.gistEmbedTagRegister = gistEmbedTagRegister;

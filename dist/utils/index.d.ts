@@ -1,4 +1,8 @@
 import Hexo from 'hexo';
+export * from './getHexoConfig';
+export * from './parseTagParameter';
+export * from './shortcodeParser';
+export * from './url';
 /**
  * hexo-util.url_for alias
  * @param url
