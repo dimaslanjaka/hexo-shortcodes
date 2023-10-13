@@ -1,0 +1,39 @@
+#!/bin/bash -e
+
+# token remover from url repo
+
+export SCRIPT=$(realpath "$0")
+export ROOT="$(git rev-parse --show-toplevel)"
+
+git -C "${REPO_PATH}" config -f .gitmodules --get-regexp '^submodule\..*\.path$' |
+    while read -r KEY MODULE_PATH
+    do
+        # relative module path from root
+        RELATIVE_MODULE_PATH="${ROOT}/${MODULE_PATH}"
+        # cd git root dir
+        cd ${ROOT}
+
+        NAME="$(echo "${KEY}" | sed 's/^submodule\.\(.*\)\.path$/\1/')"
+
+        url_key="$(echo "${KEY}" | sed 's/\.path$/.url/')"
+        branch_key="$(echo "${KEY}" | sed 's/\.path$/.branch/')"
+
+        URL="$(git config -f .gitmodules --get "${url_key}")"
+        BRANCH="$(git config -f .gitmodules --get "${branch_key}" || echo "master")"
+
+        repo=${URL#"https://github.com/"}
+        NEW_URL="https://github.com/${repo}"
+
+        # cd and update url
+        cd $RELATIVE_MODULE_PATH
+        git remote set-url origin "$NEW_URL"
+        cd $ROOT
+
+        GIT_MODULES="${RELATIVE_MODULE_PATH}/.gitmodules"
+        if [ -f "${GIT_MODULES}" ];
+        then
+          echo "${MODULE_PATH} has submodules"
+          cd "${RELATIVE_MODULE_PATH}"
+          sh "${SCRIPT}" -cwd ${RELATIVE_MODULE_PATH}
+        fi
+    done
