@@ -79,7 +79,7 @@
     "@types/nunjucks": "^3.2.3",
     "@types/warehouse": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/warehouse.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/5560156/release/cross-spawn.tgz",
-    "git-command-helper": "^2.0.1",
+    "git-command-helper": "^2.0.2",
     "husky": "^8.0.3",
     "jest": "^29.6.1",
     "jest-config": "^29.6.1",
