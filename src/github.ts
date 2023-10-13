@@ -92,7 +92,7 @@ export function githubEmbedder(hexo: Hexo) {
  * hexo shortcode to embed file
  * @param hexo
  */
-export function githubEmbed(hexo: Hexo) {
+export function githubEmbedTagRegister(hexo: Hexo) {
   hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
 }
 

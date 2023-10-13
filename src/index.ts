@@ -3,7 +3,7 @@ import { codepen } from './codepen';
 import { dailymotion } from './dailymotion';
 import { GITHUB_CARD_LIB_NAME } from './env';
 import { gist } from './gist';
-import { githubEmbed } from './github';
+import { githubEmbedTagRegister } from './github';
 import { githubCard } from './githubCard';
 import { vimeoTag } from './hexo-tag-embed/lib/tags/vimeo';
 import { youtubeTag } from './hexo-tag-embed/lib/tags/youtube';
@@ -24,7 +24,7 @@ if (typeof hexo !== 'undefined') {
   codepen(hexo);
   dailymotion(hexo);
   rssreader(hexo);
-  githubEmbed(hexo);
+  githubEmbedTagRegister(hexo);
   embedNPMRunKit(hexo);
   registerIncludeTag(hexo);
 
