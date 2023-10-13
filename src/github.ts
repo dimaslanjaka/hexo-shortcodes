@@ -93,7 +93,9 @@ export function githubEmbedder(hexo: Hexo) {
  * @param hexo
  */
 export function githubEmbedTagRegister(hexo: Hexo) {
-  hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
+  const engine = githubEmbedder(hexo);
+  hexo.extend.tag.register('github', engine, { async: true });
+  return engine;
 }
 
 /**

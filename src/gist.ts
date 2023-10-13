@@ -125,7 +125,9 @@ export const gist = (hexo: import('hexo')) => {
       caption: ''
     };
 
-    const options = Object.assign(defaults, parseTagParameter<typeof defaults>(args));
+    const params = parseTagParameter<typeof defaults>(args);
+    console.log(params);
+    const options = Object.assign(defaults, params);
 
     const content = await fetch_raw_code(hexo, id, options.filename);
     const line = options.line;
@@ -166,4 +168,6 @@ export const gist = (hexo: import('hexo')) => {
   }
 
   hexo.extend.tag.register('gist', _usingHexoSyntaxHighlighter, { async: true });
+
+  return _usingHexoSyntaxHighlighter;
 };
