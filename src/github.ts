@@ -2,6 +2,8 @@ import ansiColors from 'ansi-colors';
 import gitEmbed from 'git-embed';
 import Hexo from 'hexo';
 import * as hexoUtils from 'hexo-util';
+import { getExtUrl } from './utils';
+import { getHexoConfig } from './utils/getHexoConfig';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(github)');
 
@@ -13,6 +15,7 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
  * hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
  */
 export function githubEmbedder(hexo: Hexo) {
+  const hexoConfig = getHexoConfig(hexo);
   return async function (params: string[]) {
     // filter empty array
     params = params.filter((str) => String(str).trim().length > 0);
@@ -62,6 +65,13 @@ export function githubEmbedder(hexo: Hexo) {
       hexo.log.debug(logname, parseURL.pathname + parseURL.hash);
       config.line = parseURL.hash;
       const embed = await gitEmbed(url, { tabSize: 2 });
+      const ext = getExtUrl(url);
+
+      // return raw when hexo.config['hexo-shortcodes'].raw = true
+      if (hexoConfig['hexo-shortcodes']?.raw) {
+        return '```' + ext + '\n' + embed.result + '\n```';
+      }
+
       const content = embed.result;
 
       // If neither highlight.js nor prism.js is enabled, return escaped code directly

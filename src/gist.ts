@@ -7,6 +7,8 @@ import nunjucks from 'nunjucks';
 import { isValidHttpUrl } from 'sbg-utility';
 import path from 'upath';
 import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH } from './env';
+import { getExtUrl } from './utils';
+import { getHexoConfig } from './utils/getHexoConfig';
 import { parseTagParameter } from './utils/parseTagParameter';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
@@ -27,11 +29,11 @@ async function fetch_raw_code(hexo: import('hexo'), id: string, filename?: strin
   if (typeof filename === 'string' && filename.length > 0) {
     url = `${url}/${filename}`;
   }
-  return new Bluebird(function (resolve: (res: string) => any, reject) {
+  return new Bluebird(function (resolve: (res: { result: string; url: string }) => any, reject) {
     axios
       .get(url)
       .then(function (res) {
-        resolve(res.data);
+        resolve({ result: res.data, url });
       })
       .catch(function (e) {
         hexo.log.error(logname, id, `cannot get ${e.message}`, url);
@@ -45,6 +47,8 @@ export const gistEmbedTagRegister = (hexo: import('hexo')) => {
   const libFilename = 'gist.css';
   const libRoute = `${ROUTE_NAME}/${libFilename}`;
   const libFilePath = path.resolve(LIB_PATH, libFilename);
+  const hexoConfig = getHexoConfig(hexo);
+
   /**
    * REGISTER MIDDLEWARE FOR HEXO GENERATE
    */
@@ -99,7 +103,7 @@ export const gistEmbedTagRegister = (hexo: import('hexo')) => {
     let id = args[0] || '';
 
     // return when id is empty
-    if (id.length === 0) return `<pre><code>gist id insufficient\n\n${args}</code></pre>`;
+    if (id.length === 0) return `<pre><code>gist id insufficient\n\n${args}\n\n</code></pre>`;
 
     if (isValidHttpUrl(id)) {
       id = new URL(id).pathname;
@@ -126,10 +130,10 @@ export const gistEmbedTagRegister = (hexo: import('hexo')) => {
     };
 
     const params = parseTagParameter<typeof defaults>(args);
-    console.log(params);
+    // console.log(params);
     const options = Object.assign(defaults, params);
 
-    const content = await fetch_raw_code(hexo, id, options.filename);
+    const { result: content, url } = await fetch_raw_code(hexo, id, options.filename);
     const line = options.line;
     const lineSplit = (line?.split('-') || []).map((L) => parseInt(L.replace(/#?L/g, '')));
     const startLine = lineSplit[0] - 1;
@@ -143,6 +147,15 @@ export const gistEmbedTagRegister = (hexo: import('hexo')) => {
 
     // fallback to content
     if (codeText.length === 0) codeText = content;
+
+    let ext = getExtUrl(url);
+    // validate extension contains non-words chars
+    if (/\W/.test(ext)) ext = '';
+
+    // return raw when hexo.config['hexo-shortcodes'].raw = true
+    if (hexoConfig['hexo-shortcodes']?.raw) {
+      return '```' + ext + '\n' + content + '\n```';
+    }
 
     // If neither highlight.js nor prism.js is enabled, return escaped code directly
     if (!hexo.extend.highlight?.query(hexo.config.syntax_highlighter)) {
