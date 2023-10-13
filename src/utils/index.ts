@@ -1,5 +1,10 @@
 import Hexo from 'hexo';
 
+export * from './getHexoConfig';
+export * from './parseTagParameter';
+export * from './shortcodeParser';
+export * from './url';
+
 let hexo: Hexo;
 
 /**
