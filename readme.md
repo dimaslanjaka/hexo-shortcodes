@@ -19,8 +19,9 @@ npm i hexo-shortcodes
 latest changes, replace `COMMIT_HASH` with latest commit hash. see [pre-release commit history](https://github.com/dimaslanjaka/hexo-shortcodes/commits/pre-release)
 ```bash
 npm i hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/tarball/COMMIT_HASH
+# or
+yarn add hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/tarball/COMMIT_HASH
 ```
-for yarn just replace `npm i` with `yarn add`
 
 ## shortcodes list
 | shortcode | description |
