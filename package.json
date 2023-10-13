@@ -76,12 +76,14 @@
     "@types/hexo-front-matter": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo-front-matter.tgz",
     "@types/hexo-log": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo-log.tgz",
     "@types/hexo-util": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/hexo-util.tgz",
-    "@types/node": "^20.4.2",
+    "@types/node": "^20.8.5",
     "@types/nunjucks": "^3.2.3",
     "@types/warehouse": "https://github.com/dimaslanjaka/hexo/raw/ec2ed736/releases/warehouse.tgz",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
+    "cross-env": "^7.0.3",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/5560156/release/cross-spawn.tgz",
+    "dotenv": "^16.3.1",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
@@ -93,7 +95,8 @@
     "lint-staged": "^13.2.3",
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.1.6"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   },
   "engines": {
     "node": "^14.0.0",
