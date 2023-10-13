@@ -1,7 +1,7 @@
 import ansiColors from 'ansi-colors';
 import { default as axios } from 'axios';
-import Bluebird from 'bluebird';
 import fs from 'fs-extra';
+import Hexo from 'hexo';
 import * as hexoUtils from 'hexo-util';
 import nunjucks from 'nunjucks';
 import { isValidHttpUrl } from 'sbg-utility';
@@ -24,22 +24,21 @@ const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBri
 // You may optionally specify a `filename` after the `id`:
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 
-async function fetch_raw_code(hexo: import('hexo'), id: string, filename?: string) {
+async function fetch_raw_code(hexo: Hexo, id: string, filename?: string) {
   let url = `https://gist.githubusercontent.com/${id}/raw`;
   if (typeof filename === 'string' && filename.length > 0) {
     url = `${url}/${filename}`;
   }
-  return new Bluebird(function (resolve: (res: { result: string; url: string }) => any, reject) {
-    axios
-      .get(url)
-      .then(function (res) {
-        resolve({ result: res.data, url });
-      })
-      .catch(function (e) {
-        hexo.log.error(logname, id, `cannot get ${e.message}`, url);
-        reject(e);
-      });
-  });
+  let data = '';
+  try {
+    data = await (await axios.get(url)).data;
+    console.log({ data, url });
+  } catch (e: any) {
+    hexo.log.error(logname, e.message, url);
+    data = `${e.message} from ${url}\n id ${id}`;
+  }
+
+  return { result: data, url };
 }
 
 export const gistEmbedTagRegister = (hexo: import('hexo')) => {
@@ -148,13 +147,13 @@ export const gistEmbedTagRegister = (hexo: import('hexo')) => {
     // fallback to content
     if (codeText.length === 0) codeText = content;
 
-    let ext = getExtUrl(url);
+    let ext = options.lang.length > 0 ? options.lang : getExtUrl(options.filename || url);
     // validate extension contains non-words chars
     if (/\W/.test(ext)) ext = '';
 
     // return raw when hexo.config['hexo-shortcodes'].raw = true
     if (hexoConfig['hexo-shortcodes']?.raw) {
-      return '```' + ext + '\n' + content + '\n```';
+      return '```' + ext + '\n' + codeText + '\n```';
     }
 
     // If neither highlight.js nor prism.js is enabled, return escaped code directly

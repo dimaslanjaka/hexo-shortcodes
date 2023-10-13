@@ -65,7 +65,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.gistEmbedTagRegister = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var axios_1 = __importDefault(require("axios"));
-var bluebird_1 = __importDefault(require("bluebird"));
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var hexoUtils = __importStar(require("hexo-util"));
 var nunjucks_1 = __importDefault(require("nunjucks"));
@@ -88,23 +87,31 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
 // input {% gist meredrica/c08ee0f2726fd0e3909d test.md %}
 function fetch_raw_code(hexo, id, filename) {
     return __awaiter(this, void 0, void 0, function () {
-        var url;
+        var url, data, e_1;
         return __generator(this, function (_a) {
-            url = "https://gist.githubusercontent.com/".concat(id, "/raw");
-            if (typeof filename === 'string' && filename.length > 0) {
-                url = "".concat(url, "/").concat(filename);
+            switch (_a.label) {
+                case 0:
+                    url = "https://gist.githubusercontent.com/".concat(id, "/raw");
+                    if (typeof filename === 'string' && filename.length > 0) {
+                        url = "".concat(url, "/").concat(filename);
+                    }
+                    data = '';
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, axios_1.default.get(url)];
+                case 2: return [4 /*yield*/, (_a.sent()).data];
+                case 3:
+                    data = _a.sent();
+                    console.log({ data: data, url: url });
+                    return [3 /*break*/, 5];
+                case 4:
+                    e_1 = _a.sent();
+                    hexo.log.error(logname, e_1.message, url);
+                    data = "".concat(e_1.message, " from ").concat(url, "\n id ").concat(id);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/, { result: data, url: url }];
             }
-            return [2 /*return*/, new bluebird_1.default(function (resolve, reject) {
-                    axios_1.default
-                        .get(url)
-                        .then(function (res) {
-                        resolve({ result: res.data, url: url });
-                    })
-                        .catch(function (e) {
-                        hexo.log.error(logname, id, "cannot get ".concat(e.message), url);
-                        reject(e);
-                    });
-                })];
         });
     });
 }
@@ -208,13 +215,13 @@ var gistEmbedTagRegister = function (hexo) {
                         // fallback to content
                         if (codeText.length === 0)
                             codeText = content;
-                        ext = (0, utils_1.getExtUrl)(url);
+                        ext = options.lang.length > 0 ? options.lang : (0, utils_1.getExtUrl)(options.filename || url);
                         // validate extension contains non-words chars
                         if (/\W/.test(ext))
                             ext = '';
                         // return raw when hexo.config['hexo-shortcodes'].raw = true
                         if ((_a = hexoConfig['hexo-shortcodes']) === null || _a === void 0 ? void 0 : _a.raw) {
-                            return [2 /*return*/, '```' + ext + '\n' + content + '\n```'];
+                            return [2 /*return*/, '```' + ext + '\n' + codeText + '\n```'];
                         }
                         // If neither highlight.js nor prism.js is enabled, return escaped code directly
                         if (!((_b = hexo.extend.highlight) === null || _b === void 0 ? void 0 : _b.query(hexo.config.syntax_highlighter))) {
