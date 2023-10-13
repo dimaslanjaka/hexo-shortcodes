@@ -40,7 +40,7 @@ async function fetch_raw_code(hexo: import('hexo'), id: string, filename?: strin
   });
 }
 
-export const gist = (hexo: import('hexo')) => {
+export const gistEmbedTagRegister = (hexo: import('hexo')) => {
   const url_for = hexoUtils.url_for.bind(hexo);
   const libFilename = 'gist.css';
   const libRoute = `${ROUTE_NAME}/${libFilename}`;

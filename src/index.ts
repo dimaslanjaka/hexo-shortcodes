@@ -2,7 +2,7 @@
 import { codepen } from './codepen';
 import { dailymotion } from './dailymotion';
 import { GITHUB_CARD_LIB_NAME } from './env';
-import { gist } from './gist';
+import { gistEmbedTagRegister } from './gist';
 import { githubEmbedTagRegister } from './github';
 import { githubCard } from './githubCard';
 import { vimeoTag } from './hexo-tag-embed/lib/tags/vimeo';
@@ -19,7 +19,7 @@ if (typeof hexo !== 'undefined') {
 
   // register tags
   githubCard(hexo);
-  gist(hexo);
+  gistEmbedTagRegister(hexo);
   jsfiddle(hexo);
   codepen(hexo);
   dailymotion(hexo);
