@@ -1,9 +1,6 @@
 **/node_modules
 **/tmp
 **/build
-**/.yarn/cache
-**/.yarn/*.gz
-**/.yarn/versions
 **/dist/*.tsbuildinfo
 **/db.json
 release/hexo-shortcodes-*.tgz
@@ -14,3 +11,5 @@ yarn.lock
 packager-lock.json
 /packages
 /coverage
+.yarnrc.yml
+.yarn/
