@@ -36,6 +36,16 @@ yarn add hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/tarball
 | [hexo **include_file** shortcode](/docs/hexo-shortcodes/include_file) | include any files relative to `hexo.config.source_dir`, `hexo.config.code_dir`, or reference file it self |
 | [videos](/docs/hexo-shortcodes/videos) | default hexo embedding videos |
 
+## Config
+
+define renderer returns by setting `_config.yml`
+
+```yaml
+hexo-shortcodes:
+  # true = return raw markdown format instead html
+  raw: false
+```
+
 ## Language Test
 
 - [php](/docs/hexo-shortcodes/lang/php)
