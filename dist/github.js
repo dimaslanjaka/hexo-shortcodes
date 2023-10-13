@@ -71,7 +71,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.githubEmbed = exports.githubEmbedder = void 0;
+exports.githubEmbedderRaw = exports.githubEmbed = exports.githubEmbedder = void 0;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var git_embed_1 = __importDefault(require("git-embed"));
 var hexoUtils = __importStar(require("hexo-util"));
@@ -167,3 +167,71 @@ function githubEmbed(hexo) {
     hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
 }
 exports.githubEmbed = githubEmbed;
+/**
+ * github raw embedder engine
+ * @param hexo
+ * @returns raw parsed response without highlight.js
+ * @example
+ * hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
+ */
+function githubEmbedderRaw(hexo) {
+    return function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, parseURL, config_2, splitcolon, splithypen, embed;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        // filter empty array
+                        params = params.filter(function (str) { return String(str).trim().length > 0; });
+                        if (!(params.length > 0)) return [3 /*break*/, 2];
+                        url = void 0;
+                        parseURL = void 0;
+                        config_2 = {
+                            repo: '',
+                            file: '',
+                            line: '',
+                            ref: ''
+                        };
+                        if (params.length === 1) {
+                            // params is url
+                            try {
+                                parseURL = new URL(params[0]);
+                            }
+                            catch (_e) {
+                                parseURL = new URL('https://github.com/' + params[0]);
+                            }
+                            url = parseURL.toString();
+                        }
+                        else {
+                            splitcolon = params.map(function (str) { return String(str).split(':'); });
+                            splitcolon.forEach(function (split) {
+                                config_2[split[0].trim()] = split[1].trim();
+                            });
+                            parseURL = new URL('https://github.com');
+                            // merge pathname
+                            parseURL.pathname = [config_2.repo, 'blob', config_2.ref, config_2.file].join('/');
+                            // fix line
+                            if (!config_2.line.includes('L')) {
+                                splithypen = config_2.line.split('-');
+                                if (splithypen.length === 2) {
+                                    parseURL.hash = '#L' + splithypen[0] + '-L' + splithypen[1];
+                                }
+                            }
+                            else {
+                                parseURL.hash = config_2.line;
+                            }
+                            url = parseURL.toString();
+                        }
+                        hexo.log.debug(logname, parseURL.pathname + parseURL.hash);
+                        config_2.line = parseURL.hash;
+                        return [4 /*yield*/, (0, git_embed_1.default)(url, { tabSize: 2 })];
+                    case 1:
+                        embed = _a.sent();
+                        return [2 /*return*/, embed.result];
+                    case 2: return [2 /*return*/];
+                }
+            });
+        });
+    };
+}
+exports.githubEmbedderRaw = githubEmbedderRaw;

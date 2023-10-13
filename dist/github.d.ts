@@ -12,3 +12,11 @@ export declare function githubEmbedder(hexo: Hexo): (params: string[]) => Promis
  * @param hexo
  */
 export declare function githubEmbed(hexo: Hexo): void;
+/**
+ * github raw embedder engine
+ * @param hexo
+ * @returns raw parsed response without highlight.js
+ * @example
+ * hexo.extend.tag.register('github', githubEmbedder(hexo), { async: true });
+ */
+export declare function githubEmbedderRaw(hexo: Hexo): (params: string[]) => Promise<string>;
