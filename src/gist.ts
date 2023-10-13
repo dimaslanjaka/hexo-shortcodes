@@ -1,12 +1,12 @@
 import ansiColors from 'ansi-colors';
 import { default as axios } from 'axios';
 import Bluebird from 'bluebird';
-import path from 'upath';
+import fs from 'fs-extra';
 import * as hexoUtils from 'hexo-util';
 import nunjucks from 'nunjucks';
-import fs from 'fs-extra';
-import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH } from './env';
 import { isValidHttpUrl } from 'sbg-utility';
+import path from 'upath';
+import { GIST_TEMPLATE, LIB_PATH, ROUTE_NAME, TEMPLATE_PATH } from './env';
 import { parseTagParameter } from './utils/parseTagParameter';
 
 const logname = ansiColors.magentaBright('hexo-shortcodes') + ansiColors.blueBright('(gist)');
