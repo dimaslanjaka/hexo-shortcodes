@@ -57,7 +57,7 @@
     "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/8b31a11/releases/hexo-util.tgz",
     "nunjucks": "^3.2.4",
     "rss-parser": "^3.13.0",
-    "sbg-utility": "*"
+    "sbg-utility": "^1.1.6"
   },
   "devDependencies": {
     "@jest/environment": "^29.6.1",
