@@ -26,15 +26,15 @@ yarn add hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/tarball
 ## shortcodes list
 | shortcode | description |
 | :--- | :--- |
-| [hexo **codepen** shortcode](/docs/hexo-shortcodes/codepen) | embed codepen |
-| [hexo **gist** shortcode](/docs/hexo-shortcodes/gist) | embed gist |
-| [hexo **jsfiddle** shortcode](/docs/hexo-shortcodes/jsfiddle) | embed jsfiddle |
-| [hexo **githubCard** shortcode](/docs/hexo-shortcodes/githubCard) | embed github card |
-| [hexo **rssreader** shortcode](/docs/hexo-shortcodes/rssreader) | embed rss feed |
-| [hexo **github** shortcode](/docs/hexo-shortcodes/github) | embed any source files from [github.com](https://github.com) |
-| [hexo **npmrunkit** shortcode](/docs/hexo-shortcodes/npmrunkit) | embed any javascript codes to website |
-| [hexo **include_file** shortcode](/docs/hexo-shortcodes/include_file) | include any files relative to `hexo.config.source_dir`, `hexo.config.code_dir`, or reference file it self |
-| [videos](/docs/hexo-shortcodes/videos) | default hexo embedding videos |
+| [hexo **codepen** shortcode](https://www.webmanajemen.com/docs/hexo-shortcodes/codepen) | embed codepen |
+| [hexo **gist** shortcode](https://www.webmanajemen.com/docs/hexo-shortcodes/gist) | embed gist |
+| [hexo **jsfiddle** shortcode](https://www.webmanajemen.com/docs/hexo-shortcodes/jsfiddle) | embed jsfiddle |
+| [hexo **githubCard** shortcode](https://www.webmanajemen.com/docs/hexo-shortcodes/githubCard) | embed github card |
+| [hexo **rssreader** shortcode](https://www.webmanajemen.com/docs/hexo-shortcodes/rssreader) | embed rss feed |
+| [hexo **github** shortcode](https://www.webmanajemen.com/docs/hexo-shortcodes/github) | embed any source files from [github.com](https://github.com) |
+| [hexo **npmrunkit** shortcode](https://www.webmanajemen.com/docs/hexo-shortcodes/npmrunkit) | embed any javascript codes to website |
+| [hexo **include_file** shortcode](https://www.webmanajemen.com/docs/hexo-shortcodes/include_file) | include any files relative to `hexo.config.source_dir`, `hexo.config.code_dir`, or reference file it self |
+| [videos](https://www.webmanajemen.com/docs/hexo-shortcodes/videos) | default hexo embedding videos |
 
 ## Config
 
