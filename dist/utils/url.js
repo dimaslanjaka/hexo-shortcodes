@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getExtUrl = void 0;
+exports.getExtUrl = getExtUrl;
 /**
  * get extension from url
  * @param url
@@ -9,4 +9,3 @@ exports.getExtUrl = void 0;
 function getExtUrl(url) {
     return url.split('?')[0].split('#')[0].split('.').pop() || '';
 }
-exports.getExtUrl = getExtUrl;

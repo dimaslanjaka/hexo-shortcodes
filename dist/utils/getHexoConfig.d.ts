@@ -4,8 +4,8 @@ import Hexo from 'hexo';
  * @param hexo
  * @returns
  */
-export declare function getHexoConfig(hexo: Hexo): import("hexo/dist/hexo/index-d").Config & {
-    'hexo-shortcodes'?: {
+export declare function getHexoConfig(hexo: Hexo): typeof hexo.config & {
+    "hexo-shortcodes"?: {
         raw: boolean;
     };
 };

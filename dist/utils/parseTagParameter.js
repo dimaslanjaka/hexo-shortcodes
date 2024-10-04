@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseTagParameter = void 0;
+exports.parseTagParameter = parseTagParameter;
 var utils_1 = require("../utils");
 var rCaptionTitleFile = /("[^"]*"|'[^']*'|[\S]+)+/g;
 /**
@@ -33,4 +33,3 @@ function parseTagParameter(args) {
     // result.from = result.from - 1; <-- should decrease inside the function
     return result;
 }
-exports.parseTagParameter = parseTagParameter;

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.githubCard = void 0;
+exports.githubCard = githubCard;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 // const Promise = require('bluebird');
 var fs_1 = __importDefault(require("fs"));
@@ -68,4 +68,3 @@ function githubCard(hexo) {
         async: true
     });
 }
-exports.githubCard = githubCard;

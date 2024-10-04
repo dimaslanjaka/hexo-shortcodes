@@ -32,8 +32,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -167,9 +167,9 @@ var gistEmbedTagRegister = function (hexo) {
      * @returns
      */
     function _usingHexoSyntaxHighlighter(args) {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var id, username, gist_id, defaults, params, options, _c, content, url, line, lineSplit, startLine, endLine, codeText, ext, newContent;
+            var id, username, gist_id, defaults, params, options, _a, content, url, line, lineSplit, startLine, endLine, codeText, ext, newContent;
+            var _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -201,7 +201,7 @@ var gistEmbedTagRegister = function (hexo) {
                         options = Object.assign(defaults, params);
                         return [4 /*yield*/, fetch_raw_code(hexo, id, options.filename)];
                     case 1:
-                        _c = _d.sent(), content = _c.result, url = _c.url;
+                        _a = _d.sent(), content = _a.result, url = _a.url;
                         line = options.line;
                         lineSplit = ((line === null || line === void 0 ? void 0 : line.split('-')) || []).map(function (L) { return parseInt(L.replace(/#?L/g, '')); });
                         startLine = lineSplit[0] - 1;
@@ -219,11 +219,11 @@ var gistEmbedTagRegister = function (hexo) {
                         if (/\W/.test(ext))
                             ext = '';
                         // return raw when hexo.config['hexo-shortcodes'].raw = true
-                        if ((_a = hexoConfig['hexo-shortcodes']) === null || _a === void 0 ? void 0 : _a.raw) {
+                        if ((_b = hexoConfig['hexo-shortcodes']) === null || _b === void 0 ? void 0 : _b.raw) {
                             return [2 /*return*/, '```' + ext + '\n' + codeText + '\n```'];
                         }
                         // If neither highlight.js nor prism.js is enabled, return escaped code directly
-                        if (!((_b = hexo.extend.highlight) === null || _b === void 0 ? void 0 : _b.query(hexo.config.syntax_highlighter))) {
+                        if (!((_c = hexo.extend.highlight) === null || _c === void 0 ? void 0 : _c.query(hexo.config.syntax_highlighter))) {
                             return [2 /*return*/, "<pre><code>".concat(hexoUtils.escapeHTML(codeText), "</code></pre>")];
                         }
                         // assign lines length
