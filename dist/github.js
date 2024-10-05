@@ -32,8 +32,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -71,7 +71,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.githubEmbedderRaw = exports.githubEmbedTagRegister = exports.githubEmbedder = void 0;
+exports.githubEmbedder = githubEmbedder;
+exports.githubEmbedTagRegister = githubEmbedTagRegister;
+exports.githubEmbedderRaw = githubEmbedderRaw;
 var ansi_colors_1 = __importDefault(require("ansi-colors"));
 var git_embed_1 = __importDefault(require("git-embed"));
 var hexoUtils = __importStar(require("hexo-util"));
@@ -88,9 +90,9 @@ var logname = ansi_colors_1.default.magentaBright('hexo-shortcodes') + ansi_colo
 function githubEmbedder(hexo) {
     var hexoConfig = (0, getHexoConfig_1.getHexoConfig)(hexo);
     return function (params) {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var url, parseURL, config_1, splitcolon, splithypen, embed, ext, content, options, newContent;
+            var _a, _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -166,7 +168,6 @@ function githubEmbedder(hexo) {
         });
     };
 }
-exports.githubEmbedder = githubEmbedder;
 /**
  * hexo shortcode to embed file
  * @param hexo
@@ -176,7 +177,6 @@ function githubEmbedTagRegister(hexo) {
     hexo.extend.tag.register('github', engine, { async: true });
     return engine;
 }
-exports.githubEmbedTagRegister = githubEmbedTagRegister;
 /**
  * github raw embedder engine
  * @param hexo
@@ -244,4 +244,3 @@ function githubEmbedderRaw(hexo) {
         });
     };
 }
-exports.githubEmbedderRaw = githubEmbedderRaw;

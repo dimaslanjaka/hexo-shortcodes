@@ -14,7 +14,10 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.escapeRegex = exports.array2obj = exports.isEmptyObject = exports.isObject = exports.isArray = exports.getMatches = exports.escapeHTML = exports.registerHexo = exports.url_for = void 0;
+exports.isEmptyObject = exports.isObject = exports.isArray = exports.escapeHTML = exports.registerHexo = exports.url_for = void 0;
+exports.getMatches = getMatches;
+exports.array2obj = array2obj;
+exports.escapeRegex = escapeRegex;
 __exportStar(require("./getHexoConfig"), exports);
 __exportStar(require("./parseTagParameter"), exports);
 __exportStar(require("./shortcodeParser"), exports);
@@ -65,7 +68,6 @@ function getMatches(string, regex, index) {
         return matches[index];
     return matches;
 }
-exports.getMatches = getMatches;
 /**
  * is actual array
  * @param arr
@@ -107,7 +109,6 @@ function array2obj(data) {
         return Object.assign(prev, cur);
     }, {});
 }
-exports.array2obj = array2obj;
 /**
  * escape regex
  * @param str
@@ -116,4 +117,3 @@ exports.array2obj = array2obj;
 function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
-exports.escapeRegex = escapeRegex;

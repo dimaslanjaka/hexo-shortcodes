@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getHexoConfig = void 0;
+exports.getHexoConfig = getHexoConfig;
 /**
  * get hexo config with custom type
  * @param hexo
@@ -9,4 +9,3 @@ exports.getHexoConfig = void 0;
 function getHexoConfig(hexo) {
     return hexo.config;
 }
-exports.getHexoConfig = getHexoConfig;

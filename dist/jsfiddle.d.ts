@@ -1,1 +1,1 @@
-export declare const jsfiddle: (hexo: import('hexo')) => void;
+export declare const jsfiddle: (hexo: import("hexo")) => void;

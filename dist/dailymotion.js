@@ -11,7 +11,8 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dailymotion = exports.dailymotionTag = void 0;
+exports.dailymotionTag = dailymotionTag;
+exports.dailymotion = dailymotion;
 var hexo_util_1 = require("hexo-util");
 /**
  * Dailymotion tag
@@ -30,8 +31,6 @@ function dailymotionTag(args) {
     var playerPath = player ? "player/".concat(player, ".js") : "player.js";
     return (0, hexo_util_1.htmlTag)('script', __assign(__assign(__assign({ src: "https://geo.dailymotion.com/".concat(playerPath), class: 'video-container' }, (video ? { 'data-video': video } : null)), (playlist ? { 'data-playlist': playlist } : null)), (params ? { 'data-params': params } : null)), '', false);
 }
-exports.dailymotionTag = dailymotionTag;
 function dailymotion(hexo) {
     hexo.extend.tag.register('dailymotion', dailymotionTag);
 }
-exports.dailymotion = dailymotion;

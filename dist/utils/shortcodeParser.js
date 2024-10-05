@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.shortcodeParserResultToArrayAttrParam = exports.shortcodeParser = void 0;
+exports.shortcodeParser = shortcodeParser;
+exports.shortcodeParserResultToArrayAttrParam = shortcodeParserResultToArrayAttrParam;
 function shortcodeParser(str) {
     /** shortcode tag name */
     var tagName = '';
@@ -39,7 +40,6 @@ function shortcodeParser(str) {
     }
     return { tagName: tagName, attributes: attributes };
 }
-exports.shortcodeParser = shortcodeParser;
 /**
  * shortcode result to hexo tag attributes array format
  * @param result
@@ -55,4 +55,3 @@ function shortcodeParserResultToArrayAttrParam(result) {
     }
     return arrayResult;
 }
-exports.shortcodeParserResultToArrayAttrParam = shortcodeParserResultToArrayAttrParam;

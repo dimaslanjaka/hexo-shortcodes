@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import Hexo from 'hexo';
+import { StoreFunctionData } from 'hexo/dist/extend/renderer-d';
 import path from 'upath';
 import { parseTagParameter } from './utils/parseTagParameter';
 
@@ -111,9 +112,9 @@ function includeTag(ctx: Hexo) {
   ${template.replace(/\$line/gim, '{{ line }}').replace(/\$index/gim, '{{ loop.index }}')}
 {% endfor %}
       `.trim();
-      contents = await hexo.render.render({ text: renderTemplate, engine: 'njk' }, { lines: slice });
+      contents = await hexo.render.render({ text: renderTemplate, engine: 'njk' } as StoreFunctionData, { lines: slice });
     } else if (parseArgs.render === 'true') {
-      contents = await hexo.render.render({ text: contents, engine: parseArgs.lang || 'njk' }, { lines: slice });
+      contents = await hexo.render.render({ text: contents, engine: parseArgs.lang || 'njk' } as StoreFunctionData, { lines: slice });
     }
 
     if (preText) {

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.vimeoTag = void 0;
+exports.vimeoTag = vimeoTag;
 var hexo_util_1 = require("hexo-util");
 /**
  * Vimeo tag
@@ -18,4 +18,3 @@ function vimeoTag(id) {
     }, '');
     return (0, hexo_util_1.htmlTag)('div', { class: 'video-container' }, iframeTag, false);
 }
-exports.vimeoTag = vimeoTag;

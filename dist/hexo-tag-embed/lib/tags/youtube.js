@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.youtubeTag = void 0;
+exports.youtubeTag = youtubeTag;
 var hexo_util_1 = require("hexo-util");
 /**
 * Youtube tag
@@ -24,4 +24,3 @@ function youtubeTag(_a) {
     }, '');
     return (0, hexo_util_1.htmlTag)('div', { class: 'video-container' }, iframeTag, false);
 }
-exports.youtubeTag = youtubeTag;
