@@ -1,18 +1,24 @@
 ---
 title: hexo-shortcodes demo
 date: 2023-03-03T00:48:02+07:00
-updated: 2023-05-25T00:48:02+07:00
+updated: 2024-10-21T17:35:00+07:00
 ---
 
 # hexo-shortcodes
-Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll. Various hexo shortcode tags. [GitHub](https://github.com/dimaslanjaka/hexo-shortcodes).
+Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll. Various hexo shortcode tags.
+
+[GitHub](https://github.com/dimaslanjaka/hexo-shortcodes) |
+[Demo and docs](/docs/hexo-shortcodes/)
 
 ## Installation
-Firsly, remove old original tag renderer. Because this plugin already have all default tag (`vimeo`, `youtube`, `gist`, `codeblock`)
+
+- Firsly, remove old original tag renderer. Because this plugin already have all default tag (`vimeo`, `youtube`, `gist`, `codeblock`)
 
 ```bash
 npm un hexo-tag-embed
 ```
+
+- Install **hexo-shortcodes**
 
 production
 ```bash
@@ -21,9 +27,10 @@ npm i hexo-shortcodes
 
 latest changes, replace `COMMIT_HASH` with latest commit hash. see [pre-release commit history](https://github.com/dimaslanjaka/hexo-shortcodes/commits/pre-release)
 ```bash
-npm i hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/tarball/COMMIT_HASH
+npm i hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/raw/COMMIT_HASH/pre-release/release/hexo-shortcodes.tgz
+# or
+yarn add hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/raw/COMMIT_HASH/pre-release/release/hexo-shortcodes.tgz
 ```
-for yarn just replace `npm i` with `yarn add`
 
 ## shortcodes list
 | shortcode | description |
@@ -37,6 +44,16 @@ for yarn just replace `npm i` with `yarn add`
 | [hexo **npmrunkit** shortcode](/docs/hexo-shortcodes/npmrunkit) | embed any javascript codes to website |
 | [hexo **include_file** shortcode](/docs/hexo-shortcodes/include_file) | include any files relative to `hexo.config.source_dir`, `hexo.config.code_dir`, or reference file it self |
 | [videos](/docs/hexo-shortcodes/videos) | default hexo embedding videos |
+
+## Config
+
+define renderer returns by setting `_config.yml`
+
+```yaml
+hexo-shortcodes:
+  # true = return raw markdown format instead html
+  raw: false
+```
 
 ## Language Test
 
@@ -64,7 +81,7 @@ read more at https://github.com/dimaslanjaka/hexo-shortcodes/commits/pre-release
 - fix: invalid `git-embed` location
 
 ## Documentations
-- [FULL DEMO, FEATURES, CHANGELOG, and USAGES](https://www.webmanajemen.com/docs/hexo-shortcodes)
+- [FULL DEMO, FEATURES, CHANGELOG, and USAGES](/docs/hexo-shortcodes)
 
 License
 =======

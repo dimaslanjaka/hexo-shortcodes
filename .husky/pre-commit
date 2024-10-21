@@ -3,3 +3,6 @@
 npx lint-staged
 node package-switch.js production
 git add package.json
+node readme-copy.cjs
+git add readme.md
+git add test/fixtures/source/index.md

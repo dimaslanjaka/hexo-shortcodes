@@ -5,11 +5,14 @@ Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll. Variou
 [Demo and docs](https://www.webmanajemen.com/docs/hexo-shortcodes/)
 
 ## Installation
-Firsly, remove old original tag renderer. Because this plugin already have all default tag (`vimeo`, `youtube`, `gist`, `codeblock`)
+
+- Firsly, remove old original tag renderer. Because this plugin already have all default tag (`vimeo`, `youtube`, `gist`, `codeblock`)
 
 ```bash
 npm un hexo-tag-embed
 ```
+
+- Install **hexo-shortcodes**
 
 production
 ```bash
@@ -18,9 +21,9 @@ npm i hexo-shortcodes
 
 latest changes, replace `COMMIT_HASH` with latest commit hash. see [pre-release commit history](https://github.com/dimaslanjaka/hexo-shortcodes/commits/pre-release)
 ```bash
-npm i hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/tarball/COMMIT_HASH
+npm i hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/raw/COMMIT_HASH/pre-release/release/hexo-shortcodes.tgz
 # or
-yarn add hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/tarball/COMMIT_HASH
+yarn add hexo-shortcodes@https://github.com/dimaslanjaka/hexo-shortcodes/raw/COMMIT_HASH/pre-release/release/hexo-shortcodes.tgz
 ```
 
 ## shortcodes list
