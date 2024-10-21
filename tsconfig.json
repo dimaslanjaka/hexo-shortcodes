@@ -5,14 +5,11 @@
     "module": "commonjs",
     "lib": ["ESNext"],
     //"composite": true,
-
     /* Strict Type-Checking Options */
     "strict": true,
-
     /* Module Resolution Options */
     "moduleResolution": "node",
     "esModuleInterop": true,
-
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
@@ -20,10 +17,10 @@
     "outDir": "./dist",
     "allowJs": true,
     "checkJs": false,
-    "noEmit": true,
-    "paths": {
-      "git-embed": ["../packages/git-embed/src"]
-    }
+    "noEmit": true
+    // "paths": {
+    //   "git-embed": ["../packages/git-embed/src"]
+    // }
   },
   "exclude": ["**/dist/**", "**/node_modules/**"]
 }
