@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+      {% block title %}{% endblock %}
+    </title>
+    <meta name="description" content="{% block description %}{% endblock %}" />
+    <link rel="icon"
+          type="image/x-icon"
+          href="//www.webmanajemen.com/favicon.ico" />
+    <link rel="stylesheet"
+          href="https://rawcdn.githack.com/dimaslanjaka/Web-Manajemen/0f634f242ff259087c9fe176e8f28ccaebb5c015/css/all.min.css" />
+    <link rel="stylesheet" href="/css/style.css">
+    {{ injectHeadHtml() }}
+  </head>
+  <body class="bg-white dark:bg-slate-800 dark:text-slate-200">
+    <main class="mx-4">
+      {% block content %}{% endblock %}
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="/js/script.js"></script>
+    {{ injectBodyHtml() }}
+  </body>
+</html>

@@ -1,0 +1,352 @@
+@import "flowbite/dist/flowbite.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+
+@import "./pre-code-button.scss";
+@import "./highlight/github-dark-dimmen.scss";
+@import "@fancyapps/ui/dist/fancybox/fancybox.css";
+
+$font-size-smaller: 0.8125em;
+$font-size-small: 0.875em;
+$font-size-medium: 1em;
+$grey: #bbb;
+$grey-dark: #999;
+$grey-dim: #666;
+
+// https://github.com/hexojs/hexo-renderer-marked/pull/264
+img + figcaption,
+.fancybox + figcaption {
+  color: $grey-dark;
+  font-size: $font-size-small;
+  font-weight: bold;
+  line-height: 1;
+  margin: -15px auto 15px;
+  text-align: center;
+}
+
+.video-container {
+  height: 0;
+  margin-bottom: 20px;
+  overflow: hidden;
+  padding-top: 75%;
+  position: relative;
+  width: 100%;
+
+  iframe,
+  object,
+  embed {
+    height: 100%;
+    left: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.post {
+  a {
+    word-wrap: break-word; /* For older browsers */
+    overflow-wrap: break-word; /* Modern browsers */
+    white-space: normal; /* Allow text to wrap */
+    display: inline-block; /* Necessary for the width to take effect */
+    max-width: 100%; /* Ensure it doesn’t exceed container */
+  }
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+
+  .page-number,
+  .extend {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+
+    &:hover {
+      background-color: #eee;
+      color: #000;
+    }
+
+    &.current {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+      cursor: default;
+    }
+
+    &.extend {
+      i {
+        font-size: 16px;
+        color: inherit;
+      }
+    }
+  }
+
+  .space {
+    margin: 0 8px;
+    color: #999;
+  }
+}
+
+.dark .pagination {
+  .page-number,
+  .extend {
+    background-color: transparent;
+    color: #ccc;
+    border-color: #444;
+
+    &:hover {
+      background-color: #444;
+      color: #fff;
+    }
+
+    &.current {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+  }
+
+  .space {
+    color: #666;
+  }
+}
+
+// blockquote
+.format :where(blockquote):not(:where([class~="not-format"] *))::before {
+  content: "";
+  background: none; // Remove all background properties
+}
+
+// scrollable content - scrollbar
+* {
+  // overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Makes the scrollbar thinner for Firefox */
+  scrollbar-color: #888 #f1f1f1; /* thumb color and track color */
+}
+
+/* WebKit Scrollbar styles for all elements */
+*::-webkit-scrollbar {
+  width: 1px; /* Set the width of the scrollbar */
+  height: 1px; /* Set the height of the scrollbar (for horizontal scrollbar) */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 1px; /* Rounded corners */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color of the scrollbar thumb on hover */
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the scrollbar track */
+  border-radius: 1px; /* Rounded corners */
+}
+
+// post aside
+#TableOfContents > ul > li {
+  padding-bottom: 0.3rem;
+  // padding-top: 0.5rem;
+}
+
+// search modal
+.search-modal {
+  position: fixed;
+  top: 15%; /* Adjust this value as needed */
+  left: 50%;
+  transform: translate(-50%, 0); /* Center it horizontally and keep it at the set top */
+  height: 70vh; /* Set a fixed height for the modal */
+  width: 100%; /* Ensure it takes the full width */
+  max-width: 600px; /* Set a max width for larger screens */
+}
+
+#searchResults {
+  max-height: calc(70vh - 150px); /* Adjust based on the other content (header + input height) */
+  overflow-y: auto; /* Enable vertical scrolling for the search results */
+}
+
+// KaTeX
+.katex {
+  font-family: "KaTeX_Main", sans-serif; /* Change the font family */
+  color: var(--text-color, #473e3e); /* Change the text color with fallback */
+  border: 1px solid var(--border-color, #ccc); /* Add border with fallback color */
+  border-radius: 4px; /* Optional: add rounded corners */
+  padding: 8px; /* Optional: add some padding */
+}
+
+/* Error messages and parentheses color */
+.katex .katex-error {
+  color: var(--error-color, red); /* Change the color of error messages */
+}
+
+.katex .katex-parentheses {
+  color: var(--parentheses-color, #007bff); /* Change the color of parentheses */
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .katex {
+    color: var(--dark-text-color, #d1d5db); /* Adjust text color for dark theme */
+    border: 1px solid var(--dark-border-color, #555); /* Adjust border color for dark theme */
+  }
+
+  .katex .katex-error {
+    color: var(--dark-error-color, #f87171); /* Adjust error color for dark theme */
+  }
+
+  .katex .katex-parentheses {
+    color: var(--dark-parentheses-color, #60a5fa); /* Adjust parentheses color for dark theme */
+  }
+}
+
+// Responsive image fix
+.post {
+  img {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    &:not([id^="masonry"]):not([class*="gallery-group-img"]) {
+      height: auto;
+    }
+  }
+}
+
+// {% galleryGroup %}
+// Light theme styles
+.gallery-group-main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  .gallery-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; // Center align the content vertically
+  }
+}
+
+.gallery-group {
+  background-color: #f9f9f9; // Light background
+  border-radius: 10px;
+  overflow: hidden;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 300px; // Fixed height for the entire gallery item
+
+  .gallery-group-img {
+    width: 100%;
+    height: 200px; // Fixed height for images
+    object-fit: cover; // Maintain aspect ratio
+  }
+
+  .gallery-group-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333; // Darker text
+  }
+
+  figcaption {
+    padding: 15px;
+    text-align: center;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #555; // Muted text
+  }
+
+  a {
+    display: block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Dark theme styles
+.dark {
+  .gallery-group {
+    background-color: #2d3748; // Dark background
+    color: #e2e8f0; // Light text
+
+    .gallery-group-name {
+      color: #cbd5e0; // Lighter text in dark mode
+    }
+
+    p {
+      color: #a0aec0; // Muted text for dark mode
+    }
+
+    a {
+      color: #63b3ed; // Lighter link color in dark mode
+
+      &:hover {
+        color: #90cdf4;
+      }
+    }
+  }
+}
+
+// {% gallery %} - ./media.ts
+// masonry gallery - layout\macro\gallery-mansonry.njk
+
+.masonry-grid {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); // Adjusts based on screen size
+  // grid-template-columns: repeat(4, 1fr); // Creates 4 equal columns
+  grid-auto-rows: 150px; // Set a base height for grid items
+  gap: 8px; // Adjust gap between grid items
+
+  &:not(.gallery-items) {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .masonry-item {
+    // position: relative; // Required for absolute positioning of hover effect
+    @apply relative overflow-hidden rounded-lg;
+    min-height: 0;
+    height: auto;
+
+    // &:nth-child(odd) {
+    //   grid-row-end: span 2; // Makes odd items taller
+    // }
+    // &:nth-child(1) {
+    //   grid-row-end: span 2;
+    // }
+    // &:nth-child(3) {
+    //   grid-row-end: span 2;
+    // }
+    // &:nth-child(5) {
+    //   grid-row-end: span 2;
+    // }
+  }
+}

@@ -1,0 +1,17 @@
+.DS_Store
+.idea/
+**/node_modules/
+**/*.log
+**/db.json
+public/
+**/.deploy*/
+package-lock.json
+yarn.lock
+/.vscode
+build/
+data.WordPress.2022-06-09.xml
+**/tmp/
+**/.yarn/cache
+**/.yarn/version*
+**/.yarn/*.gz
+**/.deploy_git

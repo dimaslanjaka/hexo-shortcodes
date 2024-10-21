@@ -1,0 +1,98 @@
+{
+  "name": "hexo-theme-flowbite",
+  "version": "1.0.6",
+  "main": "dist/hexo-theme-flowbite-api.js",
+  "types": "dist/hexo-theme-flowbite-api.d.ts",
+  "bin": "bin/hexo-theme-flowbite.js",
+  "scripts": {
+    "update:ncu": "npx npm-check-updates -u -x async,progress,cheerio,jsdom,deepmerge-ts",
+    "build": "node build.cjs",
+    "postinstall": "node build.cjs"
+  },
+  "keywords": [
+    "hexo",
+    "hexo-themes",
+    "flowbite",
+    "javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dimaslanjaka/hexo-themes",
+    "directory": "themes/hexo-theme-flowbite"
+  },
+  "files": [
+    "dist/",
+    "bin/",
+    "languages/",
+    "layout/",
+    "scripts/",
+    "source/",
+    "_config.yml",
+    "src/",
+    "*.cjs",
+    "*.js",
+    "*.json"
+  ],
+  "directories": {
+    "bin": "bin",
+    "lib": "dist"
+  },
+  "author": {
+    "email": "dimaslanjaka@gmail.com",
+    "name": "Dimas Lanjaka",
+    "url": "https://webmanajemen.com"
+  },
+  "license": "MIT",
+  "description": "Hexo theme made with flowbite",
+  "dependencies": {
+    "@fancyapps/ui": "^5.0.36",
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac7a7031a81e11ddb5fab0f8ba433041c98/release/cross-spawn.tgz",
+    "deepmerge-ts": "^7.1.3",
+    "fs-extra": "^11.2.0",
+    "glob": "^11.0.0",
+    "hexo-post-parser": "^3.0.1",
+    "highlight.js": "^11.10.0",
+    "imagesloaded": "^5.0.0",
+    "jquery": "^3.7.1",
+    "lodash": "^4.17.21",
+    "masonry-layout": "^4.2.2",
+    "remove": "^0.1.5",
+    "sanitize-filename": "^1.6.3",
+    "sbg-utility": "^2.0.5",
+    "tar": "^7.4.3",
+    "upath": "^2.0.1",
+    "yaml": "^2.5.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.0",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/google.accounts": "^0.0.15",
+    "@types/imagesloaded": "^4.1.6",
+    "@types/jquery": "^3",
+    "@types/lodash": "^4",
+    "@types/masonry-layout": "^4",
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
+    "flowbite": "^2.5.2",
+    "flowbite-typography": "^1.0.4",
+    "hexo": "^7.3.0",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.1.0",
+    "postcss-loader": "^8.1.1",
+    "prettier": "^3.3.3",
+    "prettier-plugin-embed": "^0.4.15",
+    "prettier-plugin-sql": "^0.18.1",
+    "rollup": "^4.24.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "sass": "^1.79.4",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.2"
+  }
+}

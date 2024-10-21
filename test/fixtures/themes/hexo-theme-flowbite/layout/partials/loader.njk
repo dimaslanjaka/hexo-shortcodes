@@ -1,0 +1,19 @@
+{% if theme.loading_animation and theme.loading_animation.enable %}
+  {% if theme.loading_animation.type == 'mini' %}
+    <div id="preloader-mini"
+         class="fixed top-4 right-4 bg-white dark:bg-gray-900 flex items-center justify-center p-2 rounded-full z-50">
+      <div class="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500 dark:border-blue-300"></div>
+    </div>
+  {% else %}
+    <div id="preloader"
+         class="fixed inset-0 bg-white dark:bg-gray-900 flex items-center justify-center z-50">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 dark:border-blue-300"></div>
+    </div>
+  {% endif %}
+{% elif theme.loading_animation %}
+  {# show full page loading animation when theme.loading_animation is boolean #}
+  <div id="preloader"
+       class="fixed inset-0 bg-white dark:bg-gray-900 flex items-center justify-center z-50">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 dark:border-blue-300"></div>
+  </div>
+{% endif %}

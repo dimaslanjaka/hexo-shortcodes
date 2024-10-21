@@ -5,20 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "node test.js",
-      "name": "test build",
+      "command": "cd ../.. && npm start",
+      "name": "start",
       "request": "launch",
       "type": "node-terminal"
-    },
-    {
-      "command": "yarn run start",
-      "name": "server",
-      "request": "launch",
-      "type": "node-terminal",
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "cwd": "${workspaceFolder}/test/fixtures"
     }
   ]
 }

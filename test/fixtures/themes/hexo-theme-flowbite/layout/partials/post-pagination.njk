@@ -1,0 +1,35 @@
+{%- if post.prev or post.next %}
+  <div class="border-t border-gray-300 dark:border-gray-600"></div>
+  {%- set prev = post.prev %} {%- set next = post.next %}
+  <div class="flex justify-between items-center py-4">
+    <div class="post-nav-item">
+      {%- if prev %}
+        <a href="{{ urlFor(prev.path) }}"
+           rel="prev"
+           title="{{ prev.title }}"
+           class="inline-flex items-center px-4 py-2 text-base font-medium text-gray-700 bg-white rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700">
+          <i class="fa fa-angle-left mr-2"></i> {{ prev.title }}
+        </a>
+      {%- else %}
+        <span class="inline-flex items-center px-4 py-2 text-base font-medium text-gray-400 bg-gray-200 rounded-lg dark:text-gray-500 dark:bg-gray-700">
+          <i class="fa fa-angle-left mr-2"></i> No previous post
+        </span>
+      {%- endif %}
+    </div>
+    <div class="post-nav-item">
+      {%- if next %}
+        <a href="{{ urlFor(next.path) }}"
+           rel="next"
+           title="{{ next.title }}"
+           class="inline-flex items-center px-4 py-2 text-base font-medium text-gray-700 bg-white rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700">
+          {{ next.title }} <i class="fa fa-angle-right ml-2"></i>
+        </a>
+      {%- else %}
+        <span class="inline-flex items-center px-4 py-2 text-base font-medium text-gray-400 bg-gray-200 rounded-lg dark:text-gray-500 dark:bg-gray-700">
+          No next post <i class="fa fa-angle-right ml-2"></i>
+        </span>
+      {%- endif %}
+    </div>
+  </div>
+  <div class="border-b border-gray-300 dark:border-gray-600"></div>
+{%- endif %}

@@ -1,0 +1,55 @@
+# Top navigation menu links
+nav:
+  - text: '<i class="fa-duotone fa-solid fa-arrow-up-right-from-square mr-2"></i> GitHub'
+    link: "https://github.com/dimaslanjaka/hexo-themes"
+  - text: Site Overview
+    submenu:
+      - text: About
+        link: /about
+      - text: Privacy Policy
+        link: https://www.webmanajemen.com/p/privacy.html
+      - text: Terms Of Service
+        link: https://www.webmanajemen.com/p/tos.html
+      - text: Contact
+        link: /contact
+  - text: Sub Menu
+    submenu:
+      - text: "Sub Menu 1"
+        link: "#"
+        divider: true
+      - text: "Sub Menu 2"
+        link: "#"
+      - text: "Sub Menu 3"
+        link: "#"
+  - text: Sub Menu 2
+    submenu:
+      - text: "Sub Menu 1"
+        link: "#"
+      - text: "Sub Menu 2"
+        link: "#"
+      - text: "Sub Menu 3"
+        link: "#"
+        divider: true
+# Footer navigation menu links
+footer_nav:
+  - text: About
+    link: /about
+  - text: Privacy Policy
+    link: https://www.webmanajemen.com/p/privacy.html
+  - text: Terms Of Service
+    link: https://www.webmanajemen.com/p/tos.html
+  - text: Contact
+    link: /contact
+# Top navbar icon
+nav_icon: https://flowbite.com/docs/images/logo.svg
+# Show gallery images after post/page
+gallery: true
+# Show loading animation before page fully loaded
+loading_animation:
+  # toggle loading animation
+  enable: true
+  # type mini: small loader fixed on top right
+  # type full: full page loader
+  type: mini
+# favicon meta
+favicon: //www.webmanajemen.com/favicon.ico

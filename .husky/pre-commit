@@ -1,3 +1,5 @@
 #!/bin/sh
 
 npx lint-staged
+node package-switch.js production
+git add package.json

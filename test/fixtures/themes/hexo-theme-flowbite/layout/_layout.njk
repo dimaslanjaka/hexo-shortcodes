@@ -1,0 +1,46 @@
+{% set pageTitle %}
+  {% block title %}{% endblock %}
+{% endset %}
+{% set pageDescription %}
+  {% block description %}{% endblock %}
+{% endset %}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pageTitle | trim }}</title>
+    <meta name="description" content="{{ pageDescription | trim }}" />
+    <meta name="keywords" content="{{ getKeywords(page).toString() }}">
+    <meta name="search" content="{{ urlFor("/hexo-search.json") }}">
+    <meta name="author"
+          content="{{ getAuthorName(page.author, config.author) | trim }}">
+    <!-- Added SEO meta tags -->
+    <meta property="og:title" content="{{ pageTitle | trim }}">
+    <meta property="og:description" content="{{ pageDescription | trim }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ page.url }}">
+    <meta property="og:image" content="{{ page.image }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ pageTitle | trim }}">
+    <meta name="twitter:description" content="{{ pageDescription | trim }}">
+    <meta name="twitter:image" content="{{ page.image }}">
+    <link rel="icon" type="image/x-icon" href="{{ urlFor(theme.favicon | default("//www.webmanajemen.com/favicon.ico") ) }}" />
+    <link rel="stylesheet"
+          href="https://rawcdn.githack.com/dimaslanjaka/Web-Manajemen/0f634f242ff259087c9fe176e8f28ccaebb5c015/css/all.min.css" />
+    <link rel="stylesheet" href="{{ urlFor("/css/style.css") }}">
+    {{ injectHeadHtml() }}
+  </head>
+  <body class="bg-white dark:bg-slate-800 dark:text-slate-200">
+    {% include 'partials/loader.njk' %}
+    {% include 'partials/header.njk' %}
+    <main class="mx-4">
+      {% block content %}{% endblock %}
+    </main>
+    {% include 'partials/footer.njk' %}
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="{{ urlFor('/js/script.js') }}"></script>
+    {{ injectBodyHtml() }}
+  </body>
+</html>

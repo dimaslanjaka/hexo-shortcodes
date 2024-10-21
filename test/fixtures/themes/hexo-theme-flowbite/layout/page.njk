@@ -1,0 +1,29 @@
+{% extends '_layout.njk' %}
+{% block title %}
+  {%- set page_title_suffix = ' - ' + config.title %}
+  {%- if page.type === 'categories' and not page.title %}
+    {{- __("title.category") + page_title_suffix }}
+  {%- elif page.type === 'tags' and not page.title %}
+    {{- __("title.tag") + page_title_suffix }}
+  {%- elif page.type === 'schedule' and not page.title %}
+    {{- __("title.schedule") + page_title_suffix }}
+  {%- else %}
+    {{- page.title + page_title_suffix }}
+  {%- endif %}
+{% endblock %}
+{% block description %}
+  {%- set page_title_suffix = ' - ' + config.title %}
+  {%- if page.type === 'categories' and not page.title %}
+    {{- __("title.category") + page_title_suffix }}
+  {%- elif page.type === 'tags' and not page.title %}
+    {{- __("title.tag") + page_title_suffix }}
+  {%- elif page.type === 'schedule' and not page.title %}
+    {{- __("title.schedule") + page_title_suffix }}
+  {%- else %}
+    {{- page.title + page_title_suffix }}
+  {%- endif %} - {{ page.description }}
+{% endblock %}
+{% block content %}
+  <div class="max-w-none format lg:format-lg dark:format-invert format-red post">{{ page.content }}</div>
+  {% include 'partials/disqus.njk' %}
+{% endblock content %}

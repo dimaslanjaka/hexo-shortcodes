@@ -1,0 +1,61 @@
+{% extends '_layout.njk' %}
+{% block title %}
+  {%- set page_title_suffix = ' - ' + config.title %}
+  {%- if page.type === 'categories' and not page.title %}
+    {{- __("title.category") + page_title_suffix }}
+  {%- elif page.type === 'tags' and not page.title %}
+    {{- __("title.tag") + page_title_suffix }}
+  {%- elif page.type === 'schedule' and not page.title %}
+    {{- __("title.schedule") + page_title_suffix }}
+  {%- else %}
+    {{- page.title + page_title_suffix }}
+  {%- endif %}
+{% endblock %}
+{% block description %}
+  {%- set page_title_suffix = ' - ' + config.title %}
+  {%- if page.type === 'categories' and not page.title %}
+    {{- __("title.category") + page_title_suffix }}
+  {%- elif page.type === 'tags' and not page.title %}
+    {{- __("title.tag") + page_title_suffix }}
+  {%- elif page.type === 'schedule' and not page.title %}
+    {{- __("title.schedule") + page_title_suffix }}
+  {%- else %}
+    {{- page.title + page_title_suffix }}
+  {%- endif %} - {{ page.description }}
+{% endblock %}
+{% block content %}
+  <div class="relative flex justify-center">
+    <!-- Left Sticky Ad -->
+    <div class="hidden lg:block lg:sticky lg:top-0 lg:w-1/6">
+      <div>
+        <!-- Ad content here -->
+        <p>Left Ad Banner</p>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2188063137129806"
+             data-ad-slot="2450061646"
+             data-ad-format="auto"
+             data-full-width-responsive="true"
+             data-adtest="on"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="max-w-none format lg:format-lg dark:format-invert format-red post lg:w-2/3">{{ page.content }}</div>
+    <!-- Right Sticky Ad -->
+    <div class="hidden lg:block lg:sticky lg:top-0 lg:w-1/6">
+      <div>
+        <!-- Ad content here -->
+        <p>Right Ad Banner</p>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2188063137129806"
+             data-ad-slot="1136979979"
+             data-ad-format="auto"
+             data-full-width-responsive="true"
+             data-adtest="on"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

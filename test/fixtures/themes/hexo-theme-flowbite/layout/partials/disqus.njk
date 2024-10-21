@@ -1,0 +1,7 @@
+{% if config.disqus_shortname %}
+  <div class="comments">
+    <div id="disqus_thread"
+         data-disqus-shortname="{{ config.disqus_shortname }}"
+         data-disqus-url="{{ urlFor(page.permalink) }}"></div>
+  </div>
+{% endif %}
