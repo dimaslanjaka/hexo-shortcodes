@@ -10,3 +10,4 @@
 /dist
 /release
 bin/submodule-install
+.env

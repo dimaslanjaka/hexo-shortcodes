@@ -75,7 +75,7 @@
     "npm": "^8.0.0",
     "hexo": ">= 3.0.0"
   },
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@4.5.1",
   "dependencies": {
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/5560156/release/cross-spawn.tgz",
     "fs-extra": "^11.1.1",
