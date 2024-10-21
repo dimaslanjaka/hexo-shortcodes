@@ -1,7 +1,7 @@
 ---
 title: hexo-shortcodes demo
 date: 2023-03-03T00:48:02+07:00
-updated: 2024-10-22T06:28:09+07:00
+updated: 2024-10-22T06:30:37+07:00
 layout: page
 ---
 
@@ -61,6 +61,8 @@ hexo-shortcodes:
 
 ## Changelog
 read more at https://github.com/dimaslanjaka/hexo-shortcodes/commits/pre-release (`chore`,`feat`,`fix` sections)
+### 1.2.4
+- feat: update `hexo-tag-embed` from fork
 ### 1.2.3
 - fix: `hexo@6` `context.extend.highlight` undefined
   TypeError: Cannot read properties of undefined (reading 'query')
