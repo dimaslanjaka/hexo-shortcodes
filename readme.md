@@ -1,8 +1,7 @@
 # hexo-shortcodes
 Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll. Various hexo shortcode tags.
 
-[GitHub](https://github.com/dimaslanjaka/hexo-shortcodes) |
-[Demo and docs](https://www.webmanajemen.com/docs/hexo-shortcodes/)
+[GitHub](https://github.com/dimaslanjaka/hexo-shortcodes) | [Demo and docs](https://www.webmanajemen.com/docs/hexo-shortcodes/)
 
 ## Installation
 

@@ -9,6 +9,7 @@ const metadata = `
 title: hexo-shortcodes demo
 date: 2023-03-03T00:48:02+07:00
 updated: ${currentDate}
+layout: page
 ---
 `.trim();
 

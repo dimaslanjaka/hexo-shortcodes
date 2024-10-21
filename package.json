@@ -43,7 +43,9 @@
     "test": "jest --runInBand",
     "test-cov": "jest --runInBand --coverage",
     "clean": "rm -rf dist && npm run build",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepack": "node package-switch.js production",
+    "postpack": "node package-switch.js local"
   },
   "workspaces": [
     "test/fixtures"

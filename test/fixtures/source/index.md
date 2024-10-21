@@ -1,14 +1,14 @@
 ---
 title: hexo-shortcodes demo
 date: 2023-03-03T00:48:02+07:00
-updated: 2024-10-21T17:35:00+07:00
+updated: 2024-10-21T17:40:31+07:00
+layout: page
 ---
 
 # hexo-shortcodes
 Hexo shortcodes helper. Various shortcodes for hexo, adapted from jekyll. Various hexo shortcode tags.
 
-[GitHub](https://github.com/dimaslanjaka/hexo-shortcodes) |
-[Demo and docs](/docs/hexo-shortcodes/)
+[GitHub](https://github.com/dimaslanjaka/hexo-shortcodes) | [Demo and docs](/docs/hexo-shortcodes/)
 
 ## Installation
 
