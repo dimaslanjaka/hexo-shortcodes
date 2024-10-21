@@ -28,7 +28,6 @@ const local = {
   'git-command-helper': 'file:../git-command-helper/release/git-command-helper.tgz',
   'markdown-it': 'file:../markdown-it/release/markdown-it.tgz',
   'hexo-renderers': 'file:../hexo-renderers/release/hexo-renderers.tgz',
-  'hexo-shortcodes': 'file:../hexo-shortcodes/release/hexo-shortcodes.tgz',
   'hexo-seo': 'file:../hexo-seo/release/hexo-seo.tgz'
 };
 
@@ -45,7 +44,6 @@ const production = {
   'hexo-seo': 'https://github.com/dimaslanjaka/hexo-seo/raw/8c814eb/release/hexo-seo.tgz',
   'markdown-it': 'https://github.com/dimaslanjaka/markdown-it/raw/95599a5/release/markdown-it.tgz',
   'hexo-renderers': 'https://github.com/dimaslanjaka/hexo-renderers/raw/3f727de/release/hexo-renderers.tgz',
-  'hexo-shortcodes': 'https://github.com/dimaslanjaka/hexo-shortcodes/raw/f70a1c0/release/hexo-shortcodes.tgz',
   'static-blog-generator':
     'https://github.com/dimaslanjaka/static-blog-generator/raw/master/packages/static-blog-generator/release/static-blog-generator.tgz',
   'instant-indexing':
