@@ -16,3 +16,4 @@ packager-lock.json
 .yarn/version*
 .yarn/*gz
 .env
+/dist
