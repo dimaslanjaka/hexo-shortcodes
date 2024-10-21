@@ -11,5 +11,7 @@ yarn.lock
 packager-lock.json
 /packages
 /coverage
-.yarnrc.yml
-.yarn/
+.yarn/cache*
+.yarn/patche*
+.yarn/version*
+.yarn/*gz
