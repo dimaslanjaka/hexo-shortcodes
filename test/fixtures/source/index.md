@@ -1,7 +1,7 @@
 ---
 title: hexo-shortcodes demo
 date: 2023-03-03T00:48:02+07:00
-updated: 2024-10-21T17:40:31+07:00
+updated: 2024-10-22T06:28:09+07:00
 layout: page
 ---
 

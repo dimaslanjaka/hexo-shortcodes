@@ -25,8 +25,8 @@ const local = {
   'hexo-post-parser': 'file:../hexo-post-parser/release/hexo-post-parser.tgz',
   'git-command-helper': 'file:../git-command-helper/release/git-command-helper.tgz',
   'markdown-it': 'file:../markdown-it/release/markdown-it.tgz',
-  'hexo-renderers': 'file:../hexo-renderers/release/hexo-renderers.tgz',
   'hexo-shortcodes': 'file:../hexo-shortcodes/release/hexo-shortcodes.tgz',
+  'hexo-renderers': 'file:../hexo-renderers/release/hexo-renderers.tgz',
   'hexo-seo': 'file:../hexo-seo/release/hexo-seo.tgz'
 };
 

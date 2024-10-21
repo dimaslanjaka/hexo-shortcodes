@@ -26,7 +26,7 @@
   },
   "license": "MIT",
   "files": [
-    "template",
+    "template/",
     "template/*.njk",
     "lib/",
     "dist/",
@@ -34,7 +34,7 @@
   ],
   "scripts": {
     "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
-    "update:ncu": "npm-check-updates -u -x hexo,hexo-fs --enginesNode",
+    "update:ncu": "npm-check-updates -u",
     "update": "nrs \"update:**\"",
     "build": "tsc -p tsconfig.build.json",
     "pack": "node packer.js --yarn",
