@@ -2,3 +2,7 @@
 	path = src/hexo-tag-embed
 	url = https://github.com/dimaslanjaka/hexo-tag-embed.git
 	branch = monorepo
+[submodule "test/fixtures/themes/hexo-theme-landscape"]
+	path = test/fixtures/themes/hexo-theme-landscape
+	url = https://github.com/hexojs/hexo-theme-landscape.git
+	branch = master
