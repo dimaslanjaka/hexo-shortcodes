@@ -71,6 +71,7 @@
     "@types/babel__core": "^7",
     "@types/babel__preset-env": "^7",
     "@types/bluebird": "^3.5.42",
+    "@types/connect": "^3.4.38",
     "@types/eslint": "^9",
     "@types/fs-extra": "^11.0.4",
     "@types/hexo-asset-link": "https://github.com/dimaslanjaka/hexo/raw/8b31a11/releases/hexo-asset-link.tgz",

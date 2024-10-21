@@ -60,7 +60,7 @@ export const gistEmbedTagRegister = (hexo: import('hexo')) => {
    * REGISTER MIDDLEWARE FOR HEXO SERVER
    */
   hexo.extend.filter.register('server_middleware', function (app) {
-    app.use(libRoute, function (_req, res) {
+    app.use(libRoute, function (_req: import('connect').IncomingMessage, res: import('http').ServerResponse) {
       res.setHeader('content-type', 'text/javascript');
       res.end(fs.readFileSync(libFilePath).toString());
     });
@@ -80,7 +80,7 @@ export const gistEmbedTagRegister = (hexo: import('hexo')) => {
 
     return function (args: Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[0]) {
       const id = args[0];
-      hexo.log.d(logname, id);
+      hexo.log.d(logname, { id });
       const filename = args[1];
       const payload = {
         id,
