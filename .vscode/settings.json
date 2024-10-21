@@ -41,7 +41,12 @@
     "editor.formatOnSave": true
   },
   "prettier.endOfLine": "lf",
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "code-runner.clearPreviousOutput": true,
   "code-runner.saveAllFilesBeforeRun": true,
   "code-runner.runInTerminal": true,
@@ -93,5 +98,6 @@
   "html.format.enable": true,
   "yaml.schemas": {
     "https://json.schemastore.org/jekyll.json": "file:///d%3A/Repositories/hexo-shortcodes/test/_config.yml"
-  }
+  },
+  "eslint.useFlatConfig": false
 }

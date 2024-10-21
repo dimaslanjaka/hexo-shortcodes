@@ -1,4 +1,4 @@
-const prettier = require('./.prettierrc.json')
+const prettier = require('./.prettierrc.json');
 
 /**
  * @type {import('eslint').ESLint.ConfigData}
@@ -32,7 +32,7 @@ const config = {
   // override rules for js files
   overrides: [
     {
-      files: ['*.js'],
+      files: ['*.js', '*.cjs'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off' // disable require warning on js files
       }
@@ -64,6 +64,6 @@ const config = {
     'arrow-body-style': 'off',
     'prefer-arrow-callback': 'off'
   }
-}
+};
 
-module.exports = config
+module.exports = config;
